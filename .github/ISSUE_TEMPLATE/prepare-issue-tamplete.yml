@@ -1,0 +1,36 @@
+name: Prepare Template
+description: 작업 준비 사항을 공유할 때 사용하는 템플릿
+title: "[Prepare]: Prepare 이슈 제목"
+labels: ["prepare", "feature"]
+
+body:
+  - type: input
+    id: prepare-topic
+    attributes:
+      label: Topic
+      description: 무엇에 대해 공부하나요?
+      placeholder: ex. Device UserDefault에 저장된 내용을 watchOS에 동기화 시키는 기능
+    validations:
+      required: true
+      
+  - type: textarea
+    id: prepare-reference
+    attributes:
+      label: Reference
+      description: 어떤 내용들을 참고했나요? (지속적으로 추가)
+      placeholder: ex. Stackoverflow
+      value: |
+        ## 참고 사이트
+        - https://developer.apple.com/kr/
+        - 
+    validations:
+      required: false
+
+  - type: input
+    id: prepare-period
+    attributes:
+      label: Period
+      description: 예상 기간
+      placeholder: ~ MM/DD(E) ex. ~ 07/12(화)
+    validations:
+      required: true
