@@ -1,13 +1,13 @@
 //
-//  FourFourMatUITests.swift
-//  FourFourMatUITests
+//  SampleroUITests.swift
+//  SampleroUITests
 //
-//  Created by JiwKang on 2022/10/05.
+//  Created by JiwKang on 2022/10/06.
 //
 
 import XCTest
 
-final class FourFourMatUITests: XCTestCase {
+final class SampleroUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

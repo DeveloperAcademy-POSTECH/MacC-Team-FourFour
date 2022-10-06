@@ -1,8 +1,8 @@
 //
 //  ViewController.swift
-//  FourFourMat
+//  Samplero
 //
-//  Created by JiwKang on 2022/10/05.
+//  Created by JiwKang on 2022/10/06.
 //
 
 import UIKit

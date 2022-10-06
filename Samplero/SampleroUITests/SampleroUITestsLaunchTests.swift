@@ -1,13 +1,13 @@
 //
-//  FourFourMatUITestsLaunchTests.swift
-//  FourFourMatUITests
+//  SampleroUITestsLaunchTests.swift
+//  SampleroUITests
 //
-//  Created by JiwKang on 2022/10/05.
+//  Created by JiwKang on 2022/10/06.
 //
 
 import XCTest
 
-final class FourFourMatUITestsLaunchTests: XCTestCase {
+final class SampleroUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -1,14 +1,14 @@
 //
-//  FourFourMatTests.swift
-//  FourFourMatTests
+//  SampleroTests.swift
+//  SampleroTests
 //
-//  Created by JiwKang on 2022/10/05.
+//  Created by JiwKang on 2022/10/06.
 //
 
 import XCTest
-@testable import FourFourMat
+@testable import Samplero
 
-final class FourFourMatTests: XCTestCase {
+final class SampleroTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
