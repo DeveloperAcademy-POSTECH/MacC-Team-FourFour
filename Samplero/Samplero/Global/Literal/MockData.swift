@@ -11,7 +11,7 @@ import Foundation
 
 struct MockData {
 
-    static var sampleList:[Sample] = [
+    static var sampleList: [Sample] = [
         Sample(matName: "화이트마블",
                imageName: "WhiteMarble",
                matPrice: "12,000원",

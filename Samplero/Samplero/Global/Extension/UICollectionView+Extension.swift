@@ -16,8 +16,7 @@ extension UICollectionView {
         }
         return cell
     }
-    func register<T>(cell: T.Type,
-                      forCellReuseIdentifier reuseIdentifier: String = T.className) where T: UICollectionViewCell {
+    func register<T>(cell: T.Type, forCellReuseIdentifier reuseIdentifier: String = T.className) where T: UICollectionViewCell {
         register(cell, forCellWithReuseIdentifier: reuseIdentifier)
     }
 }

@@ -63,7 +63,7 @@ class CommonStackView: UIStackView {
         }
     }
 
-    func setValueLabel(with value : String) {
+    func setValueLabel(with value: String) {
         valueLabel.text = value
     }
 

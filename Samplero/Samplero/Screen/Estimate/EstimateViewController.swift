@@ -58,7 +58,6 @@ class EstimateViewController: BaseViewController {
         label.textAlignment =  .left
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .black
-        label.text = "5000원"
         return label
     }()
 

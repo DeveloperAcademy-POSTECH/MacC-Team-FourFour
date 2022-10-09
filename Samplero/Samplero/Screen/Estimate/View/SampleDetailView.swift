@@ -23,7 +23,7 @@ class SampleDetailView: UIView {
     // MARK: - Properties
 
 
-    private let sampleNameLabel : UILabel = {
+    private let sampleNameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
         label.font = .systemFont(ofSize: 16, weight: .bold)
@@ -32,7 +32,7 @@ class SampleDetailView: UIView {
         return label
     }()
 
-    private let matPriceLabel : UILabel = {
+    private let matPriceLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .right
         label.font = .systemFont(ofSize: 16, weight: .bold)
@@ -41,7 +41,7 @@ class SampleDetailView: UIView {
         return label
     }()
 
-    private let nameStackView : UIStackView = {
+    private let nameStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -49,7 +49,7 @@ class SampleDetailView: UIView {
         return stackView
     }()
 
-    private let horizontalLine : UIView = {
+    private let horizontalLine: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         return view
@@ -68,7 +68,7 @@ class SampleDetailView: UIView {
     private let makerStackView = CommonStackView(
         detailName: "제조사", detailValue: "봄봄매트")
 
-    private let h1StackView : UIStackView = {
+    private let h1StackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
@@ -77,7 +77,7 @@ class SampleDetailView: UIView {
         return stackView
     }()
 
-    private let h2StackView : UIStackView = {
+    private let h2StackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
@@ -86,7 +86,7 @@ class SampleDetailView: UIView {
         return stackView
     }()
 
-    private let vStackView : UIStackView = {
+    private let vStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -99,7 +99,7 @@ class SampleDetailView: UIView {
     // MARK: - Init
 
 
-    init(sample : Sample) {
+    init(sample: Sample) {
         super.init(frame: .zero)
         render()
         configure(with: sample)
