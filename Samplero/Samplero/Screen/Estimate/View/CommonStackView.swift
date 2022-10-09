@@ -34,10 +34,9 @@ class CommonStackView: UIStackView {
     // MARK: - Init
 
 
-    init(detailName: String, detailValue: String) {
+    init(detailName: String) {
         super.init(frame: .zero)
         nameLabel.text = detailName
-        valueLabel.text = detailValue
         self.axis = .horizontal
         self.alignment = .leading
         self.distribution = .fillEqually

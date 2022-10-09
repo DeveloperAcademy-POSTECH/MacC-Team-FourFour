@@ -12,15 +12,16 @@ import RxSwift
 import SnapKit
 
 private enum Size {
-    static let deviceHeight = UIScreen.main.bounds.size.height - ((UIApplication.shared.windows.first?.safeAreaInsets.top) ??  0) - 44
+    static let deviceHeight = UIScreen.main.bounds.size.height - ((UIApplication.shared.windows.first?.safeAreaInsets.top) ??  0.0) - 44.0
     static let defaultOffset = 20.0
-    static let samplePriceTopOffset = 28
-    static let samplePriceValueLeadingOffset = 23
-    static let sampleAddButtonWidth = 100
-    static let sampleAddButtonHeight = 39
-    static let sampleAddButtonTopOffset = 17
+    static let samplePriceTopOffset = 28.0
+    static let samplePriceValueLeadingOffset = 23.0
+    static let sampleAddButtonWidth = 100.0
+    static let sampleAddButtonHeight = 39.0
+    static let sampleAddButtonTopOffset = 17.0
     static let sampleAddButtonCornerRadius = 14.0
-    static let cellItemSize = 40
+    static let cellItemSize = 40.0
+    static let sampleCollectionBottomOffset = 14.0
 }
 
 class EstimateViewController: BaseViewController, ViewModelBindableType {
@@ -46,6 +47,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         return view
     }()
 
+    // subView of bottomView
     private let samplePriceLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
@@ -55,6 +57,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         return label
     }()
 
+    // subView of bottomView
     private let samplePriceValueLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
@@ -63,6 +66,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         return label
     }()
 
+    // subView of bottomView
     private let sampleAddButton: UIButton = {
         let button = UIButton()
         button.setTitle("샘플담기", for: .normal)
@@ -92,11 +96,10 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
                                                    bottom: .zero,
                                                    right: Size.defaultOffset)
         collectionView.allowsMultipleSelection = false
-
         return collectionView
     }()
 
-    // variable for selecting fist item in default
+    // variable for selecting first item in default
     private var lastSelectedIndexPath: IndexPath?
 
     var viewModel: EstimateViewModel!
@@ -111,7 +114,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
     override func render() {
         view.addSubview(roomImageView)
         roomImageView.snp.makeConstraints { make in
-            make.height.equalTo(Size.deviceHeight*0.69)
+            make.height.equalTo(Size.deviceHeight * 0.69)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
         }
@@ -119,15 +122,15 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         roomImageView.addSubview(sampleCollectionView)
         sampleCollectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(14)
-            make.height.equalTo(40)
+            make.bottom.equalToSuperview().inset(Size.sampleCollectionBottomOffset)
+            make.height.equalTo(Size.cellItemSize)
         }
 
         view.addSubview(sampleDetailView)
         sampleDetailView.snp.makeConstraints { make in
             make.top.equalTo(roomImageView.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(Size.deviceHeight*0.2)
+            make.height.equalTo(Size.deviceHeight * 0.2)
         }
 
         view.addSubview(bottomView)
@@ -151,7 +154,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         bottomView.addSubview(sampleAddButton)
         sampleAddButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Size.sampleAddButtonTopOffset)
-            make.trailing.equalTo(-Size.defaultOffset)
+            make.trailing.equalToSuperview().inset(Size.defaultOffset)
             make.width.equalTo(Size.sampleAddButtonWidth)
             make.height.equalTo(Size.sampleAddButtonHeight)
 
@@ -176,7 +179,8 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         output.SampleList
             .bind(to: sampleCollectionView.rx.items) { [weak self] collectionView, itemIndex, sample -> UICollectionViewCell in
                 let indexPath = IndexPath(item: itemIndex, section: .zero)
-                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
+                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self,
+                                                              for: indexPath)
                 cell.configure(with: sample.imageName)
 
                 if itemIndex == .zero {

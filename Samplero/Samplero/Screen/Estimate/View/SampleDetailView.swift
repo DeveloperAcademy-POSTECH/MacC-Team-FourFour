@@ -27,7 +27,6 @@ class SampleDetailView: UIView {
         let label = UILabel()
         label.textAlignment =  .left
         label.font = .systemFont(ofSize: 16, weight: .bold)
-        label.text = "화이트마블"
         label.textColor = .black
         return label
     }()
@@ -36,7 +35,6 @@ class SampleDetailView: UIView {
         let label = UILabel()
         label.textAlignment =  .right
         label.font = .systemFont(ofSize: 16, weight: .bold)
-        label.text = "장당 12,000원"
         label.textColor = .black
         return label
     }()
@@ -56,17 +54,13 @@ class SampleDetailView: UIView {
     }()
 
 
-    private let materialStackView = CommonStackView(
-        detailName: "소재", detailValue: "TPU")
+    private let materialStackView = CommonStackView(detailName: "소재")
 
-    private let thicknessStackView = CommonStackView(
-        detailName: "두께", detailValue: "4cm")
+    private let thicknessStackView = CommonStackView(detailName: "두께")
 
-    private let sizeStackView = CommonStackView(
-        detailName: "크기", detailValue: "120x120")
+    private let sizeStackView = CommonStackView(detailName: "크기")
 
-    private let makerStackView = CommonStackView(
-        detailName: "제조사", detailValue: "봄봄매트")
+    private let makerStackView = CommonStackView(detailName: "제조사")
 
     private let h1StackView: UIStackView = {
         let stackView = UIStackView()
@@ -116,7 +110,7 @@ class SampleDetailView: UIView {
         nameStackView.addArrangedSubview(sampleNameLabel)
         nameStackView.addArrangedSubview(matPriceLabel)
 
-         self.addSubview(nameStackView)
+        self.addSubview(nameStackView)
         nameStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Size.nameStackViewTopOffset)
             make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
