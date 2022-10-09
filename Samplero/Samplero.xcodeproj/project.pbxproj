@@ -27,6 +27,8 @@
 		355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85C28F1D15B001A5731 /* CommonStackView.swift */; };
 		355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85E28F1D5DA001A5731 /* Sample.swift */; };
 		355CB86128F295A0001A5731 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86028F295A0001A5731 /* MockData.swift */; };
+		355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */; };
+		355CB86A28F2A0AA001A5731 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86928F2A0AA001A5731 /* UICollectionView+Extension.swift */; };
 		CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */; };
 		CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD428EE77C0003D1F49 /* SceneDelegate.swift */; };
 		CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD628EE77C0003D1F49 /* MainViewController.swift */; };
@@ -68,6 +70,8 @@
 		355CB85C28F1D15B001A5731 /* CommonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStackView.swift; sourceTree = "<group>"; };
 		355CB85E28F1D5DA001A5731 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		355CB86028F295A0001A5731 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCollectionViewCell.swift; sourceTree = "<group>"; };
+		355CB86928F2A0AA001A5731 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
 		CEF76BCF28EE77C0003D1F49 /* Samplero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samplero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEF76BD428EE77C0003D1F49 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -226,6 +230,7 @@
 				21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */,
 				21ED8C7A28EFC77B0074C9A3 /* UITableView+Extension.swift */,
 				35084E4928F0292C00621C0D /* Color+Extension.swift */,
+				355CB86928F2A0AA001A5731 /* UICollectionView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -284,10 +289,19 @@
 		355CB85728F08F7A001A5731 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				355CB86228F29E89001A5731 /* cell */,
 				355CB85A28F09B06001A5731 /* SampleDetailView.swift */,
 				355CB85C28F1D15B001A5731 /* CommonStackView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		355CB86228F29E89001A5731 /* cell */ = {
+			isa = PBXGroup;
+			children = (
+				355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */,
+			);
+			path = cell;
 			sourceTree = "<group>";
 		};
 		CEF76BC628EE77C0003D1F49 = {
@@ -490,6 +504,7 @@
 			files = (
 				CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
+				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				355CB85928F08FBD001A5731 /* EstimateViewModel.swift in Sources */,
 				355CB86128F295A0001A5731 /* MockData.swift in Sources */,
@@ -503,6 +518,7 @@
 				355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
+				355CB86A28F2A0AA001A5731 /* UICollectionView+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
