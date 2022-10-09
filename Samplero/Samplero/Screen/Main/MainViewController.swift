@@ -9,9 +9,17 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+    @IBAction func estimateButton(_ sender: Any) {
+
+        var estimateVC = EstimateViewController()
+        estimateVC.bindViewModel(EstimateViewModel())
+
+        self.navigationController?.pushViewController(estimateVC, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        self.title = "카메라"
     }
 
 

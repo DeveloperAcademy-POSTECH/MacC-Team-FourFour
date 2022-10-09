@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import SnapKit
 
 private enum Size {
@@ -21,7 +23,7 @@ private enum Size {
     static let cellItemSize = 40
 }
 
-class EstimateViewController: BaseViewController {
+class EstimateViewController: BaseViewController, ViewModelBindableType {
 
 
     // MARK: - Properties
@@ -80,7 +82,8 @@ class EstimateViewController: BaseViewController {
     }()
 
     private lazy var sampleCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
+        let collectionView = UICollectionView(frame: .zero,
+                                              collectionViewLayout: self.flowLayout)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
         collectionView.register(cell: SampleCollectionViewCell.self)
@@ -95,13 +98,14 @@ class EstimateViewController: BaseViewController {
 
     private var lastSelectedIndexPath: IndexPath?
 
+    var viewModel: EstimateViewModel!
 
     // MARK: - Life Cycle
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setDelegation()
+        //       setDelegation()
     }
 
     override func render() {
@@ -137,6 +141,7 @@ class EstimateViewController: BaseViewController {
             make.top.equalToSuperview().offset(Size.samplePriceTopOffset)
             make.leading.equalToSuperview().offset(Size.defaultOffset)
         }
+        
         bottomView.addSubview(samplePriceValueLabel)
         samplePriceValueLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Size.samplePriceTopOffset)
@@ -155,57 +160,60 @@ class EstimateViewController: BaseViewController {
     }
 
     override func configUI() {
+        super.configUI()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.shoppingBag, style: .plain, target: self, action: nil)
         self.navigationItem.rightBarButtonItem?.tintColor = .black
 
     }
 
+    func bind() {
+        // Input
+        let input = EstimateViewModel.Input(collectionModelSelected: sampleCollectionView.rx.modelSelected(Sample.self))
+
+        // Output
+        let output = viewModel.transform(input: input)
+
+        output.SampleList
+            .bind(to: sampleCollectionView.rx.items) { [weak self] collectionView, itemIndex, sample -> UICollectionViewCell in
+                let indexPath = IndexPath(item: itemIndex, section: .zero)
+                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
+                cell.configure(with: sample.imageName)
+
+                if itemIndex == .zero {
+                    self?.lastSelectedIndexPath = indexPath
+                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+                    self?.configure(with: sample)
+                }
+
+                cell.isSelected = (self?.lastSelectedIndexPath == indexPath)
+
+                return cell
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        output.tappedSample
+            .bind(to: rx.configSample)
+            .disposed(by: viewModel.disposeBag)
+    }
+
 
     // MARK: - Func
 
-    private func setDelegation() {
-        sampleCollectionView.dataSource = self
-        sampleCollectionView.delegate = self
-
+    
+    func configure(with sample: Sample) {
+        sampleDetailView.configure(with: sample)
+        samplePriceValueLabel.text = sample.samplePrice
     }
 }
 
 
-// MARK: - UICollectionViewDataSource
+// MARK: - configSample: Binder
 
 
-extension EstimateViewController: UICollectionViewDataSource {
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return MockData.sampleList.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
-        let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
-        cell.configure(with: MockData.sampleList[indexPath.item].imageName)
-        
-        if indexPath.item == 0 {
-            lastSelectedIndexPath = indexPath
-            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
-            sampleDetailView.configure(with: MockData.sampleList[indexPath.item])
-            samplePriceValueLabel.text = MockData.sampleList[indexPath.item].samplePrice
+extension Reactive where Base: EstimateViewController {
+    var configSample: Binder<Sample> {
+        return Binder(self.base) { _, sample in
+            self.base.configure(with: sample)
         }
-        cell.isSelected = (lastSelectedIndexPath == indexPath)
-
-        return cell
     }
 }
-
-
-// MARK: - UICollectionViewDelegate
-
-
-extension EstimateViewController: UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        sampleDetailView.configure(with: MockData.sampleList[indexPath.item])
-        samplePriceValueLabel.text = MockData.sampleList[indexPath.item].samplePrice
-    }
-}
-
