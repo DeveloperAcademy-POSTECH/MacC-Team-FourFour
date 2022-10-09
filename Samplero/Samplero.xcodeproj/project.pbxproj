@@ -22,13 +22,13 @@
 		35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4928F0292C00621C0D /* Color+Extension.swift */; };
 		35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4B28F02A9300621C0D /* ImageLiteral.swift */; };
 		355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85328F0843D001A5731 /* EstimateViewController.swift */; };
-		355CB85928F08FBD001A5731 /* EstimateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85828F08FBD001A5731 /* EstimateViewModel.swift */; };
 		355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85A28F09B06001A5731 /* SampleDetailView.swift */; };
 		355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85C28F1D15B001A5731 /* CommonStackView.swift */; };
 		355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85E28F1D5DA001A5731 /* Sample.swift */; };
 		355CB86128F295A0001A5731 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86028F295A0001A5731 /* MockData.swift */; };
 		355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */; };
 		355CB86A28F2A0AA001A5731 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86928F2A0AA001A5731 /* UICollectionView+Extension.swift */; };
+		355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35109D3228F551F500EA6F8F /* CGSize+Extension.swift */; };
 		355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85328F0843D001A5731 /* EstimateViewController.swift */; };
@@ -83,12 +83,12 @@
 		35084E4928F0292C00621C0D /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		35084E4B28F02A9300621C0D /* ImageLiteral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLiteral.swift; sourceTree = "<group>"; };
 		355CB85328F0843D001A5731 /* EstimateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewController.swift; sourceTree = "<group>"; };
-		355CB85828F08FBD001A5731 /* EstimateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewModel.swift; sourceTree = "<group>"; };
 		355CB85A28F09B06001A5731 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
 		355CB85C28F1D15B001A5731 /* CommonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStackView.swift; sourceTree = "<group>"; };
 		355CB85E28F1D5DA001A5731 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		355CB86028F295A0001A5731 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCollectionViewCell.swift; sourceTree = "<group>"; };
+		355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewModel.swift; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		35109D3228F551F500EA6F8F /* CGSize+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		355CB85328F0843D001A5731 /* EstimateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewController.swift; sourceTree = "<group>"; };
@@ -317,18 +317,10 @@
 			isa = PBXGroup;
 			children = (
 				355CB85728F08F7A001A5731 /* View */,
-				355CB85528F08F5B001A5731 /* ViewModel */,
 				355CB85328F0843D001A5731 /* EstimateViewController.swift */,
+				355CB86B28F2EFDC001A5731 /* ViewModel */,
 			);
 			path = Estimate;
-			sourceTree = "<group>";
-		};
-		355CB85528F08F5B001A5731 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				355CB85828F08FBD001A5731 /* EstimateViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		355CB85728F08F7A001A5731 /* View */ = {
@@ -347,6 +339,14 @@
 				355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */,
 			);
 			path = cell;
+			sourceTree = "<group>";
+		};
+		355CB86B28F2EFDC001A5731 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CE1052DD28F279A900503ECF /* Camera */ = {
@@ -659,7 +659,6 @@
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
-				355CB85928F08FBD001A5731 /* EstimateViewModel.swift in Sources */,
 				355CB86128F295A0001A5731 /* MockData.swift in Sources */,
 				35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */,
 				21ED8C7C28EFC77B0074C9A3 /* UITableView+Extension.swift in Sources */,
@@ -670,6 +669,7 @@
 				35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */,
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
 				355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */,
+				355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */,
 				21ED8C7B28EFC77B0074C9A3 /* NSObject+Extension.swift in Sources */,
 				355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
