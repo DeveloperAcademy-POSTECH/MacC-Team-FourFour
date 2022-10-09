@@ -27,7 +27,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
 
 
     // MARK: - Properties
-
+    // View consists of roomImageView, sampleDetailView, bottomView
     
     private let roomImageView: UIImageView = {
         let imageView = UIImageView()
@@ -38,7 +38,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         return imageView
     }()
 
-    private let sampleDetailView = SampleDetailView(sample: MockData.sampleList[0])
+    private let sampleDetailView = SampleDetailView()
 
     private let bottomView: UIView = {
         let view = UIView()
@@ -96,6 +96,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
         return collectionView
     }()
 
+    // variable for selecting fist item in default
     private var lastSelectedIndexPath: IndexPath?
 
     var viewModel: EstimateViewModel!
@@ -105,7 +106,6 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //       setDelegation()
     }
 
     override func render() {
@@ -181,7 +181,9 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
 
                 if itemIndex == .zero {
                     self?.lastSelectedIndexPath = indexPath
-                    collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+                    collectionView.selectItem(at: indexPath,
+                                              animated: true,
+                                              scrollPosition: .left)
                     self?.configure(with: sample)
                 }
 
@@ -199,7 +201,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     // MARK: - Func
 
-    
+
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
         samplePriceValueLabel.text = sample.samplePrice

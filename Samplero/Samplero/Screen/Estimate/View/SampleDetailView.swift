@@ -99,10 +99,9 @@ class SampleDetailView: UIView {
     // MARK: - Init
 
 
-    init(sample: Sample) {
+    init() {
         super.init(frame: .zero)
         render()
-        configure(with: sample)
     }
 
     required init?(coder: NSCoder) {
