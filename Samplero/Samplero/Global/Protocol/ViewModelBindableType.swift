@@ -1,6 +1,6 @@
 //
 //  ViewModelBindableType.swift
-//  KaKaoProfile
+//  Samplero
 //
 //  Created by DaeSeong on 2022/09/30.
 //

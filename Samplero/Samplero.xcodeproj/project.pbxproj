@@ -29,6 +29,9 @@
 		355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */; };
 		355CB86A28F2A0AA001A5731 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86928F2A0AA001A5731 /* UICollectionView+Extension.swift */; };
 		355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */; };
+		355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */; };
+		355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86F28F2F716001A5731 /* ViewModelType.swift */; };
+		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35109D3228F551F500EA6F8F /* CGSize+Extension.swift */; };
 		355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85328F0843D001A5731 /* EstimateViewController.swift */; };
@@ -89,6 +92,9 @@
 		355CB86028F295A0001A5731 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCollectionViewCell.swift; sourceTree = "<group>"; };
 		355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewModel.swift; sourceTree = "<group>"; };
+		355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelBindableType.swift; sourceTree = "<group>"; };
+		355CB86F28F2F716001A5731 /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		35109D3228F551F500EA6F8F /* CGSize+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		355CB85328F0843D001A5731 /* EstimateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewController.swift; sourceTree = "<group>"; };
