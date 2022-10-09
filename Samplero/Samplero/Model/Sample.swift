@@ -10,7 +10,9 @@ import Foundation
 
 struct Sample {
     let matName: String
+    let imageName: String
     let matPrice: String
+    let samplePrice: String
     let material: String
     let thickness: String
     let size: String
