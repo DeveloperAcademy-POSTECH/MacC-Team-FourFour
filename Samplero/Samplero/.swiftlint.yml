@@ -1,0 +1,27 @@
+# SwiftLint
+
+# 추가하고자 할 경우 아래 참고
+# doc: https://github.com/realm/SwiftLint
+# Rule:
+#   * disabled_rules: 기본으로 설정되어 있는 규칙에서 사용하지 않을 규칙을 정의
+#   * opt_in_rules: 기본값이 비활성화인 규칙을 활성화
+#   * only_rules: 활성화하려는 규칙이 해당 부분에 정의 되어있을 경우 이 부분에 정의되지 않은 규칙은 활성화 불가(disabled_rules/opt_in_rules와 함께 지정 불가)
+#   * analyzer_rules: 오직 analyze 명령에만 동작하는 규칙, 해당 규칙은 모두 opt_in_rules(disabled_rules/only_rules는 아님)
+
+
+# 사용하지 않을 규칙
+disabled_rules:
+    # 공백인 라인을 제한
+    - vertical_whitespace
+    # 공백 라인 수를 1개로 제한
+    - trailing_newline
+    # 강제 언래핑 제한
+    - force_unwrapping
+    # 라인 길이 제한
+    - line_length
+    # 변수 글자수 3~40 제한
+    - identifier_name
+    # 후행 공백 제한
+    - trailing_whitespace
+
+

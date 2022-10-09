@@ -21,6 +21,7 @@
 		35084E4828EFEC5700621C0D /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 35084E4728EFEC5700621C0D /* RxTest */; };
 		35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4928F0292C00621C0D /* Color+Extension.swift */; };
 		35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4B28F02A9300621C0D /* ImageLiteral.swift */; };
+		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85328F0843D001A5731 /* EstimateViewController.swift */; };
 		355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85A28F09B06001A5731 /* SampleDetailView.swift */; };
 		355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85C28F1D15B001A5731 /* CommonStackView.swift */; };
@@ -64,6 +65,7 @@
 		21ED8C7E28EFC7990074C9A3 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		35084E4928F0292C00621C0D /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		35084E4B28F02A9300621C0D /* ImageLiteral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLiteral.swift; sourceTree = "<group>"; };
+		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		355CB85328F0843D001A5731 /* EstimateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewController.swift; sourceTree = "<group>"; };
 		355CB85A28F09B06001A5731 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
 		355CB85C28F1D15B001A5731 /* CommonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStackView.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 		CEF76BD128EE77C0003D1F49 /* Samplero */ = {
 			isa = PBXGroup;
 			children = (
+				CE13B6C628F1600B00216EB2 /* .swiftlint.yml */,
 				CEF76BE028EE77C1003D1F49 /* Info.plist */,
 				21ED8C6828EFC63A0074C9A3 /* Model */,
 				21ED8C6A28EFC6460074C9A3 /* Global */,
@@ -363,6 +366,7 @@
 				CEF76BCB28EE77C0003D1F49 /* Sources */,
 				CEF76BCC28EE77C0003D1F49 /* Frameworks */,
 				CEF76BCD28EE77C0003D1F49 /* Resources */,
+				CE13B6C528F15F0200216EB2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -475,6 +479,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */,
 				CEF76BDF28EE77C1003D1F49 /* LaunchScreen.storyboard in Resources */,
 				CEF76BDC28EE77C1003D1F49 /* Assets.xcassets in Resources */,
 				CEF76BDA28EE77C0003D1F49 /* Main.storyboard in Resources */,
@@ -496,6 +501,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CE13B6C528F15F0200216EB2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CEF76BCB28EE77C0003D1F49 /* Sources */ = {
