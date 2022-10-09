@@ -8,11 +8,12 @@
 import UIKit
 
 private enum Size {
-    static var defaultOffset = 20
-    static var horizontalLineHeight = 1
-    static var horizontalLineTopOffset = 17
-    static var vStackViewTopOffset = 10
-    static var nameStackViewTopOffset = 27
+    static let defaultOffset = 20.0
+    static let horizontalLineHeight = 1
+    static let horizontalLineTopOffset = 17
+    static let vStackViewTopOffset = 10
+    static let vStackViewSpacing = 8.0
+    static let nameStackViewTopOffset = 27
 }
 
 
@@ -21,7 +22,7 @@ class SampleDetailView: UIView {
 
     // MARK: - Properties
 
-    
+
     private let sampleNameLabel : UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
@@ -67,13 +68,12 @@ class SampleDetailView: UIView {
     private let makerStackView = CommonStackView(
         detailName: "제조사", detailValue: "봄봄매트")
 
-
     private let h1StackView : UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = Size.defaultOffset
         return stackView
     }()
 
@@ -82,7 +82,7 @@ class SampleDetailView: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.distribution = .fillEqually
-        stackView.spacing = 20
+        stackView.spacing = Size.defaultOffset
         return stackView
     }()
 
@@ -91,7 +91,7 @@ class SampleDetailView: UIView {
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fillEqually
-        stackView.spacing = 8
+        stackView.spacing = Size.vStackViewSpacing
         return stackView
     }()
 
@@ -108,6 +108,10 @@ class SampleDetailView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+
+    // MARK: - Func
+
 
     private func render() {
         nameStackView.addArrangedSubview(sampleNameLabel)
@@ -140,6 +144,7 @@ class SampleDetailView: UIView {
         h1StackView.snp.makeConstraints { make in
             make.width.equalToSuperview()
         }
+        
         h2StackView.addArrangedSubview(sizeStackView)
         h2StackView.addArrangedSubview(makerStackView)
         h2StackView.snp.makeConstraints { make in
@@ -148,15 +153,13 @@ class SampleDetailView: UIView {
 
     }
 
-    private func configure(with sample: Sample) {
-
+     func configure(with sample: Sample) {
         sampleNameLabel.text = sample.matName
         matPriceLabel.text = "장당 \(sample.matPrice)"
         materialStackView.setValueLabel(with: sample.material)
         thicknessStackView.setValueLabel(with: sample.thickness)
         sizeStackView.setValueLabel(with: sample.size)
         makerStackView.setValueLabel(with: sample.maker)
-
     }
 
 

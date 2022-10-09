@@ -11,24 +11,28 @@ import SnapKit
 
 private enum Size {
     static let deviceHeight = UIScreen.main.bounds.size.height - ((UIApplication.shared.windows.first?.safeAreaInsets.top) ??  0) - 44
-    static let defaultOffset = 20
+    static let defaultOffset = 20.0
     static let samplePriceTopOffset = 28
     static let samplePriceValueLeadingOffset = 23
     static let sampleAddButtonWidth = 100
     static let sampleAddButtonHeight = 39
     static let sampleAddButtonTopOffset = 17
-
+    static let sampleAddButtonCornerRadius = 14.0
+    static let cellItemSize = 40
 }
 
 class EstimateViewController: BaseViewController {
 
 
     // MARK: - Properties
+
+    
     private let roomImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.image = ImageLiteral.sampleRoom
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
@@ -64,9 +68,33 @@ class EstimateViewController: BaseViewController {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 14
+        button.layer.cornerRadius = Size.sampleAddButtonCornerRadius
         return button
     }()
+
+    private let flowLayout: UICollectionViewFlowLayout = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = Size.defaultOffset
+        layout.itemSize = CGSize(width: Size.cellItemSize, height: Size.cellItemSize)
+        return layout
+    }()
+
+    private lazy var sampleCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        collectionView.register(cell: SampleCollectionViewCell.self)
+        collectionView.contentInset = UIEdgeInsets(top: .zero,
+                                                   left: Size.defaultOffset,
+                                                   bottom: .zero,
+                                                   right: Size.defaultOffset)
+        collectionView.allowsMultipleSelection = false
+
+        return collectionView
+    }()
+
+    private var lastSelectedIndexPath: IndexPath?
 
 
     // MARK: - Life Cycle
@@ -74,7 +102,7 @@ class EstimateViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setDelegation()
     }
 
     override func render() {
@@ -83,6 +111,13 @@ class EstimateViewController: BaseViewController {
             make.height.equalTo(Size.deviceHeight*0.69)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
+        }
+
+        roomImageView.addSubview(sampleCollectionView)
+        sampleCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().inset(14)
+            make.height.equalTo(40)
         }
 
         view.addSubview(sampleDetailView)
@@ -117,6 +152,7 @@ class EstimateViewController: BaseViewController {
             make.height.equalTo(Size.sampleAddButtonHeight)
 
         }
+
     }
 
     override func configUI() {
@@ -125,4 +161,52 @@ class EstimateViewController: BaseViewController {
 
     }
 
+
+    // MARK: - Func
+
+    private func setDelegation() {
+        sampleCollectionView.dataSource = self
+        sampleCollectionView.delegate = self
+
+    }
 }
+
+
+// MARK: - UICollectionViewDataSource
+
+
+extension EstimateViewController: UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return MockData.sampleList.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
+        cell.configure(with: MockData.sampleList[indexPath.item].imageName)
+        
+        if indexPath.item == 0 {
+            lastSelectedIndexPath = indexPath
+            collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .left)
+            sampleDetailView.configure(with: MockData.sampleList[indexPath.item])
+            samplePriceValueLabel.text = MockData.sampleList[indexPath.item].samplePrice
+        }
+        cell.isSelected = (lastSelectedIndexPath == indexPath)
+
+        return cell
+    }
+}
+
+
+// MARK: - UICollectionViewDelegate
+
+
+extension EstimateViewController: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        sampleDetailView.configure(with: MockData.sampleList[indexPath.item])
+        samplePriceValueLabel.text = MockData.sampleList[indexPath.item].samplePrice
+    }
+}
+
