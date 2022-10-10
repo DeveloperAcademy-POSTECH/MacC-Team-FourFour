@@ -13,10 +13,7 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     
-    private let imageView: UIImageView = {
-        let imageView: UIImageView = UIImageView()
-        return imageView
-    }()
+    private let estimatedImageView: UIImageView = UIImageView()
     
     // MARK: - Life Cycle
     
@@ -29,8 +26,8 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     }
     
     override func render() {
-        contentView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
+        contentView.addSubview(estimatedImageView)
+        estimatedImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -40,7 +37,7 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configure(history: EstimateHistory) {
-        imageView.image = history.getImage()
+        estimatedImageView.image = history.getImage()
     }
     
 }
