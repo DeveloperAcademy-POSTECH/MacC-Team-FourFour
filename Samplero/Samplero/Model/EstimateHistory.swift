@@ -16,6 +16,7 @@ struct EstimateHistory {
     }
 }
 
+#if DEBUG
 extension EstimateHistory {
     static let mockData: [EstimateHistory] = [
         EstimateHistory(imageId: 0, estimateDate: Date()),
@@ -28,3 +29,4 @@ extension EstimateHistory {
         EstimateHistory(imageId: 7, estimateDate: Date())
     ]
 }
+#endif
