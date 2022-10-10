@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="uk0-on-Iwj">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -23,6 +23,56 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="48" y="-2"/>
+        </scene>
+        <!--Main View Controller-->
+        <scene sceneID="gS7-xi-wh2">
+            <objects>
+                <viewController id="4Nq-vL-cJg" customClass="MainViewController" customModule="Samplero" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5q2-nx-bQv">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gZV-zB-7qW">
+                                <rect key="frame" x="116.66666666666667" y="405" width="156.66666666666663" height="34.333333333333314"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="장바구니뷰들어가기"/>
+                                <buttonConfiguration key="configuration" style="plain" title="장바구니뷰들어가기"/>
+                                <connections>
+                                    <action selector="shopButton:" destination="4Nq-vL-cJg" eventType="touchUpInside" id="mPb-sw-RA4"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="jFA-AM-1I1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="gZV-zB-7qW" firstAttribute="centerY" secondItem="5q2-nx-bQv" secondAttribute="centerY" id="0sU-px-Xoa"/>
+                            <constraint firstItem="gZV-zB-7qW" firstAttribute="centerX" secondItem="5q2-nx-bQv" secondAttribute="centerX" id="4fH-00-AhQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="0Za-Ym-if6"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hhD-jN-yJA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2633.8461538461538" y="-2.1327014218009479"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Afs-jo-zSF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uk0-on-Iwj" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bXB-q0-ZYi">
+                        <rect key="frame" x="0.0" y="47" width="390" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="4Nq-vL-cJg" kind="relationship" relationship="rootViewController" id="gcr-Q1-HWz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fzq-15-Kgd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1704.6153846153845" y="-2.1327014218009479"/>
         </scene>
     </scenes>
     <resources>

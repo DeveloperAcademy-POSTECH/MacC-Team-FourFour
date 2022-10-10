@@ -9,10 +9,21 @@ import UIKit
 
 class MainViewController: UIViewController {
 
+
+    @IBAction func shopButton(_ sender: UIButton) {
+        let shopBasketVC = ShopBasketViewController()
+        self.navigationController?.pushViewController(shopBasketVC, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        navigationItem.title = "카메라"
+
+        
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
+    }
+
 
 
 }
