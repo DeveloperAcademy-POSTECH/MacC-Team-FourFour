@@ -256,6 +256,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         let takenPictureViewController = TakenPictureViewController()
         takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
+        takenPictureViewController.setSession(session: &session)
         takenPictureViewController.modalPresentationStyle = .overFullScreen
         self.present(takenPictureViewController, animated: true)
         

@@ -5,6 +5,7 @@
 //  Created by JiwKang on 2022/10/10.
 //
 
+import AVFoundation
 import UIKit
 
 import RxCocoa
@@ -14,6 +15,8 @@ import SnapKit
 class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
+    
+    var session: AVCaptureSession?
     
     // Rx
     var disposeBag = DisposeBag()
@@ -107,6 +110,10 @@ class TakenPictureViewController: BaseViewController {
     
     // MARK: - Func
     
+    func setSession(session: inout AVCaptureSession?) {
+        self.session = session
+    }
+    
     func configPictureImage(image: UIImage) {
         takenPictureImageView.image = image
     }
@@ -116,6 +123,9 @@ class TakenPictureViewController: BaseViewController {
             print("clicked retake picture button")
             self.dismiss(animated: true, completion: nil)
             
+            DispatchQueue.global().async {
+                self.session?.startRunning()
+            }
         }.disposed(by: disposeBag)
         
         nextButton.rx.tap.bind {
