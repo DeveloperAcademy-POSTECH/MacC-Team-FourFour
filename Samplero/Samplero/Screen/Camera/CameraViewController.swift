@@ -9,6 +9,8 @@ import UIKit
 import AVFoundation
 
 import SnapKit
+import RxSwift
+import RxCocoa
 
 class CameraViewController: BaseViewController {
     
@@ -20,6 +22,9 @@ class CameraViewController: BaseViewController {
     let output = AVCapturePhotoOutput()
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
+    
+    // Rx
+    var disposeBag = DisposeBag()
     
     // Shutter Button
     private let shutterButton: UIButton = {
@@ -97,6 +102,11 @@ class CameraViewController: BaseViewController {
         addTargets()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        disposeBag = DisposeBag()
+    }
+    
     override func render() {
         view.layer.addSublayer(previewLayer)
         previewLayer.frame = view.bounds
@@ -161,10 +171,29 @@ class CameraViewController: BaseViewController {
     // MARK: - Func
     
     func addTargets() {
-        shutterButton.addTarget(self, action: #selector(didTapTakePhoto), for: .touchUpInside)
-        bringPhotoButton.addTarget(self, action: #selector(didTapBringPhoto), for: .touchUpInside)
-        photoHistoryButton.addTarget(self, action: #selector(didTapHistory), for: .touchUpInside)
-        cartButton.addTarget(self, action: #selector(didTapCart), for: .touchUpInside)
+        shutterButton.rx.tap.bind {
+            print("clicked take photo button")
+            
+            #if !targetEnvironment(simulator)
+            self.output.capturePhoto(with: AVCapturePhotoSettings(),
+                                delegate: self)
+            #endif
+        }.disposed(by: disposeBag)
+
+        bringPhotoButton.rx.tap.bind {
+            // TODO: bring photo from library
+            print("clicked bring photo from library")
+        }.disposed(by: disposeBag)
+        
+        photoHistoryButton.rx.tap.bind {
+            // TODO: open history
+            print("clicked history")
+        }.disposed(by: disposeBag)
+        
+        cartButton.rx.tap.bind {
+            // TODO: open cart
+            print("clicked cart")
+        }.disposed(by: disposeBag)
     }
     
     private func checkCameraPermissions() {
@@ -214,30 +243,6 @@ class CameraViewController: BaseViewController {
                 print(error)
             }
         }
-    }
-    
-    @objc private func didTapTakePhoto() {
-        print("clicked take photo button")
-        
-        #if !targetEnvironment(simulator)
-        output.capturePhoto(with: AVCapturePhotoSettings(),
-                            delegate: self)
-        #endif
-    }
-    
-    @objc private func didTapBringPhoto() {
-        // TODO: bring photo from library
-        print("clicked bring photo from library")
-    }
-    
-    @objc private func didTapHistory() {
-        // TODO: open history
-        print("clicked history")
-    }
-    
-    @objc private func didTapCart() {
-        // TODO: open cart
-        print("clicked cart")
     }
 }
 
