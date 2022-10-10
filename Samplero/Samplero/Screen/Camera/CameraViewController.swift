@@ -253,13 +253,12 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         guard let data = photo.fileDataRepresentation() else {
             return
         }
-        let image = UIImage(data: data)
+        
+        let takenPictureViewController = TakenPictureViewController()
+        takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        self.present(takenPictureViewController, animated: true)
         
         session?.stopRunning()
-        
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFill
-        imageView.frame = view.bounds
-        view.addSubview(imageView)
     }
 }
