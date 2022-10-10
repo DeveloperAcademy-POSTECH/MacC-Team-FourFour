@@ -1,18 +1,19 @@
-# workflow 의 이름
+# workflow start
 name: Run Test
 
 on: [pull_request]
 
 jobs:
-#  build 체크
+  # test build success
   build:
-	# 현재는 macos-12
+	# Now macos-12
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
     - name: Build Test
       run: xcodebuild build -project Samplero.xcodeproj -scheme Samplero -destination 'platform=iOS Simulator,OS=16.0,name=iPhone 14 Pro'
 
+  # check build warnings
   SwiftLint:
     runs-on: ubuntu-latest
     steps:
