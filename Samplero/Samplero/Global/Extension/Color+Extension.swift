@@ -14,7 +14,7 @@ extension UIColor {
 //        return UIColor(hex: "#f3f3f3")
 //    }
 //
-//.  에셋 컬러 사용 예시
+//  에셋 컬러 사용 예시
 //    static var Background: UIColor {
 //        .load(name: "Background")
 //    }

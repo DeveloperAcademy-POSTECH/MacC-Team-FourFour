@@ -27,6 +27,8 @@
 		35084E4828EFEC5700621C0D /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 35084E4728EFEC5700621C0D /* RxTest */; };
 		35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4928F0292C00621C0D /* Color+Extension.swift */; };
 		35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4B28F02A9300621C0D /* ImageLiteral.swift */; };
+		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
+		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */; };
 		CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD428EE77C0003D1F49 /* SceneDelegate.swift */; };
 		CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD628EE77C0003D1F49 /* MainViewController.swift */; };
@@ -68,6 +70,8 @@
 		21ED8C7E28EFC7990074C9A3 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		35084E4928F0292C00621C0D /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		35084E4B28F02A9300621C0D /* ImageLiteral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLiteral.swift; sourceTree = "<group>"; };
+		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CEF76BCF28EE77C0003D1F49 /* Samplero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samplero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CEF76BD428EE77C0003D1F49 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -153,6 +157,7 @@
 		21ED8C6B28EFC64C0074C9A3 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				CE1052DD28F279A900503ECF /* Camera */,
 				210CC68628F29D71008191A9 /* Calculation */,
 				21ED8C6C28EFC6510074C9A3 /* Main */,
 			);
@@ -274,6 +279,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CE1052DD28F279A900503ECF /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				CE1052E028F279DB00503ECF /* CameraViewController.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
 		CEF76BC628EE77C0003D1F49 = {
 			isa = PBXGroup;
 			children = (
@@ -298,6 +311,7 @@
 		CEF76BD128EE77C0003D1F49 /* Samplero */ = {
 			isa = PBXGroup;
 			children = (
+				CE13B6C628F1600B00216EB2 /* .swiftlint.yml */,
 				CEF76BE028EE77C1003D1F49 /* Info.plist */,
 				21ED8C6828EFC63A0074C9A3 /* Model */,
 				21ED8C6A28EFC6460074C9A3 /* Global */,
@@ -333,6 +347,7 @@
 				CEF76BCB28EE77C0003D1F49 /* Sources */,
 				CEF76BCC28EE77C0003D1F49 /* Frameworks */,
 				CEF76BCD28EE77C0003D1F49 /* Resources */,
+				CE13B6C528F15F0200216EB2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -445,6 +460,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */,
 				CEF76BDF28EE77C1003D1F49 /* LaunchScreen.storyboard in Resources */,
 				CEF76BDC28EE77C1003D1F49 /* Assets.xcassets in Resources */,
 				CEF76BDA28EE77C0003D1F49 /* Main.storyboard in Resources */,
@@ -467,12 +483,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CE13B6C528F15F0200216EB2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CEF76BCB28EE77C0003D1F49 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */,
+				CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
 				21ED8C7C28EFC77B0074C9A3 /* UITableView+Extension.swift in Sources */,
