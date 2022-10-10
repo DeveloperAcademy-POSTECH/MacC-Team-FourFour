@@ -1,0 +1,23 @@
+# workflow 의 이름
+name: Run Test
+
+on: [pull_request]
+
+jobs:
+#  build 체크
+  build:
+	# 현재는 macos-12
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build Test
+      run: xcodebuild build -project Samplero.xcodeproj -scheme Samplero -destination 'platform=iOS Simulator,OS=16.0,name=iPhone 14 Pro'
+
+  SwiftLint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: GitHub Action for SwiftLint (Only files changed in the PR) with --strict
+      uses: norio-nomura/action-swiftlint@3.2.1
+      with:
+        args: --strict
