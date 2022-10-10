@@ -19,8 +19,8 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "카메라"
-    }
+        self.navigationController?.navigationBar.topItem?.title = "카메라"
+   }
 
 
 }
