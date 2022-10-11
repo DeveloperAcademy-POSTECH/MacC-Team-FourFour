@@ -181,8 +181,11 @@ class CameraViewController: BaseViewController {
         }.disposed(by: disposeBag)
 
         bringPhotoButton.rx.tap.bind {
-            // TODO: bring photo from library
-            print("clicked bring photo from library")
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = false
+            self.present(imagePickerController, animated: true)
         }.disposed(by: disposeBag)
         
         photoHistoryButton.rx.tap.bind {
@@ -261,5 +264,20 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         imageView.contentMode = .scaleAspectFill
         imageView.frame = view.bounds
         view.addSubview(imageView)
+    }
+}
+
+extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
+            // TODO: TakenPictureViewController present with selectedImage
+            print("got image from library", "\(selectedImage)")
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }
