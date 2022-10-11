@@ -32,8 +32,10 @@ class EstimateHistoryViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        estimateHistoryCollectionView.rx.setDelegate(self)
+            .disposed(by: viewModel.disposeBag)
         bind()
-        addTargets()
     }
     
     override func render() {
@@ -41,13 +43,13 @@ class EstimateHistoryViewController: BaseViewController {
         estimateHistoryCollectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        estimateHistoryCollectionView.rx.setDelegate(self)
-            .disposed(by: viewModel.disposeBag)
     }
     
     override func configUI() {
         navigationItem.title = "견적 내역"
     }
+    
+    // MARK: - Func
     
     func bind() {
         viewModel.estimateHistoryObservable
@@ -57,11 +59,7 @@ class EstimateHistoryViewController: BaseViewController {
                 return cell
             }
             .disposed(by: viewModel.disposeBag)
-    }
-    
-    // MARK: - Func
-    
-    func addTargets() {
+        
         estimateHistoryCollectionView.rx.itemSelected
             .subscribe(onNext: { index in
                 // TODO: select estimate history photo
