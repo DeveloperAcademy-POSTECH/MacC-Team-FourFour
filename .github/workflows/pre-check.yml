@@ -20,5 +20,6 @@ jobs:
     - uses: actions/checkout@v3
     - name: GitHub Action for SwiftLint (Only files changed in the PR) with --strict
       uses: norio-nomura/action-swiftlint@3.2.1
+      # treat as error
       with:
         args: --strict
