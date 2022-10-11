@@ -8,7 +8,7 @@
 import UIKit
 
 
-class CommonStackView: UIStackView {
+final class EstimateCommonStackView: UIStackView {
 
 
     // MARK: - Properties

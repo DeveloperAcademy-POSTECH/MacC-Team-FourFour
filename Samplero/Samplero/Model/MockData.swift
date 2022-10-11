@@ -8,42 +8,43 @@
 import Foundation
 
 
-
+#if DEBUG
 struct MockData {
 
     static var sampleList: [Sample] = [
         Sample(matName: "화이트마블",
                imageName: "WhiteMarble",
-               matPrice: "12,000원",
-               samplePrice: "5,000원",
+               matPrice: 12_000,
+               samplePrice: 5_000,
                material: "TPU",
-               thickness: "4cm",
-               size: "120x120",
+               thickness: 4,
+               size: CGSize(width: 120, height: 120),
                maker: "봄봄매트"),
         Sample(matName: "코지베이비",
                imageName: "CozyBaby",
-               matPrice: "11,000원",
-               samplePrice: "5,000원",
+               matPrice: 11_000,
+               samplePrice: 5_000,
                material: "TPU",
-               thickness: "3cm",
-               size: "120x150",
+               thickness: 3,
+               size: CGSize(width: 130, height: 130),
                maker: "알집매트"),
         Sample(matName: "코지그레이",
                imageName: "CozyGray",
-               matPrice: "13,000원",
-               samplePrice: "5,000원",
+               matPrice: 13_000,
+               samplePrice: 5_000,
                material: "TPU",
-               thickness: "5cm",
-               size: "150x120",
+               thickness: 5,
+               size: CGSize(width: 150, height: 150),
                maker: "매트매트"),
         Sample(matName: "간장브라운",
                imageName: "SoyBrown",
-               matPrice: "15,000원",
-               samplePrice: "5,000원",
+               matPrice: 15_000,
+               samplePrice: 5_000,
                material: "TPU",
-               thickness: "2.5cm",
-               size: "200x200",
+               thickness: 2.5,
+               size: CGSize(width: 200, height: 200),
                maker: "밀리매트")
 
     ]
 }
+#endif

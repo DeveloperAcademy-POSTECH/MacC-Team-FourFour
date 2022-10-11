@@ -10,7 +10,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class EstimateViewModel: ViewModelType {
+final class EstimateViewModel: ViewModelType {
 
     var disposeBag: DisposeBag = DisposeBag()
 

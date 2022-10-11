@@ -1,6 +1,6 @@
 //
 //  ViewModelType.swift
-//  KakaoProfile
+//  KaKaoProfile
 //
 //  Created by DaeSeong on 2022/09/30.
 //

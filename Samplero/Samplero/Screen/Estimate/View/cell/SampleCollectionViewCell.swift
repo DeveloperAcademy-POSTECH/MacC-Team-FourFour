@@ -16,7 +16,7 @@ private enum Size {
 
 }
 
-class SampleCollectionViewCell: UICollectionViewCell {
+final class SampleCollectionViewCell: UICollectionViewCell {
 
 
     // MARK: - Properties
@@ -40,11 +40,10 @@ class SampleCollectionViewCell: UICollectionViewCell {
     
     override var isSelected: Bool {
             didSet {
-                checkedView.image = isSelected ?
-                UIImage(systemName: "checkmark",
-                        withConfiguration: UIImage.SymbolConfiguration(weight: .bold)) : UIImage()
-                sampleImageView.layer.borderColor = isSelected ?
-                UIColor.systemBlue.cgColor : UIColor.clear.cgColor
+                checkedView.image = isSelected ? UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
+                : UIImage()
+                sampleImageView.layer.borderColor = isSelected ? UIColor.systemBlue.cgColor
+                : UIColor.clear.cgColor
             }
         }
 

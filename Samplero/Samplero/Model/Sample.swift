@@ -11,12 +11,13 @@ import Foundation
 struct Sample {
     let matName: String
     let imageName: String
-    let matPrice: String
-    let samplePrice: String
+    let matPrice: Int
+    let samplePrice: Int
     let material: String
-    let thickness: String
-    let size: String
+    let thickness: Double
+    let size: CGSize
     let maker: String
+
 }
 
 

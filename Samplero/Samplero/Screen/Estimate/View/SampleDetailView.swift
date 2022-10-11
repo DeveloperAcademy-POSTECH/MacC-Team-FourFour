@@ -17,7 +17,7 @@ private enum Size {
 }
 
 
-class SampleDetailView: UIView {
+final class SampleDetailView: UIView {
 
 
     // MARK: - Properties
@@ -54,15 +54,15 @@ class SampleDetailView: UIView {
     }()
 
 
-    private let materialStackView = CommonStackView(detailName: "소재")
+    private let materialStackView = EstimateCommonStackView(detailName: "소재")
 
-    private let thicknessStackView = CommonStackView(detailName: "두께")
+    private let thicknessStackView = EstimateCommonStackView(detailName: "두께")
 
-    private let sizeStackView = CommonStackView(detailName: "크기")
+    private let sizeStackView = EstimateCommonStackView(detailName: "크기")
 
-    private let makerStackView = CommonStackView(detailName: "제조사")
+    private let makerStackView = EstimateCommonStackView(detailName: "제조사")
 
-    private let h1StackView: UIStackView = {
+    private let firstHorizontalView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
@@ -71,7 +71,7 @@ class SampleDetailView: UIView {
         return stackView
     }()
 
-    private let h2StackView: UIStackView = {
+    private let secondHorizontalView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
@@ -80,7 +80,7 @@ class SampleDetailView: UIView {
         return stackView
     }()
 
-    private let vStackView: UIStackView = {
+    private let verticalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .center
@@ -123,24 +123,24 @@ class SampleDetailView: UIView {
             make.height.equalTo(Size.horizontalLineHeight)
         }
 
-        self.addSubview(vStackView)
-        vStackView.snp.makeConstraints { make in
+        self.addSubview(verticalStackView)
+        verticalStackView.snp.makeConstraints { make in
             make.top.equalTo(horizontalLine).offset(Size.vStackViewTopOffset)
             make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
         }
 
-        vStackView.addArrangedSubview(h1StackView)
-        vStackView.addArrangedSubview(h2StackView)
+        verticalStackView.addArrangedSubview(firstHorizontalView)
+        verticalStackView.addArrangedSubview(secondHorizontalView)
 
-        h1StackView.addArrangedSubview(materialStackView)
-        h1StackView.addArrangedSubview(thicknessStackView)
-        h1StackView.snp.makeConstraints { make in
+        firstHorizontalView.addArrangedSubview(materialStackView)
+        firstHorizontalView.addArrangedSubview(thicknessStackView)
+        firstHorizontalView.snp.makeConstraints { make in
             make.width.equalToSuperview()
         }
         
-        h2StackView.addArrangedSubview(sizeStackView)
-        h2StackView.addArrangedSubview(makerStackView)
-        h2StackView.snp.makeConstraints { make in
+        secondHorizontalView.addArrangedSubview(sizeStackView)
+        secondHorizontalView.addArrangedSubview(makerStackView)
+        secondHorizontalView.snp.makeConstraints { make in
             make.width.equalToSuperview()
         }
 
@@ -150,8 +150,8 @@ class SampleDetailView: UIView {
         sampleNameLabel.text = sample.matName
         matPriceLabel.text = "장당 \(sample.matPrice)"
         materialStackView.setValueLabel(with: sample.material)
-        thicknessStackView.setValueLabel(with: sample.thickness)
-        sizeStackView.setValueLabel(with: sample.size)
+         thicknessStackView.setValueLabel(with: "\(sample.thickness.description)cm")
+         sizeStackView.setValueLabel(with: sample.size.toString)
         makerStackView.setValueLabel(with: sample.maker)
     }
 

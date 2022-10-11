@@ -1,6 +1,6 @@
 //
 //  ViewModelBindableType.swift
-//  MVVMKaKaoProfile
+//  KaKaoProfile
 //
 //  Created by DaeSeong on 2022/09/30.
 //

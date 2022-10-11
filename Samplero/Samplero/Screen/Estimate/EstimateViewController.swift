@@ -24,7 +24,7 @@ private enum Size {
     static let sampleCollectionBottomOffset = 14.0
 }
 
-class EstimateViewController: BaseViewController, ViewModelBindableType {
+final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
 
     // MARK: - Properties
@@ -50,7 +50,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
     // subView of bottomView
     private let samplePriceLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment =  .left
+        label.textAlignment =  .natural
         label.font = .systemFont(ofSize: 14)
         label.text = "샘플가격"
         label.textColor = .systemGray2
@@ -60,7 +60,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
     // subView of bottomView
     private let samplePriceValueLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment =  .left
+        label.textAlignment =  .natural
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .black
         return label
@@ -208,7 +208,7 @@ class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
-        samplePriceValueLabel.text = sample.samplePrice
+        samplePriceValueLabel.text = sample.samplePrice.description
     }
 }
 
