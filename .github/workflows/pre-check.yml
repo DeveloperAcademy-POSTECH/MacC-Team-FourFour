@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build Test
-      run: xcodebuild build -project Samplero/Samplero.xcodeproj -scheme Samplero -destination 'platform=iOS Simulator,OS=16.0,name=iPhone 14 Pro'
+      run: xcodebuild build -project Samplero/Samplero.xcodeproj -scheme Samplero -destination 'platform=iOS Simulator,OS=15.2,name=iPhone 13 Pro'
 
   # check build warnings
   SwiftLint:
