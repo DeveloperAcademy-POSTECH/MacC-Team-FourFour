@@ -14,10 +14,9 @@ private enum Size {
     static let defaultOffset = 20.0
     static let allButtonsBackgroundHeight = 51.0
     static let orderButtonCorneradius = 14.0
-    static let orderButtonBottomOffset = 15.0
     static let orderButtonHeight = 64.0
     static let buttonTextStackViewSpacing = 2.0
-
+    static let zPositionValue = 1.0
 }
 
 class ShopBasketViewController: BaseViewController {
@@ -32,7 +31,7 @@ class ShopBasketViewController: BaseViewController {
     }()
     private let noticeLabel: UILabel = {
         let label = UILabel()
-        label.text = "􀅴 샘플은 하나씩만 구매할 수 있어요."
+        label.text = "ⓘ 샘플은 하나씩만 구매할 수 있어요."
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         return label
@@ -66,6 +65,7 @@ class ShopBasketViewController: BaseViewController {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = Size.orderButtonCorneradius
+        button.layer.zPosition = Size.zPositionValue
         return button
     }()
 
@@ -93,12 +93,16 @@ class ShopBasketViewController: BaseViewController {
         label.textColor = .white
         return label
     }()
+
+    private let shopBasketCollectionView: UICollectionView = {
+        let collectionView = UICollectionView()
+        return collectionView
+    }()
     // MARK: - Life Cycle
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
 
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -139,7 +143,7 @@ class ShopBasketViewController: BaseViewController {
         view.addSubview(orderButton)
         orderButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
-            make.bottom.equalToSuperview().inset(Size.orderButtonBottomOffset)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(Size.orderButtonHeight)
         }
 
@@ -150,6 +154,11 @@ class ShopBasketViewController: BaseViewController {
         buttonTextStackView.addArrangedSubview(buttonFirstLabel)
         buttonTextStackView.addArrangedSubview(buttonSecondLabel)
 
+        view.addSubview(shopBasketCollectionView)
+        shopBasketCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(allButtonsBackgroundView.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
+        }
     }
 
     override func configUI() {
@@ -167,8 +176,6 @@ class ShopBasketViewController: BaseViewController {
 
     }
 
-    
-
-
 
 }
+
