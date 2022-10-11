@@ -164,6 +164,7 @@
 		21ED8C6828EFC63A0074C9A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				355CB86028F295A0001A5731 /* MockData.swift */,
 				355CB85E28F1D5DA001A5731 /* Sample.swift */,
 				CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */,
 				355CB86028F295A0001A5731 /* MockData.swift */,
@@ -250,7 +251,6 @@
 			isa = PBXGroup;
 			children = (
 				35084E4B28F02A9300621C0D /* ImageLiteral.swift */,
-				355CB86028F295A0001A5731 /* MockData.swift */,
 			);
 			path = Literal;
 			sourceTree = "<group>";
