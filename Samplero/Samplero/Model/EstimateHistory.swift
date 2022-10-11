@@ -9,7 +9,6 @@ import UIKit
 
 struct EstimateHistory {
     let imageId: Int
-    let estimateDate: Date
     let width: Double?
     let height: Double?
     let selectedSampleId: Int?
