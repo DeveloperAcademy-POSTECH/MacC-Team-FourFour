@@ -30,6 +30,7 @@ class ShopBasketViewController: BaseViewController {
         view.backgroundColor = .systemGray4
         return view
     }()
+
     private let noticeLabel: UILabel = {
         let label = UILabel()
         label.text = "ⓘ 샘플은 하나씩만 구매할 수 있어요."
@@ -43,6 +44,7 @@ class ShopBasketViewController: BaseViewController {
         view.backgroundColor = .white
         return view
     }()
+
     private let allChoiceButton: UIButton = {
         let button = UIButton()
         button.setTitle("  전체 선택", for: .normal)  // 띄어쓰기 논의해봐야 할듯
@@ -50,7 +52,6 @@ class ShopBasketViewController: BaseViewController {
         button.setTitleColor(.systemGray2, for: .normal)
         button.setImage(UIImage(systemName: "square.fill"), for: .normal)
         button.imageView?.tintColor = .systemGray3
-        
         return button
     }()
     
@@ -102,12 +103,15 @@ class ShopBasketViewController: BaseViewController {
         
         return layout
     }()
+
     private lazy var shopBasketCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.shopBasketFlowLayout)
         collectionView.register(cell: ShopBasketCollectionViewCell.self)
         collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
+
+
     // MARK: - Life Cycle
     
     
@@ -189,6 +193,7 @@ class ShopBasketViewController: BaseViewController {
     }
 }
 
+
 // MARK: - UICollectionViewDataSource
 
 
@@ -202,6 +207,7 @@ extension ShopBasketViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
