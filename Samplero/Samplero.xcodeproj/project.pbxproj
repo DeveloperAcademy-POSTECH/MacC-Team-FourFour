@@ -12,6 +12,7 @@
 		210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */; };
 		210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68028F26FEF008191A9 /* BottomSheetController.swift */; };
 		210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68228F2700C008191A9 /* GetAreaViewController.swift */; };
+		216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */; };
 		2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */; };
 		21ED8C5E28EFC3E40074C9A3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21ED8C5D28EFC3E40074C9A3 /* SnapKit */; };
 		21ED8C6128EFC4130074C9A3 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 21ED8C6028EFC4130074C9A3 /* RxCocoa */; };
@@ -63,6 +64,7 @@
 		210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		210CC68028F26FEF008191A9 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
 		210CC68228F2700C008191A9 /* GetAreaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAreaViewController.swift; sourceTree = "<group>"; };
+		216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGetSizeView.swift; sourceTree = "<group>"; };
 		2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
 		21ED8C7A28EFC77B0074C9A3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				210CC68228F2700C008191A9 /* GetAreaViewController.swift */,
+				216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */,
 				210CC68028F26FEF008191A9 /* BottomSheetController.swift */,
 				210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */,
 				210CC67C28F26FBD008191A9 /* BottomSheetPresentationController.swift */,
@@ -512,6 +515,7 @@
 				CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
+				216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */,
 				21ED8C7C28EFC77B0074C9A3 /* UITableView+Extension.swift in Sources */,
 				210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */,
 				CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */,
