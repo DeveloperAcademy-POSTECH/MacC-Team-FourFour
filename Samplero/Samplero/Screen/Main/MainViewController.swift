@@ -14,6 +14,13 @@ class MainViewController: UIViewController {
         let shopBasketVC = ShopBasketViewController()
         self.navigationController?.pushViewController(shopBasketVC, animated: true)
     }
+    @IBAction func estimateButton(_ sender: Any) {
+
+        var estimateVC = EstimateViewController()
+        estimateVC.bindViewModel(EstimateViewModel())
+
+        self.navigationController?.pushViewController(estimateVC, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "카메라"
@@ -24,7 +31,7 @@ class MainViewController: UIViewController {
         navigationController?.navigationBar.isHidden = true
     }
 
+   }
 
 
-}
 

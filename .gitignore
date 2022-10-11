@@ -1,6 +1,5 @@
 # Created by https://www.toptal.com/developers/gitignore/api/swift,xcode,macos,cocoapods
-# Edit at https://www.toptal.com/developers/gitignore?templates=swift,xcode,macos,cocoapods
-
+# Edit at https://www.toptal.com/developers/gitignore?templates=swift,xcode,macos,cocoapodsu
 ### CocoaPods ###
 ## CocoaPods GitIgnore Template
 
@@ -49,23 +48,6 @@ Temporary Items
 
 ## User settings
 xcuserdata/
-
-## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
-*.xcscmblueprint
-*.xccheckout
-
-## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
-build/
-DerivedData/
-*.moved-aside
-*.pbxuser
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
 
 ## Obj-C/Swift specific
 *.hmap
@@ -137,5 +119,6 @@ iOSInjectionProject/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
+swiftpm/
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,macos,cocoapods

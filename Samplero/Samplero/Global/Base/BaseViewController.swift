@@ -22,6 +22,7 @@ class BaseViewController: UIViewController {
     
     func configUI() {
         // UI 관련 코드들 모아놓는 곳
+        view.backgroundColor = .systemBackground
     }
     
 }

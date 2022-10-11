@@ -9,7 +9,8 @@ import Foundation
 import UIKit
 
 enum ImageLiteral {
-   // static var imgA: UIImage { .load(named: "")}
+    static var sampleRoom: UIImage { .load(named: "SampleRoom")}
+    static var shoppingBag: UIImage { .load(named: "ShoppingBag")}
 }
 
 extension UIImage {
