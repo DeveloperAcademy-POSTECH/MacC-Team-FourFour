@@ -6,7 +6,7 @@ on: [pull_request]
 jobs:
   # test build success
   build:
-	# Now macos-12
+    # Now macos-12
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v3
