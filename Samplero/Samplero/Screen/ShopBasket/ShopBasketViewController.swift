@@ -18,6 +18,7 @@ private enum Size {
     static let buttonTextStackViewSpacing = 2.0
     static let zPositionValue = 1.0
     static let cellSpacing = 32.0
+    static let cellHeight = 80
 }
 
 class ShopBasketViewController: BaseViewController {
@@ -83,7 +84,7 @@ class ShopBasketViewController: BaseViewController {
     
     private let buttonFirstLabel: UILabel = {
         let label = UILabel()
-        label.text = "총 4개의 샘플" // FIXME: - 4 bold
+        label.text = "4개의 샘플" // FIXME: - 4 bold
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         return label
@@ -217,6 +218,6 @@ extension ShopBasketViewController: UICollectionViewDataSource {
 
 extension ShopBasketViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        .init(width: collectionView.bounds.width, height: 80)
+        .init(width: collectionView.bounds.width, height: Size.cellHeight)
     }
 }
