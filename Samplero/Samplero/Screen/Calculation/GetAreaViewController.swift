@@ -126,7 +126,7 @@ final class GetAreaViewController: BottomSheetController {
             make.centerY.equalToSuperview()
         }
         widthTextField.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-52)
+            make.trailing.equalToSuperview().inset(52)
             make.width.equalTo(100)
             make.centerY.equalToSuperview()
         }
@@ -135,7 +135,7 @@ final class GetAreaViewController: BottomSheetController {
             make.centerY.equalToSuperview()
         }
         heightTextField.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-52)
+            make.trailing.equalToSuperview().inset(52)
             make.width.equalTo(100)
             make.centerY.equalToSuperview()
         }

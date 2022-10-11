@@ -16,7 +16,6 @@ class BottomSheetController: BaseViewController {
     enum PreferredSheetSizing: CGFloat {
         case fit = 0 // Fit, based on the view's constraints
         case small = 0.25
-//        case medium = 0.5
         case medium = 0.64
         case large = 0.75
         case fill = 1
@@ -63,7 +62,7 @@ class BottomSheetController: BaseViewController {
         }
     }
 
-    var preferredSheetCornerRadius: CGFloat = 8 {
+    var preferredSheetCornerRadius: CGFloat = 20 {
         didSet {
             bottomSheetTransitioningDelegate.preferredSheetCornerRadius = preferredSheetCornerRadius
         }
