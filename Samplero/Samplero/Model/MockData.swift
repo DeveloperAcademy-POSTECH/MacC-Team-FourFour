@@ -11,7 +11,7 @@ import Foundation
 #if DEBUG
 struct MockData {
 
-    static var sampleList: [Sample] = [
+    static let sampleList: [Sample] = [
         Sample(matName: "화이트마블",
                imageName: "WhiteMarble",
                matPrice: 12_000,
@@ -45,6 +45,49 @@ struct MockData {
                size: CGSize(width: 200, height: 200),
                maker: "밀리매트")
 
+    ]
+    
+    static let estimateHistories: [EstimateHistory] = [
+        EstimateHistory(imageId: 0,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 1,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 2,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 3,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 4,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 5,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 6,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 7,
+                        estimateDate: Date(),
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil)
     ]
 }
 #endif
