@@ -208,7 +208,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
-        samplePriceValueLabel.text = sample.samplePrice.description
+        samplePriceValueLabel.text = "\(sample.samplePrice.description)원"
     }
 }
 

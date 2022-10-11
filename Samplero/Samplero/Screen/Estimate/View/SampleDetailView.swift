@@ -148,7 +148,7 @@ final class SampleDetailView: UIView {
 
      func configure(with sample: Sample) {
         sampleNameLabel.text = sample.matName
-        matPriceLabel.text = "장당 \(sample.matPrice)"
+        matPriceLabel.text = "장당 \(sample.matPrice)원"
         materialStackView.setValueLabel(with: sample.material)
          thicknessStackView.setValueLabel(with: "\(sample.thickness.description)cm")
          sizeStackView.setValueLabel(with: sample.size.toString)
