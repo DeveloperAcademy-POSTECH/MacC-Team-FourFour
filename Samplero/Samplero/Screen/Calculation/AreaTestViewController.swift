@@ -70,7 +70,7 @@ final class AreaTestViewController: BaseViewController {
             make.top.equalToSuperview()
             make.center.equalToSuperview()
             make.width.equalTo(textButton).multipliedBy(1.1)
-            make.height.equalTo(textButton).multipliedBy(1.25)
+            make.height.equalTo(40)
         }
         
         priceAndAreaStackView.snp.makeConstraints { make in
@@ -87,27 +87,8 @@ final class AreaTestViewController: BaseViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        roundedRectangle.bounds = .init(origin: textButton.center, size: CGSize(width: roundedRectangle.frame.width, height: roundedRectangle.frame.height))
-        roundedRectangle.layer.roundCorners(radius: 21)
+        roundedRectangle.layer.cornerRadius = roundedRectangle.bounds.height/2
+        roundedRectangle.layer.borderWidth = 1
+        roundedRectangle.layer.borderColor = CGColor(gray: 1, alpha: 1)
     }
-}
-
-extension CALayer {
-   func roundCorners(radius: CGFloat) {
-       let roundPath = UIBezierPath(
-        roundedRect: self.bounds,
-           cornerRadius: radius)
-       let maskLayer = CAShapeLayer()
-       maskLayer.path = roundPath.cgPath
-       self.mask = maskLayer
-       
-       let borderLayer = CAShapeLayer()
-       borderLayer.path = maskLayer.path
-       borderLayer.fillColor = nil
-       borderLayer.strokeColor = UIColor.white.cgColor
-       borderLayer.lineWidth = 1
-       borderLayer.frame = .init(origin: CGPoint(x: 0, y: 0), size: self.bounds.size)
-       self.addSublayer(borderLayer)
-   }
-
 }
