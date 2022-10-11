@@ -34,38 +34,38 @@ final class AreaTestViewController: BaseViewController {
     
     private let roundedRectangle: UIView = {
         let rect = UIView()
-        rect.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        rect.backgroundColor = .black
+        rect.alpha = 0.5
         return rect
     }()
     
     private let priceAndAreaStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        stackView.backgroundColor = .black
+        stackView.alpha = 0.5
         stackView.distribution = .equalSpacing
         stackView.alignment = .center
         return stackView
     }()
     
-    // MARK: - Func
-    override func render() {
-        getAreaButton.addSubview(roundedRectangle)
-        getAreaButton.addSubview(textButton)
-        priceAndAreaStackView.addArrangedSubview(priceLabel)
-        priceAndAreaStackView.addArrangedSubview(getAreaButton)
-        view.addSubview(priceAndAreaStackView)
+    // MARK: - Life Cycle
+    
+    override func viewDidLayoutSubviews() {
+        roundedRectangle.layer.cornerRadius = roundedRectangle.bounds.height/2
+        roundedRectangle.layer.borderWidth = 1
+        roundedRectangle.layer.borderColor = UIColor.white.cgColor
     }
     
-    override func configUI() {
-        priceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(23)
-        }
+    override func render() {
+        view.addSubview(priceAndAreaStackView)
+        getAreaButton.addSubview(roundedRectangle)
+        getAreaButton.addSubview(textButton)
         
         textButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(23)
             make.center.equalToSuperview()
         }
-        
         roundedRectangle.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.center.equalToSuperview()
@@ -73,6 +73,12 @@ final class AreaTestViewController: BaseViewController {
             make.height.equalTo(40)
         }
         
+        priceAndAreaStackView.addArrangedSubview(priceLabel)
+        priceLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(23)
+        }
+        
+        priceAndAreaStackView.addArrangedSubview(getAreaButton)
         priceAndAreaStackView.snp.makeConstraints { make in
             make.center.equalTo(view)
             make.leading.trailing.equalTo(view)
@@ -80,15 +86,15 @@ final class AreaTestViewController: BaseViewController {
         }
     }
     
+    override func configUI() {
+    }
+    
+    
+    // MARK: - Func
+    
     @objc func buttonDidTap() {
         let viewController = GetAreaViewController()
         viewController.preferredSheetSizing = .medium
         present(viewController, animated: true)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        roundedRectangle.layer.cornerRadius = roundedRectangle.bounds.height/2
-        roundedRectangle.layer.borderWidth = 1
-        roundedRectangle.layer.borderColor = CGColor(gray: 1, alpha: 1)
     }
 }
