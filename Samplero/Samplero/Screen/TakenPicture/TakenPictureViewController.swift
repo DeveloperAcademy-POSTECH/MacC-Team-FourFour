@@ -113,9 +113,8 @@ class TakenPictureViewController: BaseViewController {
     }
     
     private func addTargets() {
-        retakeButton.rx.tap.bind { [weak self] in
+        retakeButton.rx.tap.bind {
             print("clicked retake picture button")
-            self?.dismiss(animated: true, completion: nil)
         }.disposed(by: disposeBag)
         
         nextButton.rx.tap.bind {

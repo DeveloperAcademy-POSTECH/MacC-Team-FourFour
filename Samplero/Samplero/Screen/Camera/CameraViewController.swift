@@ -261,6 +261,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.session?.startRunning()
+                takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
         self.present(takenPictureViewController, animated: true)
         
