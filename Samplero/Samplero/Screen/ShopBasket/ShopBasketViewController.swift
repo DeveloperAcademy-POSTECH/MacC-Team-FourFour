@@ -24,7 +24,7 @@ class ShopBasketViewController: BaseViewController {
     
     
     // MARK: - Properties
-    
+    // View consists of noticeBackgroundView, allButtonsBackgroundView, shopBasketCollectionView
     private let noticeBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
@@ -62,7 +62,8 @@ class ShopBasketViewController: BaseViewController {
         button.setTitleColor(.systemGray2, for: .normal)
         return button
     }()
-    
+
+    // orderButton consists of buttonTextStackView( buttonFirstLabel, buttonSecondLabel )
     private let orderButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
@@ -117,10 +118,7 @@ class ShopBasketViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        shopBasketCollectionView.dataSource = self
-        shopBasketCollectionView.delegate = self
-        
+        setDelegation()
     }
     override func viewWillAppear(_ animated: Bool) {
         hideNavBar()
@@ -186,7 +184,12 @@ class ShopBasketViewController: BaseViewController {
     
     
     // MARK: - Func
-    
+
+
+    private func setDelegation() {
+        shopBasketCollectionView.dataSource = self
+        shopBasketCollectionView.delegate = self
+    }
     
     private func hideNavBar() {
         navigationController?.navigationBar.isHidden = false
