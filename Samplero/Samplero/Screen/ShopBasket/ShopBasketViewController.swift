@@ -17,13 +17,14 @@ private enum Size {
     static let orderButtonHeight = 64.0
     static let buttonTextStackViewSpacing = 2.0
     static let zPositionValue = 1.0
+    static let cellSpacing = 32.0
 }
 
 class ShopBasketViewController: BaseViewController {
-
-
+    
+    
     // MARK: - Properties
-
+    
     private let noticeBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
@@ -36,7 +37,7 @@ class ShopBasketViewController: BaseViewController {
         label.font = UIFont.systemFont(ofSize: 12, weight: .light)
         return label
     }()
-
+    
     private let allButtonsBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -49,10 +50,10 @@ class ShopBasketViewController: BaseViewController {
         button.setTitleColor(.systemGray2, for: .normal)
         button.setImage(UIImage(systemName: "square.fill"), for: .normal)
         button.imageView?.tintColor = .systemGray3
-
+        
         return button
     }()
-
+    
     private let allDeleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("전체 삭제", for: .normal)  // 띄어쓰기 논의해봐야 할듯
@@ -60,7 +61,7 @@ class ShopBasketViewController: BaseViewController {
         button.setTitleColor(.systemGray2, for: .normal)
         return button
     }()
-
+    
     private let orderButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemBlue
@@ -68,7 +69,7 @@ class ShopBasketViewController: BaseViewController {
         button.layer.zPosition = Size.zPositionValue
         return button
     }()
-
+    
     private let buttonTextStackView: UIStackView = {
         let view = UIStackView()
         view.alignment = .center
@@ -77,7 +78,7 @@ class ShopBasketViewController: BaseViewController {
         view.spacing = Size.buttonTextStackViewSpacing
         return view
     }()
-
+    
     private let buttonFirstLabel: UILabel = {
         let label = UILabel()
         label.text = "총 4개의 샘플" // FIXME: - 4 bold
@@ -85,7 +86,7 @@ class ShopBasketViewController: BaseViewController {
         label.textColor = .white
         return label
     }()
-
+    
     private let buttonSecondLabel: UILabel = {
         let label = UILabel()
         label.text = "주문하기"
@@ -93,22 +94,34 @@ class ShopBasketViewController: BaseViewController {
         label.textColor = .white
         return label
     }()
-
-    private let shopBasketCollectionView: UICollectionView = {
-        let collectionView = UICollectionView()
+    
+    private let shopBasketFlowLayout: UICollectionViewFlowLayout = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = Size.cellSpacing
+        
+        return layout
+    }()
+    private lazy var shopBasketCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.shopBasketFlowLayout)
+        collectionView.register(cell: ShopBasketCollectionViewCell.self)
+        collectionView.backgroundColor = .systemBackground
         return collectionView
     }()
     // MARK: - Life Cycle
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        shopBasketCollectionView.dataSource = self
+        shopBasketCollectionView.delegate = self
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         hideNavBar()
     }
-
+    
     override func render() {
         view.addSubview(noticeBackgroundView)
         noticeBackgroundView.snp.makeConstraints { make in
@@ -116,13 +129,13 @@ class ShopBasketViewController: BaseViewController {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(Size.noticeBackgroundHeight)
         }
-
+        
         noticeBackgroundView.addSubview(noticeLabel)
         noticeLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(Size.defaultOffset)
         }
-
+        
         view.addSubview(allButtonsBackgroundView)
         allButtonsBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(noticeBackgroundView.snp.bottom)
@@ -139,43 +152,62 @@ class ShopBasketViewController: BaseViewController {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(Size.defaultOffset)
         }
-
+        
         view.addSubview(orderButton)
         orderButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
             make.bottom.equalTo(view.safeAreaLayoutGuide)
             make.height.equalTo(Size.orderButtonHeight)
         }
-
+        
         orderButton.addSubview(buttonTextStackView)
         buttonTextStackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
         buttonTextStackView.addArrangedSubview(buttonFirstLabel)
         buttonTextStackView.addArrangedSubview(buttonSecondLabel)
-
+        
         view.addSubview(shopBasketCollectionView)
         shopBasketCollectionView.snp.makeConstraints { make in
             make.top.equalTo(allButtonsBackgroundView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
     }
-
+    
     override func configUI() {
         view.backgroundColor = .systemBackground
         navigationItem.title = "장바구니"
         navigationController?.navigationBar.prefersLargeTitles = true
     }
-
-
+    
+    
     // MARK: - Func
-
-
+    
+    
     private func hideNavBar() {
         navigationController?.navigationBar.isHidden = false
-
     }
-
-
 }
 
+// MARK: - UICollectionViewDataSource
+
+
+extension ShopBasketViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
+        return cell
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+
+
+extension ShopBasketViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        .init(width: collectionView.bounds.width, height: 80)
+    }
+}
