@@ -18,7 +18,7 @@ private enum Size {
     static let buttonTextStackViewSpacing = 2.0
     static let zPositionValue = 1.0
     static let cellSpacing = 32.0
-    static let cellHeight = 80
+    static let cellHeight = 80.0
 }
 
 class ShopBasketViewController: BaseViewController {
