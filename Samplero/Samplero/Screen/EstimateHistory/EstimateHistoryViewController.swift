@@ -24,7 +24,7 @@ class EstimateHistoryViewController: BaseViewController {
         layout.minimumInteritemSpacing = 0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.registor(cell: EstimateHistoryCollectionViewCell.self)
+        collectionView.register(cell: EstimateHistoryCollectionViewCell.self)
         return collectionView
     }()
     
@@ -54,7 +54,7 @@ class EstimateHistoryViewController: BaseViewController {
     func bind() {
         viewModel.estimateHistoryObservable
             .bind(to: estimateHistoryCollectionView.rx.items) { collectionView, row, history -> UICollectionViewCell in
-                let cell = collectionView.dequeReusableCell(withType: EstimateHistoryCollectionViewCell.self, for: IndexPath.init(row: row, section: 0))
+                let cell = collectionView.dequeueReusableCell(withType: EstimateHistoryCollectionViewCell.self, for: IndexPath.init(row: row, section: 0))
                 cell.configure(history: history)
                 return cell
             }
