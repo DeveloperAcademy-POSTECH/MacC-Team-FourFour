@@ -9,6 +9,7 @@ import Foundation
 
 
 struct Sample {
+    let id: Int
     let matName: String
     let imageName: String
     let matPrice: Int
