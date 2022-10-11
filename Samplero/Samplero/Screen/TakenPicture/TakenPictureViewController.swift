@@ -16,8 +16,6 @@ class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
     
-    var session: AVCaptureSession?
-    
     // Rx
     var disposeBag = DisposeBag()
     
@@ -110,27 +108,23 @@ class TakenPictureViewController: BaseViewController {
     
     // MARK: - Func
     
-    func setSession(session: inout AVCaptureSession?) {
-        self.session = session
-    }
-    
     func configPictureImage(image: UIImage) {
         takenPictureImageView.image = image
     }
     
     func addTargets() {
-        retakeButton.rx.tap.bind {
+        retakeButton.rx.tap.bind { [weak self] in
             print("clicked retake picture button")
-            self.dismiss(animated: true, completion: nil)
-            
-            DispatchQueue.global().async {
-                self.session?.startRunning()
-            }
+            self?.dismiss(animated: true, completion: nil)
         }.disposed(by: disposeBag)
         
         nextButton.rx.tap.bind {
             // TODO: go next
             print("clicked next button")
         }.disposed(by: disposeBag)
+    }
+    
+    func getRetakeButton() -> UIButton {
+        return retakeButton
     }
 }

@@ -256,10 +256,21 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         
         let takenPictureViewController = TakenPictureViewController()
         takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
-        takenPictureViewController.setSession(session: &session)
         takenPictureViewController.modalPresentationStyle = .overFullScreen
+        takenPictureViewController.rx.retake
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.session?.startRunning()
+            }).disposed(by: disposeBag)
         self.present(takenPictureViewController, animated: true)
         
         session?.stopRunning()
+    }
+}
+
+extension Reactive where Base: TakenPictureViewController {
+    var retake: ControlEvent<Void> {
+        let source = self.base.getRetakeButton().rx.tap
+        return ControlEvent(events: source)
     }
 }
