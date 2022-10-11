@@ -17,7 +17,7 @@ class TakenPictureViewController: BaseViewController {
     // MARK: - Properties
     
     // Rx
-    var disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     // Picture view
     private let takenPictureImageView: UIImageView = {
@@ -112,7 +112,7 @@ class TakenPictureViewController: BaseViewController {
         takenPictureImageView.image = image
     }
     
-    func addTargets() {
+    private func addTargets() {
         retakeButton.rx.tap.bind { [weak self] in
             print("clicked retake picture button")
             self?.dismiss(animated: true, completion: nil)
