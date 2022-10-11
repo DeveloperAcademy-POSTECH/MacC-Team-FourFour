@@ -32,6 +32,12 @@
 		CEF76BEA28EE77C2003D1F49 /* SampleroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BE928EE77C2003D1F49 /* SampleroTests.swift */; };
 		CEF76BF428EE77C2003D1F49 /* SampleroUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BF328EE77C2003D1F49 /* SampleroUITests.swift */; };
 		CEF76BF628EE77C2003D1F49 /* SampleroUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BF528EE77C2003D1F49 /* SampleroUITestsLaunchTests.swift */; };
+		CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFFE77928F3C5E6007A7842 /* EstimateHistoryViewController.swift */; };
+		CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFFE77C28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift */; };
+		CEFFE77F28F3C7D4007A7842 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFFE77E28F3C7D4007A7842 /* UICollectionView+Extension.swift */; };
+		CEFFE78528F3CFF9007A7842 /* EstimateHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFFE78428F3CFF9007A7842 /* EstimateHistoryViewModel.swift */; };
+		CEFFE78728F3D0E5007A7842 /* EstimateHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */; };
+		CEFFE78C28F3D7A3007A7842 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFFE78B28F3D7A3007A7842 /* BaseCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +79,12 @@
 		CEF76BEF28EE77C2003D1F49 /* SampleroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF76BF328EE77C2003D1F49 /* SampleroUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleroUITests.swift; sourceTree = "<group>"; };
 		CEF76BF528EE77C2003D1F49 /* SampleroUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleroUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CEFFE77928F3C5E6007A7842 /* EstimateHistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateHistoryViewController.swift; sourceTree = "<group>"; };
+		CEFFE77C28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateHistoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		CEFFE77E28F3C7D4007A7842 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
+		CEFFE78428F3CFF9007A7842 /* EstimateHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateHistoryViewModel.swift; sourceTree = "<group>"; };
+		CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateHistory.swift; sourceTree = "<group>"; };
+		CEFFE78B28F3D7A3007A7842 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +123,7 @@
 		21ED8C6828EFC63A0074C9A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -133,6 +146,7 @@
 		21ED8C6B28EFC64C0074C9A3 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				CEFFE77828F3C5BE007A7842 /* EstimateHistory */,
 				CE1052DD28F279A900503ECF /* Camera */,
 				21ED8C6C28EFC6510074C9A3 /* Main */,
 			);
@@ -199,6 +213,7 @@
 			children = (
 				21ED8C7E28EFC7990074C9A3 /* BaseTableViewCell.swift */,
 				21ED8C7D28EFC7990074C9A3 /* BaseViewController.swift */,
+				CEFFE78B28F3D7A3007A7842 /* BaseCollectionViewCell.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -216,6 +231,7 @@
 				21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */,
 				21ED8C7A28EFC77B0074C9A3 /* UITableView+Extension.swift */,
 				35084E4928F0292C00621C0D /* Color+Extension.swift */,
+				CEFFE77E28F3C7D4007A7842 /* UICollectionView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -309,6 +325,40 @@
 				CEF76BF528EE77C2003D1F49 /* SampleroUITestsLaunchTests.swift */,
 			);
 			path = SampleroUITests;
+			sourceTree = "<group>";
+		};
+		CEFFE77828F3C5BE007A7842 /* EstimateHistory */ = {
+			isa = PBXGroup;
+			children = (
+				CEFFE77928F3C5E6007A7842 /* EstimateHistoryViewController.swift */,
+				CEFFE78328F3CFDC007A7842 /* ViewModel */,
+				CEFFE78228F3CFA8007A7842 /* View */,
+			);
+			path = EstimateHistory;
+			sourceTree = "<group>";
+		};
+		CEFFE77B28F3C659007A7842 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				CEFFE77C28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		CEFFE78228F3CFA8007A7842 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CEFFE77B28F3C659007A7842 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CEFFE78328F3CFDC007A7842 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CEFFE78428F3CFF9007A7842 /* EstimateHistoryViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -482,16 +532,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEFFE77F28F3C7D4007A7842 /* UICollectionView+Extension.swift in Sources */,
 				CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */,
+				CEFFE78728F3D0E5007A7842 /* EstimateHistory.swift in Sources */,
+				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
 				CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				21ED8C7C28EFC77B0074C9A3 /* UITableView+Extension.swift in Sources */,
 				CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */,
+				CEFFE78528F3CFF9007A7842 /* EstimateHistoryViewModel.swift in Sources */,
+				CEFFE78C28F3D7A3007A7842 /* BaseCollectionViewCell.swift in Sources */,
 				35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */,
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
 				21ED8C7B28EFC77B0074C9A3 /* NSObject+Extension.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
+				CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
