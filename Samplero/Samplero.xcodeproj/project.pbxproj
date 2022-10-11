@@ -28,7 +28,6 @@
 		355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85E28F1D5DA001A5731 /* Sample.swift */; };
 		355CB86128F295A0001A5731 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86028F295A0001A5731 /* MockData.swift */; };
 		355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */; };
-		355CB86A28F2A0AA001A5731 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86928F2A0AA001A5731 /* UICollectionView+Extension.swift */; };
 		355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */; };
 		355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */; };
 		355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86F28F2F716001A5731 /* ViewModelType.swift */; };
