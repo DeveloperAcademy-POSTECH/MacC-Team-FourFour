@@ -12,6 +12,7 @@ private enum Size {
     static let sampleImageSize = 80.0
     static let defaultOffset = 20.0
     static let secondaryOffset = 16
+    static let checkBoxFrameSize = 36.0
 }
 
 final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
@@ -25,6 +26,11 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "square.fill"), for: .normal)
         button.imageView?.tintColor = .systemGray3
+        button.imageEdgeInsets = UIEdgeInsets(top: .zero,
+                                              left: .zero,
+                                              bottom: Size.checkBoxFrameSize / 2,
+                                              right: Size.checkBoxFrameSize / 2)
+        button.backgroundColor = .systemPink  // TODO: - 삭제 예정
         return button
     }()
 
@@ -95,11 +101,6 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
 
-    override var isSelected: Bool {
-        didSet {
-            
-        }
-    }
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -120,13 +121,13 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         checkBox.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(Size.defaultOffset)
-            make.size.equalTo(Size.defaultOffset)
+            make.size.equalTo(Size.checkBoxFrameSize)
         }
 
         contentView.addSubview(sampleImageView)
         sampleImageView.snp.makeConstraints { make in
             make.size.equalTo(Size.sampleImageSize)
-            make.leading.equalTo(checkBox.snp.trailing).offset(Size.secondaryOffset)
+            make.leading.equalTo(checkBox.snp.trailing)
             make.top.bottom.equalToSuperview()
         }
 
