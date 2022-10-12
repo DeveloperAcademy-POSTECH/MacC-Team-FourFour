@@ -96,6 +96,11 @@ class CameraViewController: BaseViewController {
     
     // MARK: - Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkCameraPermissions()
@@ -160,6 +165,7 @@ class CameraViewController: BaseViewController {
         imageView.layer.zPosition = -1
         view.addSubview(imageView)
         #endif
+        
         view.backgroundColor = .black
         navigationItem.backButtonTitle = "카메라"
     }
