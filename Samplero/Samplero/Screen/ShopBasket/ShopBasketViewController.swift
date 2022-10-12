@@ -118,8 +118,18 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
         return collectionView
     }()
 
+    private let noSampleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "담긴 샘플이 없습니다."
+        label.textColor = .secondaryGray
+        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.layer.zPosition = -1
+        return label
+    }()
+
     var viewModel: ShopBasketViewModel!
 
+    private var count = 0
 
     // MARK: - Life Cycle
 
@@ -185,6 +195,11 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
             make.top.equalTo(allButtonsBackgroundView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
         }
+
+        view.addSubview(noSampleLabel)
+        noSampleLabel.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+        }
     }
 
     override func configUI() {
@@ -211,25 +226,44 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
 
     private func bindToCollection() {
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Sample>> {(_, collectionView, indexPath, sample) -> UICollectionViewCell in
+
+            // cell configuration
             let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
             cell.configure(with: sample)
-            cell.getCheckButton().rx.tap
-                .subscribe(onNext: {
-                        // TODO: - 해야할 것
-                })
-                .disposed(by: self.viewModel.disposeBag)
+            cell.disposeBag = DisposeBag()
 
+            cell.getCheckButton().rx.tap
+                .map { _ in sample }
+                .bind(to: self.viewModel.selectedSample)
+                .disposed(by: cell.disposeBag!)
+
+            cell.getDeleteButton().rx.tap
+                              .map { _ in sample }
+                              .bind(to: self.viewModel.remove)
+                              .disposed(by: cell.disposeBag!)
+            //TODO:- viewModel.disposed로 하면 연속으로 지워지는 문제 발생 이유 찾기
             return cell
 
         } configureSupplementaryView: { (_, collectionView, _, indexPath) -> UICollectionReusableView in
-            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
-            return footer
+            
+            // CollectionView Footer Configuration
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
+            return footerView
         }
 
         viewModel.wishedSampleObservable
-            .map { [SectionModel(model: "", items: $0)]}
+            .asObservable()
+            .map {
+                return [SectionModel(model: "", items: $0)]}
             .bind(to: shopBasketCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: viewModel.disposeBag)
+
+        viewModel.wishedSampleObservable
+            .asObservable()
+            .map { !$0.isEmpty}
+            .bind(to: shopBasketCollectionView.rx.visibleStatus)
+            .disposed(by: viewModel.disposeBag)
+        
     }
 }
 
@@ -240,6 +274,22 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
 extension ShopBasketViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         .init(width: collectionView.bounds.width, height: Size.cellHeight)
+    }
+}
+
+// MARK: - visibleStatus + Binder
+
+
+extension Reactive where Base: UICollectionView {
+    var visibleStatus: Binder<Bool> {
+        return Binder(self.base) { collectionView, boolValue in
+            switch boolValue {
+            case true :
+                collectionView.isHidden = false
+            case false :
+                collectionView.isHidden = true
+            }
+        }
     }
 }
 

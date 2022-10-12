@@ -7,6 +7,8 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 
 private enum Size {
     static let sampleImageSize = 80.0
@@ -101,11 +103,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
 
-    var isChecked: Bool = false {
-        didSet {
-            
-        }
-    }
+    var disposeBag: DisposeBag?
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -164,6 +162,10 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
 
     func getCheckButton() -> UIButton {
         return checkBox
+    }
+
+    func getDeleteButton() -> UIButton {
+        return deleteButton
     }
 
     func configure(with sample: Sample) {
