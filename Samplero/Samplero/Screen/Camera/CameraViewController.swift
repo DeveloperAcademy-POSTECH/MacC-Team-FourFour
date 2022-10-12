@@ -102,11 +102,6 @@ class CameraViewController: BaseViewController {
         addTargets()
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        disposeBag = DisposeBag()
-    }
-    
     override func render() {
         view.layer.addSublayer(previewLayer)
         previewLayer.frame = view.bounds
