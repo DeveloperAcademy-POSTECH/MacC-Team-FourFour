@@ -8,7 +8,7 @@
 import Foundation
 import SQLite3
 
-class DBHelper {
+final class DBHelper {
     
     // MARK: - Properties
     
