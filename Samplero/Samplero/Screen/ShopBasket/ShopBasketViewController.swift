@@ -89,7 +89,7 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
 
     private let buttonFirstLabel: UILabel = {
         let label = UILabel()
-        label.text = "4개의 샘플" // FIXME: - 4 bold
+        label.text = "4개의 샘플" 
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         return label
@@ -142,7 +142,7 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
         hideNavBar()
     }
     override func viewDidLayoutSubviews() {
-        shopBasketFlowLayout.footerReferenceSize = CGSizeMake(self.shopBasketCollectionView.bounds.width, Size.footerViewHeight)
+        shopBasketFlowLayout.footerReferenceSize = CGSizeMake(shopBasketCollectionView.bounds.width, Size.footerViewHeight)
     }
 
     override func render() {
@@ -209,22 +209,7 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
     }
 
     func bind() {
-        bindToCollection()
-
-    }
-
-    // MARK: - Func
-
-
-    private func setDelegation() {
-        shopBasketCollectionView.rx.setDelegate(self).disposed(by: viewModel.disposeBag)
-    }
-
-    private func hideNavBar() {
-        navigationController?.navigationBar.isHidden = false
-    }
-
-    private func bindToCollection() {
+        // Reactive collectionView ( more than one section )
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Sample>> {(_, collectionView, indexPath, sample) -> UICollectionViewCell in
 
             // cell configuration
@@ -245,12 +230,13 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
             return cell
 
         } configureSupplementaryView: { (_, collectionView, _, indexPath) -> UICollectionReusableView in
-            
+
             // CollectionView Footer Configuration
             let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
             return footerView
         }
 
+        // shopBasketCollectionView binding
         viewModel.wishedSampleObservable
             .asObservable()
             .map {
@@ -258,13 +244,33 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
             .bind(to: shopBasketCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: viewModel.disposeBag)
 
+        // shopBasketCollectionView visibleStatus binding
         viewModel.wishedSampleObservable
             .asObservable()
             .map { !$0.isEmpty}
             .bind(to: shopBasketCollectionView.rx.visibleStatus)
             .disposed(by: viewModel.disposeBag)
-        
+
+        // allDeleteButton binding
+        allDeleteButton.rx.tap
+            .map { [] }
+            .bind(to: viewModel.wishedSampleObservable)
+            .disposed(by: viewModel.disposeBag)
+
+
     }
+
+    // MARK: - Func
+
+
+    private func setDelegation() {
+        shopBasketCollectionView.rx.setDelegate(self).disposed(by: viewModel.disposeBag)
+    }
+
+    private func hideNavBar() {
+        navigationController?.navigationBar.isHidden = false
+    }
+
 }
 
 
