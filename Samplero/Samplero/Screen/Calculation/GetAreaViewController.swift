@@ -48,9 +48,12 @@ final class GetAreaViewController: BottomSheetController {
 
     // MARK: - Life Cycle
     
-    override func render() {
-        self.hideKeyboardWhenTappedAround()
-        
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        hideKeyboardWhenTappedAround()
+    }
+    
+    override func render() {        
         textFieldStackView.addArrangedSubview(getWidthView)
         getWidthView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(textFieldStackView)
