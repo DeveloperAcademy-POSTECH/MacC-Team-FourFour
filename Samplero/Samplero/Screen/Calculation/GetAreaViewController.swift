@@ -28,7 +28,7 @@ final class GetAreaViewController: BottomSheetController {
         stackView.axis = .vertical
         stackView.spacing = 50
         stackView.layer.borderWidth = 1
-        stackView.layer.borderColor = UIColor.white.cgColor
+        stackView.layer.borderColor = UIColor.black.cgColor
         stackView.layer.cornerRadius = 6
         return stackView
     }()
@@ -53,7 +53,7 @@ final class GetAreaViewController: BottomSheetController {
         hideKeyboardWhenTappedAround()
     }
     
-    override func render() {        
+    override func render() {
         textFieldStackView.addArrangedSubview(getWidthView)
         getWidthView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(textFieldStackView)
