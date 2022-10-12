@@ -5,8 +5,8 @@
 //  Created by JiwKang on 2022/10/09.
 //
 
-import UIKit
 import AVFoundation
+import UIKit
 
 import SnapKit
 import RxSwift
@@ -181,8 +181,11 @@ class CameraViewController: BaseViewController {
         }.disposed(by: disposeBag)
 
         bringPhotoButton.rx.tap.bind {
-            // TODO: bring photo from library
-            print("clicked bring photo from library")
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = false
+            self.present(imagePickerController, animated: true)
         }.disposed(by: disposeBag)
         
         photoHistoryButton.rx.tap.bind {
@@ -273,5 +276,20 @@ extension Reactive where Base: TakenPictureViewController {
     var retake: ControlEvent<Void> {
         let source = self.base.getRetakeButton().rx.tap
         return ControlEvent(events: source)
+    }
+}
+
+extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
+            // TODO: TakenPictureViewController present with selectedImage
+            print("got image from library", "\(selectedImage)")
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }
