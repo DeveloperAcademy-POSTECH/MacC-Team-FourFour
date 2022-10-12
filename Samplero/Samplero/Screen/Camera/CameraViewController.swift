@@ -107,6 +107,17 @@ class CameraViewController: BaseViewController {
         super.viewDidLoad()
         checkCameraPermissions()
         addTargets()
+        
+        viewModel.estimateHistoryObservable
+            .subscribe(onNext: { [weak self] history in
+                self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        bringPhotoButton.layer.cornerRadius = bringPhotoButton.bounds.height / 2
     }
     
     override func viewDidDisappear(_ animated: Bool) {
