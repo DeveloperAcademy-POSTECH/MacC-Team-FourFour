@@ -8,16 +8,11 @@
 import UIKit
 extension UIColor {
 
-
-//  헥사코드 커스텀컬러 예시
-//    static var mainGray: UIColor {
-//        return UIColor(hex: "#f3f3f3")
-//    }
-//
 //  에셋 컬러 사용 예시
-//    static var Background: UIColor {
-//        .load(name: "Background")
-//    }
+    static let accent: UIColor = .systemBlue
+    static let boxBackground: UIColor = .secondarySystemBackground
+    static let primaryBlack: UIColor = .black
+    static let secondaryGray: UIColor = .secondaryLabel
 
     }
 

@@ -164,7 +164,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     override func configUI() {
         super.configUI()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.shoppingBag, style: .plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.cartDark, style: .plain, target: self, action: nil)
         self.navigationItem.rightBarButtonItem?.tintColor = .black
 
     }
