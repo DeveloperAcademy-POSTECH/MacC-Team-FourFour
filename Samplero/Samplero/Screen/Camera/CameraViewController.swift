@@ -253,13 +253,25 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         guard let data = photo.fileDataRepresentation() else {
             return
         }
-        let image = UIImage(data: data)
+        
+        let takenPictureViewController = TakenPictureViewController()
+        takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        takenPictureViewController.rx.retake
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.session?.startRunning()
+                takenPictureViewController.dismiss(animated: true)
+            }).disposed(by: disposeBag)
+        self.present(takenPictureViewController, animated: true)
         
         session?.stopRunning()
-        
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFill
-        imageView.frame = view.bounds
-        view.addSubview(imageView)
+    }
+}
+
+extension Reactive where Base: TakenPictureViewController {
+    var retake: ControlEvent<Void> {
+        let source = self.base.getRetakeButton().rx.tap
+        return ControlEvent(events: source)
     }
 }
