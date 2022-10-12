@@ -261,9 +261,12 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
         takenPictureViewController.modalPresentationStyle = .overFullScreen
         takenPictureViewController.rx.retake
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .map { [weak self] in
                 self?.session?.startRunning()
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
                 takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
         self.present(takenPictureViewController, animated: true)
