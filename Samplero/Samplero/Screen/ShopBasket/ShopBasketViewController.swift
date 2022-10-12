@@ -19,6 +19,7 @@ private enum Size {
     static let zPositionValue = 1.0
     static let cellSpacing = 32.0
     static let cellHeight = 80.0
+    static let footerViewHeight = 111.0
 }
 
 class ShopBasketViewController: BaseViewController {
@@ -102,7 +103,6 @@ class ShopBasketViewController: BaseViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = Size.cellSpacing
-
         return layout
     }()
 
@@ -110,6 +110,7 @@ class ShopBasketViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.shopBasketFlowLayout)
         collectionView.register(cell: ShopBasketCollectionViewCell.self)
         collectionView.backgroundColor = .systemBackground
+        collectionView.register(AmountFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className)
         return collectionView
     }()
 
@@ -123,6 +124,9 @@ class ShopBasketViewController: BaseViewController {
     }
     override func viewWillAppear(_ animated: Bool) {
         hideNavBar()
+    }
+    override func viewDidLayoutSubviews() {
+        shopBasketFlowLayout.footerReferenceSize = CGSizeMake(self.shopBasketCollectionView.bounds.width, Size.footerViewHeight)
     }
 
     override func render() {
@@ -209,6 +213,19 @@ extension ShopBasketViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        switch kind {
+        case UICollectionView.elementKindSectionFooter:
+            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath) as? AmountFooterView else { return UICollectionReusableView() }
+            return footerView
+
+        default:
+            assert(false, "Invalid element type")
+        }
+
     }
 }
 

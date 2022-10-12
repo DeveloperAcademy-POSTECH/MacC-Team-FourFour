@@ -94,6 +94,12 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         label.textAlignment = .right
         return label
     }()
+
+    override var isSelected: Bool {
+        didSet {
+            
+        }
+    }
     // MARK: - Init
 
     override init(frame: CGRect) {
