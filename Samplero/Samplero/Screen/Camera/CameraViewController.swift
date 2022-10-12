@@ -5,8 +5,8 @@
 //  Created by JiwKang on 2022/10/09.
 //
 
-import UIKit
 import AVFoundation
+import UIKit
 
 import SnapKit
 import RxSwift
@@ -90,7 +90,7 @@ class CameraViewController: BaseViewController {
         button.layer.cornerRadius = UIScreen.main.bounds.width / 16.25
         button.layer.masksToBounds = true
         button.backgroundColor = .init(white: 1, alpha: 0.2)
-        button.setImage(UIImage(named: "cart"), for: .normal)
+        button.setImage(ImageLiteral.cartLight, for: .normal)
         return button
     }()
     
@@ -181,8 +181,11 @@ class CameraViewController: BaseViewController {
         }.disposed(by: disposeBag)
 
         bringPhotoButton.rx.tap.bind {
-            // TODO: bring photo from library
-            print("clicked bring photo from library")
+            let imagePickerController = UIImagePickerController()
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.delegate = self
+            imagePickerController.allowsEditing = false
+            self.present(imagePickerController, animated: true)
         }.disposed(by: disposeBag)
         
         photoHistoryButton.rx.tap.bind {
@@ -253,13 +256,40 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         guard let data = photo.fileDataRepresentation() else {
             return
         }
-        let image = UIImage(data: data)
+        
+        let takenPictureViewController = TakenPictureViewController()
+        takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        takenPictureViewController.rx.retake
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.session?.startRunning()
+                takenPictureViewController.dismiss(animated: true)
+            }).disposed(by: disposeBag)
+        self.present(takenPictureViewController, animated: true)
         
         session?.stopRunning()
+    }
+}
+
+extension Reactive where Base: TakenPictureViewController {
+    var retake: ControlEvent<Void> {
+        let source = self.base.getRetakeButton().rx.tap
+        return ControlEvent(events: source)
+    }
+}
+
+extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        if let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
+            // TODO: TakenPictureViewController present with selectedImage
+            print("got image from library", "\(selectedImage)")
+        }
         
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFill
-        imageView.frame = view.bounds
-        view.addSubview(imageView)
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }
