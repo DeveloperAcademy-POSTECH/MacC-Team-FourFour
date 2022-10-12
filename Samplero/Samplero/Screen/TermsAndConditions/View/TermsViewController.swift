@@ -57,15 +57,7 @@ class TermsViewController: BaseViewController {
         return textView
     }()
     
-    private let checkboxImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.layer.masksToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = Size.checkboxCornerRadius
-        imageView.layer.borderWidth = Size.checkboxBorderWidth
-        imageView.layer.borderColor = UIColor.boxBackground.cgColor
-        return imageView
-    }()
+    private let checkboxImageView = CustomCheckbox(isChecked: false)
     
     private let checkboxLabel: UILabel = {
         let label = UILabel()
@@ -91,6 +83,7 @@ class TermsViewController: BaseViewController {
         button.layer.cornerRadius = Size.linkToKakaoButtonRadius
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
         button.tintColor = .white
+        button.addTarget(self, action: #selector(sendAlert), for: .touchUpInside)
         return button
     }()
     
@@ -157,5 +150,9 @@ class TermsViewController: BaseViewController {
                                                    height: CGFloat.greatestFiniteMagnitude))
         newFrame.size = CGSize(width: width, height: newSize.height)
         textView.frame = newFrame
+    }
+    
+    @objc func sendAlert() {
+        makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
     }
 }
