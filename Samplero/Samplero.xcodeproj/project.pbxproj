@@ -39,6 +39,25 @@
 		355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */; };
 		355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */; };
 		355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86F28F2F716001A5731 /* ViewModelType.swift */; };
+		B51AF42328F6E9190076F21B /* FloorSegmentation.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */; };
+		B51AF43628F6EDA40076F21B /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42528F6EDA40076F21B /* Array+Extensions.swift */; };
+		B51AF43728F6EDA40076F21B /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42628F6EDA40076F21B /* Math.swift */; };
+		B51AF43828F6EDA40076F21B /* UIImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42728F6EDA40076F21B /* UIImage+CVPixelBuffer.swift */; };
+		B51AF43928F6EDA40076F21B /* Predictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42828F6EDA40076F21B /* Predictions.swift */; };
+		B51AF43A28F6EDA40076F21B /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42928F6EDA40076F21B /* UIImage+Extensions.swift */; };
+		B51AF43B28F6EDA40076F21B /* CGImagePropertyOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */; };
+		B51AF43C28F6EDA40076F21B /* UIImage+RawBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42B28F6EDA40076F21B /* UIImage+RawBytes.swift */; };
+		B51AF43D28F6EDA40076F21B /* MLMultiArray+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42C28F6EDA40076F21B /* MLMultiArray+Helpers.swift */; };
+		B51AF43E28F6EDA40076F21B /* MLModel+Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42D28F6EDA40076F21B /* MLModel+Images.swift */; };
+		B51AF43F28F6EDA40076F21B /* CoreML+Combine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42E28F6EDA40076F21B /* CoreML+Combine.swift */; };
+		B51AF44028F6EDA40076F21B /* CVPixelBuffer+Create.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42F28F6EDA40076F21B /* CVPixelBuffer+Create.swift */; };
+		B51AF44128F6EDA40076F21B /* CGImage+CVPixelBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43028F6EDA40076F21B /* CGImage+CVPixelBuffer.swift */; };
+		B51AF44228F6EDA40076F21B /* NonMaxSuppression.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43128F6EDA40076F21B /* NonMaxSuppression.swift */; };
+		B51AF44328F6EDA40076F21B /* CGImage+RawBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43228F6EDA40076F21B /* CGImage+RawBytes.swift */; };
+		B51AF44428F6EDA40076F21B /* MLMultiArray+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43328F6EDA40076F21B /* MLMultiArray+Image.swift */; };
+		B51AF44528F6EDA40076F21B /* CVPixelBuffer+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43428F6EDA40076F21B /* CVPixelBuffer+Resize.swift */; };
+		B51AF44628F6EDA40076F21B /* CVPixelBuffer+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43528F6EDA40076F21B /* CVPixelBuffer+Rotate.swift */; };
+		B51AF44828F6EDB80076F21B /* UIImage+CustomExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF44728F6EDB80076F21B /* UIImage+CustomExtensions.swift */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
@@ -101,6 +120,25 @@
 		355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewModel.swift; sourceTree = "<group>"; };
 		355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelBindableType.swift; sourceTree = "<group>"; };
 		355CB86F28F2F716001A5731 /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = FloorSegmentation.mlmodel; sourceTree = "<group>"; };
+		B51AF42528F6EDA40076F21B /* Array+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		B51AF42628F6EDA40076F21B /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		B51AF42728F6EDA40076F21B /* UIImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
+		B51AF42828F6EDA40076F21B /* Predictions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Predictions.swift; sourceTree = "<group>"; };
+		B51AF42928F6EDA40076F21B /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImagePropertyOrientation.swift; sourceTree = "<group>"; };
+		B51AF42B28F6EDA40076F21B /* UIImage+RawBytes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+RawBytes.swift"; sourceTree = "<group>"; };
+		B51AF42C28F6EDA40076F21B /* MLMultiArray+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MLMultiArray+Helpers.swift"; sourceTree = "<group>"; };
+		B51AF42D28F6EDA40076F21B /* MLModel+Images.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MLModel+Images.swift"; sourceTree = "<group>"; };
+		B51AF42E28F6EDA40076F21B /* CoreML+Combine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreML+Combine.swift"; sourceTree = "<group>"; };
+		B51AF42F28F6EDA40076F21B /* CVPixelBuffer+Create.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Create.swift"; sourceTree = "<group>"; };
+		B51AF43028F6EDA40076F21B /* CGImage+CVPixelBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImage+CVPixelBuffer.swift"; sourceTree = "<group>"; };
+		B51AF43128F6EDA40076F21B /* NonMaxSuppression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonMaxSuppression.swift; sourceTree = "<group>"; };
+		B51AF43228F6EDA40076F21B /* CGImage+RawBytes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImage+RawBytes.swift"; sourceTree = "<group>"; };
+		B51AF43328F6EDA40076F21B /* MLMultiArray+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MLMultiArray+Image.swift"; sourceTree = "<group>"; };
+		B51AF43428F6EDA40076F21B /* CVPixelBuffer+Resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Resize.swift"; sourceTree = "<group>"; };
+		B51AF43528F6EDA40076F21B /* CVPixelBuffer+Rotate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CVPixelBuffer+Rotate.swift"; sourceTree = "<group>"; };
+		B51AF44728F6EDB80076F21B /* UIImage+CustomExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CustomExtensions.swift"; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
@@ -287,6 +325,8 @@
 		21ED8C7528EFC6800074C9A3 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B51AF44728F6EDB80076F21B /* UIImage+CustomExtensions.swift */,
+				B51AF42428F6EDA40076F21B /* CoreMLHelpers */,
 				21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */,
 				21ED8C7A28EFC77B0074C9A3 /* UITableView+Extension.swift */,
 				35084E4928F0292C00621C0D /* Color+Extension.swift */,
@@ -316,6 +356,7 @@
 		21ED8C7828EFC68F0074C9A3 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */,
 				CEF76BD828EE77C0003D1F49 /* Main.storyboard */,
 				CEF76BDD28EE77C1003D1F49 /* LaunchScreen.storyboard */,
 				CEF76BDB28EE77C1003D1F49 /* Assets.xcassets */,
@@ -364,6 +405,30 @@
 				355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B51AF42428F6EDA40076F21B /* CoreMLHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				B51AF42528F6EDA40076F21B /* Array+Extensions.swift */,
+				B51AF42628F6EDA40076F21B /* Math.swift */,
+				B51AF42728F6EDA40076F21B /* UIImage+CVPixelBuffer.swift */,
+				B51AF42828F6EDA40076F21B /* Predictions.swift */,
+				B51AF42928F6EDA40076F21B /* UIImage+Extensions.swift */,
+				B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */,
+				B51AF42B28F6EDA40076F21B /* UIImage+RawBytes.swift */,
+				B51AF42C28F6EDA40076F21B /* MLMultiArray+Helpers.swift */,
+				B51AF42D28F6EDA40076F21B /* MLModel+Images.swift */,
+				B51AF42E28F6EDA40076F21B /* CoreML+Combine.swift */,
+				B51AF42F28F6EDA40076F21B /* CVPixelBuffer+Create.swift */,
+				B51AF43028F6EDA40076F21B /* CGImage+CVPixelBuffer.swift */,
+				B51AF43128F6EDA40076F21B /* NonMaxSuppression.swift */,
+				B51AF43228F6EDA40076F21B /* CGImage+RawBytes.swift */,
+				B51AF43328F6EDA40076F21B /* MLMultiArray+Image.swift */,
+				B51AF43428F6EDA40076F21B /* CVPixelBuffer+Resize.swift */,
+				B51AF43528F6EDA40076F21B /* CVPixelBuffer+Rotate.swift */,
+			);
+			path = CoreMLHelpers;
 			sourceTree = "<group>";
 		};
 		CE1052DD28F279A900503ECF /* Camera */ = {
@@ -637,8 +702,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B51AF44828F6EDB80076F21B /* UIImage+CustomExtensions.swift in Sources */,
 				CEFFE77F28F3C7D4007A7842 /* UICollectionView+Extension.swift in Sources */,
+				B51AF44228F6EDA40076F21B /* NonMaxSuppression.swift in Sources */,
 				CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */,
+				B51AF43828F6EDA40076F21B /* UIImage+CVPixelBuffer.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */,
@@ -648,32 +716,48 @@
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
+				B51AF44628F6EDA40076F21B /* CVPixelBuffer+Rotate.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
 				216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */,
+				B51AF43D28F6EDA40076F21B /* MLMultiArray+Helpers.swift in Sources */,
+				B51AF43B28F6EDA40076F21B /* CGImagePropertyOrientation.swift in Sources */,
 				210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */,
 				2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */,
+				B51AF43928F6EDA40076F21B /* Predictions.swift in Sources */,
 				21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */,
 				210CC67B28F26F8B008191A9 /* BottomSheetInteractiveDismissalTransition.swift in Sources */,
 				355CB86128F295A0001A5731 /* MockData.swift in Sources */,
 				35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */,
 				21ED8C7C28EFC77B0074C9A3 /* UITableView+Extension.swift in Sources */,
+				B51AF43A28F6EDA40076F21B /* UIImage+Extensions.swift in Sources */,
+				B51AF44428F6EDA40076F21B /* MLMultiArray+Image.swift in Sources */,
+				B51AF43F28F6EDA40076F21B /* CoreML+Combine.swift in Sources */,
+				B51AF43E28F6EDA40076F21B /* MLModel+Images.swift in Sources */,
 				355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */,
 				CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */,
+				B51AF43628F6EDA40076F21B /* Array+Extensions.swift in Sources */,
 				CEFFE78528F3CFF9007A7842 /* EstimateHistoryViewModel.swift in Sources */,
 				CEFFE78C28F3D7A3007A7842 /* BaseCollectionViewCell.swift in Sources */,
 				35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */,
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
+				B51AF44028F6EDA40076F21B /* CVPixelBuffer+Create.swift in Sources */,
+				B51AF44128F6EDA40076F21B /* CGImage+CVPixelBuffer.swift in Sources */,
 				355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */,
 				355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */,
 				21ED8C7B28EFC77B0074C9A3 /* NSObject+Extension.swift in Sources */,
 				355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
+				B51AF44328F6EDA40076F21B /* CGImage+RawBytes.swift in Sources */,
+				B51AF42328F6E9190076F21B /* FloorSegmentation.mlmodel in Sources */,
 				CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */,
 				210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */,
+				B51AF44528F6EDA40076F21B /* CVPixelBuffer+Resize.swift in Sources */,
 				210CC67D28F26FBD008191A9 /* BottomSheetPresentationController.swift in Sources */,
 				355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */,
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
+				B51AF43C28F6EDA40076F21B /* UIImage+RawBytes.swift in Sources */,
 				CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */,
+				B51AF43728F6EDA40076F21B /* Math.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

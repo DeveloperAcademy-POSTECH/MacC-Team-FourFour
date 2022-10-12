@@ -23,5 +23,6 @@ disabled_rules:
     - identifier_name
     # 후행 공백 제한
     - trailing_whitespace
+    - large_tuple
 
 

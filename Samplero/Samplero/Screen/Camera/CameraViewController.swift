@@ -6,7 +6,9 @@
 //
 
 import AVFoundation
+import CoreML
 import UIKit
+import Vision
 
 import SnapKit
 import RxSwift
@@ -23,6 +25,10 @@ class CameraViewController: BaseViewController {
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
     
+//    var tempPicture = UIImage()
+    var outputPicture = UIImage()
+    let backgroundPicture = UIImage(named: "sample_mat_floor")!
+
     // Rx
     var disposeBag = DisposeBag()
     
@@ -255,27 +261,73 @@ class CameraViewController: BaseViewController {
 
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let data = photo.fileDataRepresentation() else {
+//        guard let data = photo.fileDataRepresentation() else {
+        guard let data = photo.cgImageRepresentation() else {
             return
         }
         
         let takenPictureViewController = TakenPictureViewController()
-        let takenPicture = UIImage(data: data) ?? UIImage()
+//        let heicTakenPicture = UIImage(data: data) ?? UIImage()
+//        let takenPicture = UIImage(named: "sample_house")!
+//        let data2 = heicTakenPicture.jpegData(compressionQuality: 0) ?? Data()
+        let takenPicture = data
 
-        takenPictureViewController.configPictureImage(image: takenPicture)
-        takenPictureViewController.modalPresentationStyle = .overFullScreen
-        takenPictureViewController.rx.retake
-            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-            .map { [weak self] in
-                self?.session?.startRunning()
+    
+
+//        tempPicture = takenPicture
+
+        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init (configuration: .init()).model)
+        else { return }
+        print("1")
+
+        let request = VNCoreMLRequest(model: model, completionHandler: visionRequestDidComplete)
+
+        print("1.75")
+
+        request.imageCropAndScaleOption = .scaleFill
+        DispatchQueue.global().async {
+            print("2")
+            let handler = VNImageRequestHandler(cgImage: takenPicture, options: [:])
+
+            do {
+                try handler.perform([request])
+                print("3")
+            } catch {
+                print(error)
             }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                takenPictureViewController.dismiss(animated: true)
-            }).disposed(by: self.disposeBag)
-        self.present(takenPictureViewController, animated: true)
-        
-        session?.stopRunning()
+        }
+        print("4")
+        DispatchQueue.main.asyncAfter(deadline: .now()
+                                      + 3) {
+            print("5")
+            takenPictureViewController.configPictureImage(image: self.outputPicture)
+            takenPictureViewController.modalPresentationStyle = .overFullScreen
+            takenPictureViewController.rx.retake
+                .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+                .map { [weak self] in
+                    self?.session?.startRunning()
+                }
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: {
+                    takenPictureViewController.dismiss(animated: true)
+                }).disposed(by: self.disposeBag)
+            self.present(takenPictureViewController, animated: true)
+
+            self.session?.stopRunning()
+        }
+    }
+
+    func visionRequestDidComplete(request: VNRequest, error: Error?) {
+        DispatchQueue.main.async {
+            print("1.25")
+            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
+               let segmentationmap = observations.first?.featureValue.multiArrayValue {
+                let segmentationMask = segmentationmap.image(min: 0, max: 1)
+                self.outputPicture = segmentationMask!.resizedImage(for: CGSize(width: 1080, height: 1920))!
+                print("1.5")
+//                maskInputImage()
+            }
+        }
     }
 }
 
