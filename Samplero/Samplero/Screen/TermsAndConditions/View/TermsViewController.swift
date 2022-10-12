@@ -89,12 +89,6 @@ class TermsViewController: BaseViewController {
     
     
     // MARK: - Life Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.resize(textView: termsContents)
-    }
     
     override func render() {
         view.addSubview(titleLabel)
@@ -142,15 +136,6 @@ class TermsViewController: BaseViewController {
 
     
     // MARK: - Func
-
-    func resize(textView: UITextView) {
-        var newFrame = textView.frame
-        let width = newFrame.size.width
-        let newSize = textView.sizeThatFits(CGSize(width: width,
-                                                   height: CGFloat.greatestFiniteMagnitude))
-        newFrame.size = CGSize(width: width, height: newSize.height)
-        textView.frame = newFrame
-    }
     
     @objc func sendAlert() {
 //        makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
