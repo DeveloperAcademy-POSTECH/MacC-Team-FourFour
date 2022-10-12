@@ -90,7 +90,7 @@ class CameraViewController: BaseViewController {
         button.layer.cornerRadius = UIScreen.main.bounds.width / 16.25
         button.layer.masksToBounds = true
         button.backgroundColor = .init(white: 1, alpha: 0.2)
-        button.setImage(UIImage(named: "cart"), for: .normal)
+        button.setImage(ImageLiteral.cartLight, for: .normal)
         return button
     }()
     
