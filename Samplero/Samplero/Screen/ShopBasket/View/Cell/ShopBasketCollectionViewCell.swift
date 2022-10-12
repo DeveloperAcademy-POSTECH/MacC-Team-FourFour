@@ -101,6 +101,11 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
 
+    var isChecked: Bool = false {
+        didSet {
+            
+        }
+    }
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -157,6 +162,16 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         }
     }
 
+    func getCheckButton() -> UIButton {
+        return checkBox
+    }
 
+    func configure(with sample: Sample) {
+        sampleImageView.image = UIImage(named: sample.imageName)
+        makerLabel.text = sample.maker
+        matNameLabel.text = sample.matName
+        thicknessLabel.text = "\(sample.thickness)cm"
+        samplePriceLabel.text = "\(sample.samplePrice)원"
+    }
 }
 

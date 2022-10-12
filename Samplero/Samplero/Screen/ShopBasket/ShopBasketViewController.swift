@@ -7,7 +7,11 @@
 
 import UIKit
 
+import RxCocoa
+import RxDataSources
+import RxSwift
 import SnapKit
+
 
 private enum Size {
     static let noticeBackgroundHeight = 42.0
@@ -22,7 +26,7 @@ private enum Size {
     static let footerViewHeight = 111.0
 }
 
-class ShopBasketViewController: BaseViewController {
+class ShopBasketViewController: BaseViewController, ViewModelBindableType {
 
 
     // MARK: - Properties
@@ -114,6 +118,8 @@ class ShopBasketViewController: BaseViewController {
         return collectionView
     }()
 
+    var viewModel: ShopBasketViewModel!
+
 
     // MARK: - Life Cycle
 
@@ -187,45 +193,43 @@ class ShopBasketViewController: BaseViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
 
+    func bind() {
+        bindToCollection()
+
+    }
 
     // MARK: - Func
 
 
     private func setDelegation() {
-        shopBasketCollectionView.dataSource = self
-        shopBasketCollectionView.delegate = self
+        shopBasketCollectionView.rx.setDelegate(self).disposed(by: viewModel.disposeBag)
     }
 
     private func hideNavBar() {
         navigationController?.navigationBar.isHidden = false
     }
-}
 
+    private func bindToCollection() {
+        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, Sample>> {(_, collectionView, indexPath, sample) -> UICollectionViewCell in
+            let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
+            cell.configure(with: sample)
+            cell.getCheckButton().rx.tap
+                .subscribe(onNext: {
+                        // TODO: - 해야할 것
+                })
+                .disposed(by: self.viewModel.disposeBag)
 
-// MARK: - UICollectionViewDataSource
+            return cell
 
-
-extension ShopBasketViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-        switch kind {
-        case UICollectionView.elementKindSectionFooter:
-            guard let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath) as? AmountFooterView else { return UICollectionReusableView() }
-            return footerView
-
-        default:
-            assert(false, "Invalid element type")
+        } configureSupplementaryView: { (_, collectionView, _, indexPath) -> UICollectionReusableView in
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
+            return footer
         }
 
+        viewModel.wishedSampleObservable
+            .map { [SectionModel(model: "", items: $0)]}
+            .bind(to: shopBasketCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
     }
 }
 
@@ -238,3 +242,4 @@ extension ShopBasketViewController: UICollectionViewDelegateFlowLayout {
         .init(width: collectionView.bounds.width, height: Size.cellHeight)
     }
 }
+
