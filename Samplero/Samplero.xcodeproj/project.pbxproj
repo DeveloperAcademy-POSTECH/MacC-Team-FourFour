@@ -13,6 +13,7 @@
 		210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68028F26FEF008191A9 /* BottomSheetController.swift */; };
 		210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68228F2700C008191A9 /* GetAreaViewController.swift */; };
 		212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212CFA7928F65D30003D310A /* TermsViewController.swift */; };
+		2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307328F693F500443A1B /* CustomCheckbox.swift */; };
 		216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */; };
 		2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */; };
 		21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C81DA228F45447000E89DA /* AreaTestViewController.swift */; };
@@ -84,6 +85,7 @@
 		210CC68028F26FEF008191A9 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
 		210CC68228F2700C008191A9 /* GetAreaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAreaViewController.swift; sourceTree = "<group>"; };
 		212CFA7928F65D30003D310A /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		2164307328F693F500443A1B /* CustomCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
 		216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGetSizeView.swift; sourceTree = "<group>"; };
 		2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		21C81DA228F45447000E89DA /* AreaTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaTestViewController.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				212CFA7928F65D30003D310A /* TermsViewController.swift */,
+				2164307328F693F500443A1B /* CustomCheckbox.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -685,6 +688,7 @@
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
 				355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */,
 				355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */,
+				2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */,
 				21ED8C7B28EFC77B0074C9A3 /* NSObject+Extension.swift in Sources */,
 				355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
