@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 
 private enum Size {
@@ -84,7 +85,7 @@ class TermsViewController: BaseViewController {
         button.layer.cornerRadius = Size.linkToKakaoButtonRadius
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(sendAlert), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -102,9 +103,16 @@ class TermsViewController: BaseViewController {
         return label
     }()
     
+    let viewModel = TermsViewModel()
     
     
     // MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        bind()
+    }
     
     override func render() {
         view.addSubview(titleLabel)
@@ -153,9 +161,25 @@ class TermsViewController: BaseViewController {
     
     // MARK: - Func
     
-    @objc func sendAlert() {
-        makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
-        showToastAnimation()
+    func bind() {
+        checkboxImageView.rx
+            .tap
+            .scan(false) { lastState, _ in
+                !lastState
+            }
+            .bind(to: viewModel.checkboxObservable)
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.checkboxObservable.bind(to: linkToKakaoButton.rx.enableStatus)
+            .disposed(by: viewModel.disposeBag)
+    }
+    
+    @objc func buttonTapped() {
+        if checkboxImageView.isChecked {
+            // 카카오 채널로 이동
+        } else {
+            makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
+        }
     }
     
     @objc func showToastAnimation() {
@@ -172,5 +196,20 @@ class TermsViewController: BaseViewController {
         }, completion: { _ in
             self.toastView.removeFromSuperview()
         })
+    }
+}
+
+extension Reactive where Base: UIButton {
+    var enableStatus: Binder<Bool> {
+        return Binder(self.base) { button, boolValue in
+            switch boolValue {
+            case true :
+                button.backgroundColor = UIColor(hex: "#FAE100")
+                button.setTitleColor(.black, for: .normal)
+            case false :
+                button.backgroundColor = .secondarySystemBackground
+                button.setTitleColor(.white, for: .normal)
+            }
+        }
     }
 }
