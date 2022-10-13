@@ -107,12 +107,7 @@ class CameraViewController: BaseViewController {
         super.viewDidLoad()
         checkCameraPermissions()
         addTargets()
-        
-        viewModel.estimateHistoryObservable
-            .subscribe(onNext: { [weak self] history in
-                self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
-            })
-            .disposed(by: disposeBag)
+        bind()
     }
     
     override func viewDidLayoutSubviews() {
@@ -193,6 +188,14 @@ class CameraViewController: BaseViewController {
         view.addSubview(imageView)
         #endif
         view.backgroundColor = .black
+    }
+    
+    func bind() {
+        viewModel.estimateHistoryObservable
+            .subscribe(onNext: { [weak self] history in
+                self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Func
