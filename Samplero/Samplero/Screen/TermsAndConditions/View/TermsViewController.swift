@@ -89,6 +89,7 @@ class TermsViewController: BaseViewController {
     
     let viewModel = TermsViewModel(isChecked: false)
     
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -167,10 +168,14 @@ class TermsViewController: BaseViewController {
     
     @objc func buttonTapped() {
         if checkboxImageView.isChecked {
-            // 카카오 채널로 이동
+//            showToastAnimation()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            }
         } else {
             makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
         }
     }
-    
 }
