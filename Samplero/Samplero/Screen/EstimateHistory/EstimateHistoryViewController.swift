@@ -11,11 +11,11 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-class EstimateHistoryViewController: BaseViewController {
+class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     
     // MARK: - Properties
     
-    let viewModel = EstimateHistoryViewModel()
+    var viewModel: EstimateHistoryViewModel!
     
     private let estimateHistoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -39,7 +39,6 @@ class EstimateHistoryViewController: BaseViewController {
         
         estimateHistoryCollectionView.rx.setDelegate(self)
             .disposed(by: viewModel.disposeBag)
-        bind()
     }
     
     override func render() {

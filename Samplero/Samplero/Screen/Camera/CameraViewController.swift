@@ -209,7 +209,12 @@ class CameraViewController: BaseViewController {
         
         photoHistoryButton.rx.tap.bind { [weak self] in
             print("clicked history")
-            self?.navigationController?.pushViewController(EstimateHistoryViewController(), animated: true)
+            
+            var estimateHistoryViewController = EstimateHistoryViewController()
+            estimateHistoryViewController.bindViewModel(EstimateHistoryViewModel())
+            
+            self?.navigationController?.pushViewController(estimateHistoryViewController, animated: true)
+
         }.disposed(by: disposeBag)
         
         cartButton.rx.tap.bind {
