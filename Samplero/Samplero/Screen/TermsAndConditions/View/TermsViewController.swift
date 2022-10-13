@@ -173,10 +173,9 @@ class TermsViewController: BaseViewController {
             // FIXME: - 테스트 용 string입니다. 추후 장바구니 내역으로 수정 필요
             UIPasteboard.general.string = "장바구니 내역"
             
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-                if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
-                    UIApplication.shared.open(url, options: [:])
-                }
+            sleep(2)
+            if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
+                UIApplication.shared.open(url, options: [:])
             }
         } else {
             makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
