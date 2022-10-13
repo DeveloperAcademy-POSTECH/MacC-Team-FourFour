@@ -9,65 +9,52 @@ import UIKit
 
 import SnapKit
 
-final class AreaTestViewController: BaseViewController {
+final class AreaTestViewController: BaseViewController, ShowModalDelegate {
 
     // MARK: - Properties
-    private let priceLabel: UILabel = {
-        let label = UILabel()
-        label.text = "예상 가격"
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
-        label.textColor = .white
-        label.textAlignment = .center
-        return label
-    }()
     
-    private let textButton: PaddedButton = {
-        let button = PaddedButton(topInset: 7, bottomInset: 7, leftInset: 17, rightInset: 17)
-        button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
-        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
-        button.tintColor = .white
-        button.setTitle("면적 입력하기", for: .normal)
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        return button
-    }()
-    
-    private let priceAndAreaStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.backgroundColor = .black
-        stackView.alpha = 0.5
-        stackView.distribution = .equalCentering
-        stackView.alignment = .center
-        return stackView
-    }()
+    private let toBeEstimatedPriceView = ToBeEstimatedPriceView()
+    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: "1,200,000원", width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: "15,000")
     
     // MARK: - Life Cycle
     
     override func viewDidLayoutSubviews() {
-        textButton.layer.cornerRadius = textButton.bounds.height/2
+        toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height/2
+        estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height/2
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        toBeEstimatedPriceView.delegate = self
+        estimatedPriceView.delegate = self
     }
     
     override func render() {
-        view.addSubview(priceAndAreaStackView)
-  
-        priceAndAreaStackView.addArrangedSubview(priceLabel)
-        priceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
+        view.addSubview(toBeEstimatedPriceView)
+        toBeEstimatedPriceView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.center.equalToSuperview().inset(100)
+            make.height.equalTo(80)
         }
         
-        priceAndAreaStackView.addArrangedSubview(textButton)
-        textButton.snp.makeConstraints { make in
-            make.trailing.equalTo(view).inset(20)
-        }
-        
-        priceAndAreaStackView.snp.makeConstraints { make in
-            make.center.equalTo(view)
-            make.leading.trailing.equalTo(view)
+        view.addSubview(estimatedPriceView)
+        estimatedPriceView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.center.equalToSuperview().offset(100)
             make.height.equalTo(80)
         }
     }
     
+    func buttonDidTapped() {
+        let viewController = GetAreaViewController()
+        viewController.preferredSheetSizing = .medium
+        present(viewController, animated: true)
+    }
+    
     override func configUI() {
+        toBeEstimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        estimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     
