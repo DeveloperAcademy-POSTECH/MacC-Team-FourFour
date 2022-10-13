@@ -169,6 +169,10 @@ class TermsViewController: BaseViewController {
     @objc func buttonTapped() {
         if checkboxImageView.isChecked {
 //            showToastAnimation()
+            
+            // FIXME: - 테스트 용 string입니다. 추후 장바구니 내역으로 수정 필요
+            UIPasteboard.general.string = "장바구니 내역"
+            
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
                 if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
                     UIApplication.shared.open(url, options: [:])
