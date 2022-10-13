@@ -25,17 +25,11 @@ class CameraViewController: BaseViewController {
     let output = AVCapturePhotoOutput()
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
-    var sourceTakenPhotoData = Data()
 
 
-    
-//    var tempPicture = UIImage()
-    var outputPicture = UIImage()
-    let backgroundPicture = UIImage(named: "sample_mat_floor")!
 
     // Rx
     var disposeBag = DisposeBag()
-    let dispatchGroup = DispatchGroup()
 
     // Shutter Button
     private let shutterButton: UIButton = {
@@ -266,73 +260,27 @@ class CameraViewController: BaseViewController {
 
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let data = photo.fileDataRepresentation() else { return }
-        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
-        else { return }
-        let request = VNCoreMLRequest(model: model, completionHandler: visionRequestDidComplete)
+        guard let data = photo.fileDataRepresentation() else {
+            return
+        }
+
         let takenPictureViewController = TakenPictureViewController()
-
-        self.sourceTakenPhotoData = data
-        request.imageCropAndScaleOption = .scaleFill
-        self.dispatchGroup.enter()
-
-        DispatchQueue.global().async {
-            let handler = VNImageRequestHandler(data: data, options: [:])
-            do {
-                self.dispatchGroup.enter()
-                try handler.perform([request])
-                self.dispatchGroup.leave()
-            } catch {
-                print(error)
+        takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        takenPictureViewController.rx.retake
+            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .map { [weak self] in
+                self?.session?.startRunning()
             }
-        }
-        dispatchGroup.notify(queue: .main) {
-            takenPictureViewController.configPictureImage(image: self.outputPicture)
-            takenPictureViewController.modalPresentationStyle = .overFullScreen
-            takenPictureViewController.rx.retake
-                .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-                .map { [weak self] in
-                    self?.session?.startRunning()
-                }
-                .observe(on: MainScheduler.instance)
-                .subscribe(onNext: {
-                    takenPictureViewController.dismiss(animated: true)
-                }).disposed(by: self.disposeBag)
-            self.present(takenPictureViewController, animated: true)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                takenPictureViewController.dismiss(animated: true)
+            }).disposed(by: disposeBag)
+        self.present(takenPictureViewController, animated: true)
 
-            self.session?.stopRunning()
-        }
+        session?.stopRunning()
     }
 
-    func visionRequestDidComplete(request: VNRequest, error: Error?) {
-        DispatchQueue.main.async {
-            print("1.25")
-            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
-               let segmentationmap = observations.first?.featureValue.multiArrayValue {
-                let segmentationMask = segmentationmap.image(min: 0, max: 1)
-                self.outputPicture = segmentationMask!.resizedImage(for: CGSize(width: 1080, height: 1920))!
-                print("1.5")
-                self.maskInputImage()
-            }
-        }
-    }
-
-    func maskInputImage() {
-        let bgImage = UIImage.init(named: "sample_mat_floor")!
-        let beginImage = CIImage(data: sourceTakenPhotoData)!.oriented(CGImagePropertyOrientation(UIImage(data: sourceTakenPhotoData)!.imageOrientation))
-        let background = CIImage(cgImage: bgImage.cgImage!)
-        let mask = CIImage(cgImage: self.outputPicture.cgImage!)
-
-        if let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: [
-            kCIInputImageKey: beginImage,
-            kCIInputBackgroundImageKey: background,
-            kCIInputMaskImageKey: mask])?.outputImage {
-            let ciContext = CIContext(options: nil)
-            let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent)
-            self.outputPicture = UIImage(cgImage: filteredImageRef!)
-            self.dispatchGroup.leave()
-        }
-    }
 }
 
 extension Reactive where Base: TakenPictureViewController {

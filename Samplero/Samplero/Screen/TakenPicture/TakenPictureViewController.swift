@@ -6,7 +6,9 @@
 //
 
 import AVFoundation
+import CoreML
 import UIKit
+import Vision
 
 import RxCocoa
 import RxSwift
@@ -15,10 +17,14 @@ import SnapKit
 class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
+//    private var sourceTakenPhotoData = Data()
+    private var outputPicture = UIImage()
+    private var takenImage = UIImage()
+    private var takenImageData = Data()
     
     // Rx
     private var disposeBag = DisposeBag()
-    
+
     // Picture view
     private let takenPictureImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
@@ -110,6 +116,10 @@ class TakenPictureViewController: BaseViewController {
     
     func configPictureImage(image: UIImage) {
         takenPictureImageView.image = image
+//        takenPictureImageView.image = image.resizedImage(for: CGSize(width: 1080, height: 1920))
+        takenImage = image
+        takenImageData = image.jpegData(compressionQuality: 1.0)!
+//        takenImage = UIImage.load(named: "sample_house")
     }
     
     private func addTargets() {
@@ -119,8 +129,58 @@ class TakenPictureViewController: BaseViewController {
         
         nextButton.rx.tap.bind {
             // TODO: go next
-            print("clicked next button")
+            guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
+            else { return }
+            let request = VNCoreMLRequest(model: model, completionHandler: self.visionRequestDidComplete)
+
+            request.imageCropAndScaleOption = .scaleFill
+
+            DispatchQueue.global().async {
+//                let handler = VNImageRequestHandler(cgImage: self.takenImage.cgImage!, options: [:])
+                let handler = VNImageRequestHandler(data: self.takenImageData, options: [:])
+                do {
+                    try handler.perform([request])
+                } catch {
+                    print(error)
+                }
+            }
+
         }.disposed(by: disposeBag)
+    }
+
+
+    private func visionRequestDidComplete(request: VNRequest, error: Error?) {
+        DispatchQueue.main.async {
+            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
+               let segmentationmap = observations.first?.featureValue.multiArrayValue {
+                let segmentationMask = segmentationmap.image(min: 0, max: 1)
+                self.outputPicture = segmentationMask!.resizedImage(for: self.takenImage.size)!
+                self.maskInputImage()
+            }
+        }
+    }
+
+    private func maskInputImage() {
+        let backgroundImage = UIImage.load(named: "sample_mat_floor")
+
+        let beginImage = CIImage(data: self.takenImageData)!.oriented(CGImagePropertyOrientation(UIImage(data: self.takenImageData)!.imageOrientation))
+//        let beginImage = CIImage(cgImage: takenImage.cgImage!)
+        guard let backgroundCGImage = backgroundImage.cgImage else { return }
+        var background = CIImage(cgImage: backgroundCGImage.resize(size: self.takenImage.size)!)
+        let mask = CIImage(cgImage: self.outputPicture.cgImage!)
+
+        if let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: [
+            kCIInputImageKey: beginImage,
+            kCIInputBackgroundImageKey: background,
+            kCIInputMaskImageKey: mask])?.outputImage {
+            let ciContext = CIContext(options: nil)
+            let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent)
+            self.outputPicture = UIImage(cgImage: filteredImageRef!)
+            let newViewController = EstimateViewController()
+            newViewController.roomImageView.image = self.outputPicture
+            self.present(newViewController, animated: true)
+//            self.navigationControll9er?.pushViewController(newViewController, animated: true)
+        }
     }
     
     func getRetakeButton() -> UIButton {

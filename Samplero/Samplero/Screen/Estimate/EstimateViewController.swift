@@ -29,8 +29,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     // MARK: - Properties
     // View consists of roomImageView, sampleDetailView, bottomView
-    
-    private let roomImageView: UIImageView = {
+    var roomImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill

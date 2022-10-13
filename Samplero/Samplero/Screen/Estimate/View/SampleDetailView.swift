@@ -22,7 +22,6 @@ final class SampleDetailView: UIView {
 
     // MARK: - Properties
 
-
     private let sampleNameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left

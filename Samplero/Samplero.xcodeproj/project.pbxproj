@@ -16,8 +16,8 @@
 		2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307328F693F500443A1B /* CustomCheckbox.swift */; };
 		2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307928F69FA600443A1B /* UIViewController+Alert.swift */; };
 		216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */; };
-		2188F2FC28F7D59E005BC322 /* TermsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */; };
 		2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188F2F828F7B434005BC322 /* PaddedLabel.swift */; };
+		2188F2FC28F7D59E005BC322 /* TermsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */; };
 		2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */; };
 		21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C81DA228F45447000E89DA /* AreaTestViewController.swift */; };
 		21ED8C5E28EFC3E40074C9A3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21ED8C5D28EFC3E40074C9A3 /* SnapKit */; };
@@ -50,6 +50,7 @@
 		B51AF44328F6EDA40076F21B /* CGImage+RawBytes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43228F6EDA40076F21B /* CGImage+RawBytes.swift */; };
 		B51AF44428F6EDA40076F21B /* MLMultiArray+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF43328F6EDA40076F21B /* MLMultiArray+Image.swift */; };
 		B51AF44828F6EDB80076F21B /* UIImage+CustomExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF44728F6EDB80076F21B /* UIImage+CustomExtensions.swift */; };
+		B51AF44C28F858130076F21B /* CGImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF44B28F858130076F21B /* CGImage+Resize.swift */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E428F59782003ED6FA /* DBHelper.swift */; };
@@ -98,8 +99,8 @@
 		2164307328F693F500443A1B /* CustomCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
 		2164307928F69FA600443A1B /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGetSizeView.swift; sourceTree = "<group>"; };
-		2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewModel.swift; sourceTree = "<group>"; };
 		2188F2F828F7B434005BC322 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
+		2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewModel.swift; sourceTree = "<group>"; };
 		2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		21C81DA228F45447000E89DA /* AreaTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaTestViewController.swift; sourceTree = "<group>"; };
 		21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		B51AF43228F6EDA40076F21B /* CGImage+RawBytes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGImage+RawBytes.swift"; sourceTree = "<group>"; };
 		B51AF43328F6EDA40076F21B /* MLMultiArray+Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MLMultiArray+Image.swift"; sourceTree = "<group>"; };
 		B51AF44728F6EDB80076F21B /* UIImage+CustomExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CustomExtensions.swift"; sourceTree = "<group>"; };
+		B51AF44B28F858130076F21B /* CGImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+Resize.swift"; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE6379E428F59782003ED6FA /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 				CEFFE77E28F3C7D4007A7842 /* UICollectionView+Extension.swift */,
 				35109D3228F551F500EA6F8F /* CGSize+Extension.swift */,
 				2164307928F69FA600443A1B /* UIViewController+Alert.swift */,
+				B51AF44B28F858130076F21B /* CGImage+Resize.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -716,6 +719,7 @@
 				B51AF43B28F6EDA40076F21B /* CGImagePropertyOrientation.swift in Sources */,
 				210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */,
 				2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */,
+				B51AF44C28F858130076F21B /* CGImage+Resize.swift in Sources */,
 				21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */,
 				210CC67B28F26F8B008191A9 /* BottomSheetInteractiveDismissalTransition.swift in Sources */,
 				355CB86128F295A0001A5731 /* MockData.swift in Sources */,

@@ -119,7 +119,6 @@ extension MLMultiArray {
                   -> (bytes: [UInt8], width: Int, height: Int, channels: Int)? {
     // MLMultiArray with unsupported shape?
     if shape.count < 2 {
-      print("Cannot convert MLMultiArray of shape \(shape) to image")
       return nil
     }
 
@@ -134,7 +133,6 @@ extension MLMultiArray {
       guard channelAxis >= 0 && channelAxis < shape.count &&
             heightAxis >= 0 && heightAxis < shape.count &&
             widthAxis >= 0 && widthAxis < shape.count else {
-        print("Invalid axes \(axes) for shape \(shape)")
         return nil
       }
     } else if shape.count == 2 {
@@ -172,7 +170,6 @@ extension MLMultiArray {
       let channelDim = self.shape[channelAxis].intValue
       if let channel = channel {
         if channel < 0 || channel >= channelDim {
-          print("Channel must be -1, or between 0 and \(channelDim - 1)")
           return nil
         }
         channels = 1
@@ -184,7 +181,6 @@ extension MLMultiArray {
         channelOffset = 0
       } else {
         if channelDim != 3 && channelDim != 4 {
-          print("Expected channel dimension to have 1, 3, or 4 channels, got \(channelDim)")
           return nil
         }
         channels = channelDim
