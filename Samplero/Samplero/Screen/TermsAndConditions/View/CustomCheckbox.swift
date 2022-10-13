@@ -16,7 +16,7 @@ class CustomCheckbox: UIButton {
     
     var isChecked: Bool = false {
         didSet {
-            if isChecked == true {
+            if isChecked {
                 self.setImage(checkedImage, for: .normal)
                 self.backgroundColor = UIColor.accent
             } else {
@@ -31,7 +31,7 @@ class CustomCheckbox: UIButton {
     init(isChecked: Bool) {
         super.init(frame: .zero)
         self.isChecked = isChecked
-        self.addTarget(self, action:#selector(buttonClicked(sender:)), for: UIControl.Event.touchUpInside)
+        self.addTarget(self, action: #selector(buttonClicked(sender:)), for: UIControl.Event.touchUpInside)
         configUI()
     }
     
@@ -49,7 +49,7 @@ class CustomCheckbox: UIButton {
         
     @objc func buttonClicked(sender: UIButton) {
         if sender == self {
-            isChecked = !isChecked
+            self.isChecked.toggle()
         }
     }
 }

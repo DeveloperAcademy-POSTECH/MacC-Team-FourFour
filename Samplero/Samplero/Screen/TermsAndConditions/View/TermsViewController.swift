@@ -138,6 +138,6 @@ class TermsViewController: BaseViewController {
     // MARK: - Func
     
     @objc func sendAlert() {
-//        makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
+        makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
     }
 }
