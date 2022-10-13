@@ -12,6 +12,8 @@
 		210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */; };
 		210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68028F26FEF008191A9 /* BottomSheetController.swift */; };
 		210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68228F2700C008191A9 /* GetAreaViewController.swift */; };
+		212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212CFA7928F65D30003D310A /* TermsViewController.swift */; };
+		2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307328F693F500443A1B /* CustomCheckbox.swift */; };
 		2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307928F69FA600443A1B /* UIViewController+Alert.swift */; };
 		216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */; };
 		2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */; };
@@ -84,6 +86,8 @@
 		210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		210CC68028F26FEF008191A9 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
 		210CC68228F2700C008191A9 /* GetAreaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAreaViewController.swift; sourceTree = "<group>"; };
+		212CFA7928F65D30003D310A /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		2164307328F693F500443A1B /* CustomCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
 		2164307928F69FA600443A1B /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGetSizeView.swift; sourceTree = "<group>"; };
 		2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -176,6 +180,23 @@
 			path = Calculation;
 			sourceTree = "<group>";
 		};
+		212CFA7728F65D09003D310A /* TermsAndConditions */ = {
+			isa = PBXGroup;
+			children = (
+				212CFA7828F65D14003D310A /* View */,
+			);
+			path = TermsAndConditions;
+			sourceTree = "<group>";
+		};
+		212CFA7828F65D14003D310A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				212CFA7928F65D30003D310A /* TermsViewController.swift */,
+				2164307328F693F500443A1B /* CustomCheckbox.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		21ED8C6828EFC63A0074C9A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +225,7 @@
 		21ED8C6B28EFC64C0074C9A3 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				212CFA7728F65D09003D310A /* TermsAndConditions */,
 				CE9C460628F4592E00890821 /* TakenPicture */,
 				CE1052DD28F279A900503ECF /* Camera */,
 				210CC68628F29D71008191A9 /* Calculation */,
@@ -653,6 +675,7 @@
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
+				212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
 				216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */,
@@ -672,6 +695,7 @@
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
 				355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */,
 				355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */,
+				2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */,
 				21ED8C7B28EFC77B0074C9A3 /* NSObject+Extension.swift in Sources */,
 				355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
