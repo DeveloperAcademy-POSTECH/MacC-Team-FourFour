@@ -16,10 +16,15 @@ class MainViewController: UIViewController {
 
         self.navigationController?.pushViewController(estimateVC, animated: true)
     }
+    @IBAction func shopBasketButton(_ sender: Any) {
+        let shopBasketVC = ShopBasketViewController()
+                self.navigationController?.pushViewController(shopBasketVC, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.topItem?.title = "카메라"
+
    }
 
 
