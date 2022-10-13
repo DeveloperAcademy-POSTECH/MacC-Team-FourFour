@@ -179,6 +179,23 @@ class CameraViewController: BaseViewController {
             #if !targetEnvironment(simulator)
             self.output.capturePhoto(with: AVCapturePhotoSettings(),
                                 delegate: self)
+            #else
+            let takenPictureViewController = TakenPictureViewController()
+            takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
+            takenPictureViewController.modalPresentationStyle = .overFullScreen
+            takenPictureViewController.rx.retake
+                .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+                .map { [weak self] in
+                    self?.session?.startRunning()
+                }
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: {
+                    takenPictureViewController.dismiss(animated: true)
+                }).disposed(by: self.disposeBag)
+            
+            self.present(takenPictureViewController, animated: true)
+            
+            self.session?.stopRunning()
             #endif
         }.disposed(by: disposeBag)
 
