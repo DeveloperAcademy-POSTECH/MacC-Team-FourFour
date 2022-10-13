@@ -96,15 +96,15 @@ class CameraViewController: BaseViewController {
     
     // MARK: - Life Cycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkCameraPermissions()
         addTargets()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(true)
-        disposeBag = DisposeBag()
     }
     
     override func render() {
@@ -165,7 +165,9 @@ class CameraViewController: BaseViewController {
         imageView.layer.zPosition = -1
         view.addSubview(imageView)
         #endif
+        
         view.backgroundColor = .black
+        navigationItem.backButtonTitle = "카메라"
     }
     
     // MARK: - Func
@@ -188,9 +190,9 @@ class CameraViewController: BaseViewController {
             self.present(imagePickerController, animated: true)
         }.disposed(by: disposeBag)
         
-        photoHistoryButton.rx.tap.bind {
-            // TODO: open history
+        photoHistoryButton.rx.tap.bind { [weak self] in
             print("clicked history")
+            self?.navigationController?.pushViewController(EstimateHistoryViewController(), animated: true)
         }.disposed(by: disposeBag)
         
         cartButton.rx.tap.bind {
@@ -261,9 +263,12 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
         takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
         takenPictureViewController.modalPresentationStyle = .overFullScreen
         takenPictureViewController.rx.retake
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .map { [weak self] in
                 self?.session?.startRunning()
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
                 takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
         self.present(takenPictureViewController, animated: true)
@@ -281,12 +286,23 @@ extension Reactive where Base: TakenPictureViewController {
 
 extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage {
-            // TODO: TakenPictureViewController present with selectedImage
-            print("got image from library", "\(selectedImage)")
-        }
+        let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage ?? UIImage()
+        
+        let takenPictureViewController = TakenPictureViewController()
+        takenPictureViewController.configPictureImage(image: selectedImage)
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        takenPictureViewController.rx.retake
+            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+            .map { [weak self] in
+                self?.session?.startRunning()
+            }
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: {
+                takenPictureViewController.dismiss(animated: true)
+            }).disposed(by: disposeBag)
         
         picker.dismiss(animated: true, completion: nil)
+        self.present(takenPictureViewController, animated: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

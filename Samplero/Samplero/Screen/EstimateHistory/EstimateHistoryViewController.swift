@@ -29,6 +29,10 @@ class EstimateHistoryViewController: BaseViewController {
     }()
     
     // MARK: - Life Cycle
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isNavigationBarHidden = false
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
