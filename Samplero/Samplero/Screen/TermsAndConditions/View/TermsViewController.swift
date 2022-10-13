@@ -83,12 +83,19 @@ class TermsViewController: BaseViewController {
         button.layer.cornerRadius = Size.linkToKakaoButtonRadius
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
         button.tintColor = .white
-        button.addTarget(self, action: #selector(sendAlert), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         return button
     }()
     
+    let viewModel = TermsViewModel(isChecked: false)
     
     // MARK: - Life Cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        bind()
+    }
     
     override func render() {
         view.addSubview(titleLabel)
@@ -137,7 +144,33 @@ class TermsViewController: BaseViewController {
     
     // MARK: - Func
     
-    @objc func sendAlert() {
-        makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
+    func bind() {
+        checkboxImageView.rx
+            .tap
+            .scan(false) { lastState, _ in
+                !lastState
+            }
+            .bind(to: viewModel.checkboxObservable)
+            .disposed(by: viewModel.disposeBag)
+        
+        viewModel.checkboxObservable.subscribe(onNext: { isChecked in
+            if isChecked {
+                self.linkToKakaoButton.backgroundColor = UIColor(hex: "#FAE100")
+                self.linkToKakaoButton.setTitleColor(.black, for: .normal)
+            } else {
+                self.linkToKakaoButton.backgroundColor = .secondarySystemBackground
+                self.linkToKakaoButton.setTitleColor(.white, for: .normal)
+            }
+        })
+        .disposed(by: viewModel.disposeBag)
     }
+    
+    @objc func buttonTapped() {
+        if checkboxImageView.isChecked {
+            // 카카오 채널로 이동
+        } else {
+            makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
+        }
+    }
+    
 }
