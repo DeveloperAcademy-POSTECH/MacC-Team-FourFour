@@ -26,7 +26,7 @@ private enum Size {
     static let footerViewHeight = 111.0
 }
 
-class ShopBasketViewController: BaseViewController, ViewModelBindableType {
+final class ShopBasketViewController: BaseViewController, ViewModelBindableType {
     
     
     // MARK: - Properties
