@@ -26,13 +26,13 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
 
     private let checkBox: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "square.fill"), for: .normal)
+        button.setImage(UIImage(systemName: "square"), for: .normal)
         button.imageView?.tintColor = .systemGray3
         button.imageEdgeInsets = UIEdgeInsets(top: .zero,
                                               left: .zero,
                                               bottom: Size.checkBoxFrameSize / 2,
                                               right: Size.checkBoxFrameSize / 2)
-        button.backgroundColor = .systemPink  // TODO: - 삭제 예정
+       // button.backgroundColor = .systemPink  // TODO: - 삭제 예정
         return button
     }()
 
@@ -103,7 +103,23 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
 
+    var isChecked: Bool = false {
+        didSet {
+            if isChecked {
+                checkBox.setImage(UIImage(systemName: "square.fill"), for: .normal)
+                checkBox.imageView?.tintColor = .accent
+
+            } else {
+                checkBox.setImage(UIImage(systemName: "square"), for: .normal)
+                checkBox.imageView?.tintColor = .systemGray4
+
+            }
+        }
+    }
+
     var disposeBag: DisposeBag?
+
+    
     // MARK: - Init
 
     override init(frame: CGRect) {
@@ -113,6 +129,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
 
 
     // MARK: - Func
@@ -174,6 +191,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         matNameLabel.text = sample.matName
         thicknessLabel.text = "\(sample.thickness)cm"
         samplePriceLabel.text = "\(sample.samplePrice)원"
+        isChecked = sample.isChecked
     }
 }
 
