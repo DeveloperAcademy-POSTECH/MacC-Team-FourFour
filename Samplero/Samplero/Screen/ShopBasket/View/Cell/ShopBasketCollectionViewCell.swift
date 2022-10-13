@@ -130,6 +130,10 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+        isChecked = false
+    }
+
 
 
     // MARK: - Func

@@ -27,7 +27,7 @@ class AmountFooterView: UICollectionReusableView {
     private let deliveryFeeView = AmountStackView(detailName: "배송비")
     private let totalAmountView = AmountStackView(detailName: "총 결제예정 금액")
 
-
+    private let deliveryFee = 5000
     // MARK: - Init
 
 
@@ -75,6 +75,12 @@ class AmountFooterView: UICollectionReusableView {
         deliveryFeeView.setValueLabel(with: "0원")
         totalAmountView.setValueLabel(with: "0원")
 
+    }
+
+    func configure(with totalPrice: Int) {
+        totalPriceView.setValueLabel(with: "\(totalPrice)원")
+        deliveryFeeView.setValueLabel(with: "\(deliveryFee)원")
+        totalAmountView.setValueLabel(with: "\(totalPrice + deliveryFee)원")
     }
 }
 

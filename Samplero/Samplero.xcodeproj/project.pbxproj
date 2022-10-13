@@ -45,6 +45,7 @@
 		35E443F628F6991D00320DD6 /* AmountStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443F528F6991D00320DD6 /* AmountStackView.swift */; };
 		35E443F928F6AF4D00320DD6 /* ShopBasketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443F828F6AF4D00320DD6 /* ShopBasketViewModel.swift */; };
 		35E443FC28F6CE7C00320DD6 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 35E443FB28F6CE7C00320DD6 /* RxDataSources */; };
+		35E443FE28F85BE500320DD6 /* CheckSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443FD28F85BE500320DD6 /* CheckSample.swift */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
@@ -112,6 +113,7 @@
 		35E443F328F692CF00320DD6 /* AmountFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFooterView.swift; sourceTree = "<group>"; };
 		35E443F528F6991D00320DD6 /* AmountStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountStackView.swift; sourceTree = "<group>"; };
 		35E443F828F6AF4D00320DD6 /* ShopBasketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketViewModel.swift; sourceTree = "<group>"; };
+		35E443FD28F85BE500320DD6 /* CheckSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSample.swift; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 				CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */,
 				355CB86028F295A0001A5731 /* MockData.swift */,
 				355CB85E28F1D5DA001A5731 /* Sample.swift */,
+				35E443FD28F85BE500320DD6 /* CheckSample.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -729,6 +732,7 @@
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
 				CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */,
 				35E443F628F6991D00320DD6 /* AmountStackView.swift in Sources */,
+				35E443FE28F85BE500320DD6 /* CheckSample.swift in Sources */,
 				35E443F428F692CF00320DD6 /* AmountFooterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

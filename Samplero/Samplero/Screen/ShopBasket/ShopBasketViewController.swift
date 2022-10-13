@@ -220,7 +220,8 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
 
             // each cell's checkButton Binding
             cell.getCheckButton().rx.tap
-                .map {cell.isChecked.toggle()}
+                .map {
+                    cell.isChecked.toggle()}
                 .map { _ in sample }
                 .bind(to: self.viewModel.selectedSubject)
                 .disposed(by: cell.disposeBag!)
@@ -273,6 +274,7 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
         
         // buttonFirstLabel binding
         viewModel.selectionState
+            .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
             .map { "\($0.count)개의 샘플"}
             .asDriver(onErrorJustReturn: "0개의 샘플")
             .drive(buttonFirstLabel.rx.text)
@@ -295,18 +297,27 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
                     self.allChoiceButton.imageView?.tintColor = .accent
 
                 } else {
-                        self.allChoiceButton.setImage(UIImage(systemName: "square"), for: .normal)
-                        self.allChoiceButton.imageView?.tintColor = .boxBackground
-                    }
+                    self.allChoiceButton.setImage(UIImage(systemName: "square"), for: .normal)
+                    self.allChoiceButton.imageView?.tintColor = .boxBackground
+                }
             })
             .disposed(by: viewModel.disposeBag)
 
-        //
+        viewModel.selectionState
+            .subscribe(onNext: { samples in
+                let totalPrice = samples.map { $0.samplePrice }.reduce(0, +)
 
+                let footerView = self.shopBasketCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: .zero, section: .zero)) as? AmountFooterView
+                footerView?.configure(with: totalPrice)
+            })
+            .disposed(by: viewModel.disposeBag)
+
+
+        // allChoiceButton
         allChoiceButton.rx.tap
             .map {
                 let wishedSampleCount = self.viewModel.wishedSampleObservable.value.count
-                 if self.checkedCount == wishedSampleCount {
+                if self.checkedCount == wishedSampleCount {
                     return false
                 } else { return true }
             }
@@ -337,11 +348,6 @@ class ShopBasketViewController: BaseViewController, ViewModelBindableType {
                 }
             })
             .disposed(by: viewModel.disposeBag)
-
-
-
-
-
     }
     
     // MARK: - Func
