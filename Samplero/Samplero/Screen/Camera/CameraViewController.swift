@@ -5,6 +5,7 @@
 //  Created by JiwKang on 2022/10/09.
 //
 
+import Foundation
 import AVFoundation
 import CoreML
 import UIKit
@@ -24,6 +25,9 @@ class CameraViewController: BaseViewController {
     let output = AVCapturePhotoOutput()
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
+    var sourceTakenPhotoData = Data()
+
+
     
 //    var tempPicture = UIImage()
     var outputPicture = UIImage()
@@ -31,7 +35,8 @@ class CameraViewController: BaseViewController {
 
     // Rx
     var disposeBag = DisposeBag()
-    
+    let dispatchGroup = DispatchGroup()
+
     // Shutter Button
     private let shutterButton: UIButton = {
         let buttonSize: CGFloat = UIScreen.main.bounds.height / 14.07
@@ -261,45 +266,27 @@ class CameraViewController: BaseViewController {
 
 extension CameraViewController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-//        guard let data = photo.fileDataRepresentation() else {
-        guard let data = photo.cgImageRepresentation() else {
-            return
-        }
-        
-        let takenPictureViewController = TakenPictureViewController()
-//        let heicTakenPicture = UIImage(data: data) ?? UIImage()
-//        let takenPicture = UIImage(named: "sample_house")!
-//        let data2 = heicTakenPicture.jpegData(compressionQuality: 0) ?? Data()
-        let takenPicture = data
-
-    
-
-//        tempPicture = takenPicture
-
-        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init (configuration: .init()).model)
+        guard let data = photo.fileDataRepresentation() else { return }
+        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
         else { return }
-        print("1")
-
         let request = VNCoreMLRequest(model: model, completionHandler: visionRequestDidComplete)
+        let takenPictureViewController = TakenPictureViewController()
 
-        print("1.75")
-
+        self.sourceTakenPhotoData = data
         request.imageCropAndScaleOption = .scaleFill
-        DispatchQueue.global().async {
-            print("2")
-            let handler = VNImageRequestHandler(cgImage: takenPicture, options: [:])
+        self.dispatchGroup.enter()
 
+        DispatchQueue.global().async {
+            let handler = VNImageRequestHandler(data: data, options: [:])
             do {
+                self.dispatchGroup.enter()
                 try handler.perform([request])
-                print("3")
+                self.dispatchGroup.leave()
             } catch {
                 print(error)
             }
         }
-        print("4")
-        DispatchQueue.main.asyncAfter(deadline: .now()
-                                      + 3) {
-            print("5")
+        dispatchGroup.notify(queue: .main) {
             takenPictureViewController.configPictureImage(image: self.outputPicture)
             takenPictureViewController.modalPresentationStyle = .overFullScreen
             takenPictureViewController.rx.retake
@@ -325,8 +312,25 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
                 let segmentationMask = segmentationmap.image(min: 0, max: 1)
                 self.outputPicture = segmentationMask!.resizedImage(for: CGSize(width: 1080, height: 1920))!
                 print("1.5")
-//                maskInputImage()
+                self.maskInputImage()
             }
+        }
+    }
+
+    func maskInputImage() {
+        let bgImage = UIImage.init(named: "sample_mat_floor")!
+        let beginImage = CIImage(data: sourceTakenPhotoData)!.oriented(CGImagePropertyOrientation(UIImage(data: sourceTakenPhotoData)!.imageOrientation))
+        let background = CIImage(cgImage: bgImage.cgImage!)
+        let mask = CIImage(cgImage: self.outputPicture.cgImage!)
+
+        if let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: [
+            kCIInputImageKey: beginImage,
+            kCIInputBackgroundImageKey: background,
+            kCIInputMaskImageKey: mask])?.outputImage {
+            let ciContext = CIContext(options: nil)
+            let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent)
+            self.outputPicture = UIImage(cgImage: filteredImageRef!)
+            self.dispatchGroup.leave()
         }
     }
 }

@@ -99,7 +99,7 @@ extension MLMultiArray {
             return CGImage.fromByteArrayRGBA(b, width: w, height: h)
           }
         }
-        
+
         return nil
     }
 
@@ -204,7 +204,7 @@ extension MLMultiArray {
     ptr = ptr.advanced(by: channelOffset * cStride)
 
     // Loop through all the pixels and all the channels and copy them over.
-    
+
     for c in 0..<channels {
       for y in 0..<height {
         for x in 0..<width {
