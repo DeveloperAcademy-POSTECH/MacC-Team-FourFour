@@ -9,8 +9,9 @@ import UIKit
 
 
 private enum Size {
-    static let sampleImageSize = 80.0
+    static let sampleImage = 80.0
     static let defaultOffset = 20.0
+    static let checkBox = 20.0
     static let secondaryOffset = 16
 }
 
@@ -46,7 +47,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
     }()
 
     // firstHorizontalStackView consists of makerLabel,deleteButton
-    private let firstHorizontalStackView: UIStackView = {
+    private let horizontalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -114,12 +115,12 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         checkBox.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(Size.defaultOffset)
-            make.size.equalTo(Size.defaultOffset)
+            make.size.equalTo(Size.checkBox)
         }
 
         contentView.addSubview(sampleImageView)
         sampleImageView.snp.makeConstraints { make in
-            make.size.equalTo(Size.sampleImageSize)
+            make.size.equalTo(Size.sampleImage)
             make.leading.equalTo(checkBox.snp.trailing).offset(Size.secondaryOffset)
             make.top.bottom.equalToSuperview()
         }
