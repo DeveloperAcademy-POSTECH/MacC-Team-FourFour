@@ -16,6 +16,7 @@
 		2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307328F693F500443A1B /* CustomCheckbox.swift */; };
 		2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307928F69FA600443A1B /* UIViewController+Alert.swift */; };
 		216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */; };
+		2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188F2F828F7B434005BC322 /* PaddedLabel.swift */; };
 		2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */; };
 		21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C81DA228F45447000E89DA /* AreaTestViewController.swift */; };
 		21ED8C5E28EFC3E40074C9A3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21ED8C5D28EFC3E40074C9A3 /* SnapKit */; };
@@ -90,6 +91,7 @@
 		2164307328F693F500443A1B /* CustomCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
 		2164307928F69FA600443A1B /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGetSizeView.swift; sourceTree = "<group>"; };
+		2188F2F828F7B434005BC322 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		21C81DA228F45447000E89DA /* AreaTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaTestViewController.swift; sourceTree = "<group>"; };
 		21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 		21ED8C7628EFC6840074C9A3 /* UIComponent */ = {
 			isa = PBXGroup;
 			children = (
+				2188F2F828F7B434005BC322 /* PaddedLabel.swift */,
 			);
 			path = UIComponent;
 			sourceTree = "<group>";
@@ -674,6 +677,7 @@
 				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
+				2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
 				212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
