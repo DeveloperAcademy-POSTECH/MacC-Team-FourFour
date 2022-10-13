@@ -7,6 +7,7 @@
 
 import UIKit
 
+import RxSwift
 import SnapKit
 
 private enum Size {
@@ -87,7 +88,7 @@ class TermsViewController: BaseViewController {
         return button
     }()
     
-    let viewModel = TermsViewModel(isChecked: false)
+    let viewModel = TermsViewModel()
     
     // MARK: - Life Cycle
     
@@ -153,16 +154,8 @@ class TermsViewController: BaseViewController {
             .bind(to: viewModel.checkboxObservable)
             .disposed(by: viewModel.disposeBag)
         
-        viewModel.checkboxObservable.subscribe(onNext: { isChecked in
-            if isChecked {
-                self.linkToKakaoButton.backgroundColor = UIColor(hex: "#FAE100")
-                self.linkToKakaoButton.setTitleColor(.black, for: .normal)
-            } else {
-                self.linkToKakaoButton.backgroundColor = .secondarySystemBackground
-                self.linkToKakaoButton.setTitleColor(.white, for: .normal)
-            }
-        })
-        .disposed(by: viewModel.disposeBag)
+        viewModel.checkboxObservable.bind(to: linkToKakaoButton.rx.enableStatus)
+            .disposed(by: viewModel.disposeBag)
     }
     
     @objc func buttonTapped() {
@@ -173,4 +166,19 @@ class TermsViewController: BaseViewController {
         }
     }
     
+}
+
+extension Reactive where Base: UIButton {
+    var enableStatus: Binder<Bool> {
+        return Binder(self.base) { button, boolValue in
+            switch boolValue {
+            case true :
+                button.backgroundColor = UIColor(hex: "#FAE100")
+                button.setTitleColor(.black, for: .normal)
+            case false :
+                button.backgroundColor = .secondarySystemBackground
+                button.setTitleColor(.white, for: .normal)
+            }
+        }
+    }
 }
