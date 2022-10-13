@@ -21,6 +21,7 @@ private enum Size {
     static let checkboxCornerRadius = 5.0
     static let checkboxBorderWidth = 1.0
     static let termsContentsInset = UIEdgeInsets(top: 20, left: 18, bottom: 20, right: 18)
+    static let toastViewCornerRadius = 14.0
 }
 
 class TermsViewController: BaseViewController {
@@ -87,6 +88,21 @@ class TermsViewController: BaseViewController {
         return button
     }()
     
+    private let toastView: PaddedLabel = {
+        let label = PaddedLabel(topInset: 16, bottomInset: 16, leftInset: 40, rightInset: 40)
+        label.text = "장바구니 내역이 복사되었습니다. \n 카카오톡 채팅방에 붙여넣어주세요!"
+        label.backgroundColor = .orange
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.backgroundColor = UIColor(hex: "#1E1E1E").withAlphaComponent(0.75)
+        label.textColor = .white
+        label.layer.cornerRadius = Size.toastViewCornerRadius
+        label.clipsToBounds = true
+        label.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .footnote).pointSize)
+        return label
+    }()
+    
+    
     
     // MARK: - Life Cycle
     
@@ -139,5 +155,22 @@ class TermsViewController: BaseViewController {
     
     @objc func sendAlert() {
         makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
+        showToastAnimation()
+    }
+    
+    @objc func showToastAnimation() {
+        toastView.alpha = 1.0
+            
+        self.view.addSubview(toastView)
+        toastView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(147)
+        }
+        
+        UIView.animate(withDuration: 1.5, delay: 1.4, options: .curveEaseIn, animations: {
+            self.toastView.alpha = 0.0
+        }, completion: { _ in
+            self.toastView.removeFromSuperview()
+        })
     }
 }
