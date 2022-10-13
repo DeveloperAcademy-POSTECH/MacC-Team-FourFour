@@ -132,13 +132,13 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
             make.trailing.equalToSuperview().inset(Size.defaultOffset)
         }
 
-        verticalStackView.addArrangedSubview(firstHorizontalStackView)
-        firstHorizontalStackView.snp.makeConstraints { make in
+        verticalStackView.addArrangedSubview(horizontalStackView)
+        horizontalStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
 
-        firstHorizontalStackView.addArrangedSubview(makerLabel)
-        firstHorizontalStackView.addArrangedSubview(deleteButton)
+        horizontalStackView.addArrangedSubview(makerLabel)
+        horizontalStackView.addArrangedSubview(deleteButton)
         deleteButton.snp.makeConstraints { make in
             make.size.equalTo(Size.defaultOffset)
         }
