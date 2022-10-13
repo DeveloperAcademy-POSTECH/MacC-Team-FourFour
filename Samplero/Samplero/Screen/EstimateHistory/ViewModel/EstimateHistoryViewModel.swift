@@ -10,7 +10,19 @@ import Foundation
 import RxSwift
 
 class EstimateHistoryViewModel {
+    
+    // MARK: - Properties
+    
+    let db = DBHelper.shared
+    
     var disposeBag = DisposeBag()
     
-    let estimateHistoryObservable = Observable.of(MockData.estimateHistories)
+    let estimateHistorySubject: BehaviorSubject<[EstimateHistory]>
+    
+    init () {
+        var estimateHistories: [EstimateHistory] = []
+        estimateHistories = db.getEstimateHistories()
+        
+        estimateHistorySubject = BehaviorSubject(value: estimateHistories)
+    }
 }

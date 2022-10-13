@@ -55,7 +55,7 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     // MARK: - Func
     
     func bind() {
-        viewModel.estimateHistoryObservable
+        viewModel.estimateHistorySubject
             .bind(to: estimateHistoryCollectionView.rx.items) { collectionView, row, history -> UICollectionViewCell in
                 let cell = collectionView.dequeueReusableCell(withType: EstimateHistoryCollectionViewCell.self, for: IndexPath.init(row: row, section: 0))
                 cell.configure(history: history)
