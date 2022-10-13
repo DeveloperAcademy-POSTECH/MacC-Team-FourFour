@@ -9,24 +9,11 @@ import UIKit
 
 struct EstimateHistory {
     let imageId: Int
-    let estimateDate: Date
+    let width: Double?
+    let height: Double?
+    let selectedSampleId: Int?
     
     func getImage() -> UIImage? {
         return UIImage(named: "sample_photo_\(imageId)")
     }
 }
-
-#if DEBUG
-extension EstimateHistory {
-    static let mockData: [EstimateHistory] = [
-        EstimateHistory(imageId: 0, estimateDate: Date()),
-        EstimateHistory(imageId: 1, estimateDate: Date()),
-        EstimateHistory(imageId: 2, estimateDate: Date()),
-        EstimateHistory(imageId: 3, estimateDate: Date()),
-        EstimateHistory(imageId: 4, estimateDate: Date()),
-        EstimateHistory(imageId: 5, estimateDate: Date()),
-        EstimateHistory(imageId: 6, estimateDate: Date()),
-        EstimateHistory(imageId: 7, estimateDate: Date())
-    ]
-}
-#endif

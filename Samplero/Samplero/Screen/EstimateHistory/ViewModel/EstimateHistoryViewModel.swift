@@ -12,5 +12,5 @@ import RxSwift
 class EstimateHistoryViewModel {
     var disposeBag = DisposeBag()
     
-    let estimateHistoryObservable = Observable.of(EstimateHistory.mockData)
+    let estimateHistoryObservable = Observable.of(MockData.estimateHistories)
 }
