@@ -189,13 +189,14 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         return deleteButton
     }
 
-    func configure(with sample: Sample) {
+    func configure(with checkSample: CheckSample) {
+        let sample = checkSample.sample
         sampleImageView.image = UIImage(named: sample.imageName)
         makerLabel.text = sample.maker
         matNameLabel.text = sample.matName
         thicknessLabel.text = "\(sample.thickness)cm"
         samplePriceLabel.text = "\(sample.samplePrice)원"
-        isChecked = sample.isChecked
+        isChecked = checkSample.isChecked
     }
 }
 
