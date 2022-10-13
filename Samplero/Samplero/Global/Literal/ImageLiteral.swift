@@ -10,7 +10,9 @@ import UIKit
 
 enum ImageLiteral {
     static var sampleRoom: UIImage { .load(named: "SampleRoom")}
-    static var shoppingBag: UIImage { .load(named: "ShoppingBag")}
+    static var cartDark: UIImage { .load(named: "CartDark")}
+    static var cartLight: UIImage { .load(named: "CartLight")}
+
 }
 
 extension UIImage {
