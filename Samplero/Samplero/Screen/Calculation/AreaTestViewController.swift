@@ -21,22 +21,14 @@ final class AreaTestViewController: BaseViewController {
         return label
     }()
     
-    private let getAreaButton = UIView()
-    
-    private let textButton: UIButton = {
-        let button = UIButton(type: .system)
+    private let textButton: PaddedButton = {
+        let button = PaddedButton(topInset: 7, bottomInset: 7, leftInset: 17, rightInset: 17)
         button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
-        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .light)
+        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
         button.tintColor = .white
-        button.setTitle("견적 계산을 위해 공간의 면적을 입력해주세요", for: .normal)
+        button.setTitle("면적 입력하기", for: .normal)
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         return button
-    }()
-    
-    private let roundedRectangle: UIView = {
-        let rect = UIView()
-        rect.backgroundColor = .black
-        rect.alpha = 0.5
-        return rect
     }()
     
     private let priceAndAreaStackView: UIStackView = {
@@ -44,7 +36,7 @@ final class AreaTestViewController: BaseViewController {
         stackView.axis = .horizontal
         stackView.backgroundColor = .black
         stackView.alpha = 0.5
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .equalCentering
         stackView.alignment = .center
         return stackView
     }()
@@ -52,33 +44,22 @@ final class AreaTestViewController: BaseViewController {
     // MARK: - Life Cycle
     
     override func viewDidLayoutSubviews() {
-        roundedRectangle.layer.cornerRadius = roundedRectangle.bounds.height/2
-        roundedRectangle.layer.borderWidth = 1
-        roundedRectangle.layer.borderColor = UIColor.white.cgColor
+        textButton.layer.cornerRadius = textButton.bounds.height/2
     }
     
     override func render() {
         view.addSubview(priceAndAreaStackView)
-        getAreaButton.addSubview(roundedRectangle)
-        getAreaButton.addSubview(textButton)
-        
-        textButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(23)
-            make.center.equalToSuperview()
-        }
-        roundedRectangle.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.center.equalToSuperview()
-            make.width.equalTo(textButton).multipliedBy(1.1)
-            make.height.equalTo(40)
-        }
-        
+  
         priceAndAreaStackView.addArrangedSubview(priceLabel)
         priceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(23)
+            make.leading.equalToSuperview().offset(20)
         }
         
-        priceAndAreaStackView.addArrangedSubview(getAreaButton)
+        priceAndAreaStackView.addArrangedSubview(textButton)
+        textButton.snp.makeConstraints { make in
+            make.trailing.equalTo(view).inset(20)
+        }
+        
         priceAndAreaStackView.snp.makeConstraints { make in
             make.center.equalTo(view)
             make.leading.trailing.equalTo(view)
