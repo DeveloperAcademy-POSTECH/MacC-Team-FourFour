@@ -16,7 +16,7 @@ class EstimatedPriceView: UIView {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "예상 가격"
+        label.text = "셀프 시공 예상 가격"
         label.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize)
         label.textColor = .white
         label.textAlignment = .left
@@ -117,10 +117,10 @@ class EstimatedPriceView: UIView {
     }
     
     func changeEstimation(estimatedPrice: Int, width: Int, height: Int, estimatedQuantity: Int, pricePerBlock: Int) {
-        self.showPriceLabel.text = numberFormatter(number: estimatedPrice)
-        self.sizeAndQuantityLabel.text = "\(width)x\(height)(cm), \(estimatedQuantity)장"
-        self.pricePerBlockLabel.text = "장당 \(numberFormatter(number: pricePerBlock))원"
-    }
+            self.showPriceLabel.text = estimatedPrice == -1 ? "미정" : numberFormatter(number: estimatedPrice)
+            self.sizeAndQuantityLabel.text = "\(width)x\(height)(cm), \(estimatedQuantity)장"
+            self.pricePerBlockLabel.text = pricePerBlock == -1 ? "장당 가격 미정" : "장당 \(numberFormatter(number: pricePerBlock))원"
+        }
     
     func numberFormatter(number: Int) -> String {
         let numberFormatter = NumberFormatter()

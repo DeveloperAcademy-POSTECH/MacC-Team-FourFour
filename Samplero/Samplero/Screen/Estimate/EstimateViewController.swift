@@ -81,7 +81,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     var viewModel: EstimateViewModel!
 
      let toBeEstimatedPriceView = ToBeEstimatedPriceView()
-     let estimatedPriceView = EstimatedPriceView(estimatedPrice: 1200000, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: 15000)
+     let estimatedPriceView = EstimatedPriceView(estimatedPrice: -1, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: -1)
 
     var currentSample: Sample = MockData.sampleList[0]
 
@@ -224,10 +224,12 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     private func calculatePrice(width: CGFloat, height: CGFloat) -> [CGFloat] {
         let sampleArea = currentSample.size.width * currentSample.size.height
         let estimatedQuantity = width*height / sampleArea
-        let estimatedPrice = CGFloat(currentSample.samplePrice) * estimatedQuantity
+        let estimatedPrice = currentSample.samplePrice == -1 ? -1 : CGFloat(currentSample.samplePrice) * estimatedQuantity
         // FIXME: - 배열 말고 다른 방식 사용하기
         return [estimatedQuantity, estimatedPrice]
     }
+
+
 }
 
 
