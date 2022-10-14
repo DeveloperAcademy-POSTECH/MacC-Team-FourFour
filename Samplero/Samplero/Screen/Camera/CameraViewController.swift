@@ -29,6 +29,7 @@ class CameraViewController: BaseViewController {
 
 
     // Rx
+    let viewModel = EstimateHistoryViewModel()
     var disposeBag = DisposeBag()
 
     // Shutter Button
@@ -53,11 +54,15 @@ class CameraViewController: BaseViewController {
         return button
     }()
     
+    // Help View
+    private let cameraHelpView: CameraHelpView = CameraHelpView()
+    
     // Top Drawer
     private let topDrawer: UIView = {
         let view: UIView = UIView()
         view.backgroundColor = .black
         view.alpha = 0.5
+        view.isHidden = true
         return view
     }()
     
@@ -73,9 +78,12 @@ class CameraViewController: BaseViewController {
     private let bringPhotoButton: UIButton = {
         let button: UIButton = UIButton()
         
-        button.setTitle("사진 불러오기", for: .normal)
-        button.titleLabel?.textColor = .white
-        button.titleLabel?.font = UIFont.systemFont(ofSize: UIScreen.main.bounds.width / 26)
+        button.setImage(UIImage(systemName: "photo.on.rectangle"), for: .normal)
+        button.setTitle(" 사진 불러오기", for: .normal)
+        button.tintColor = .white
+        button.setTitleColor(.lightGray.withAlphaComponent(0.8), for: .highlighted)
+        
+        button.backgroundColor = .white.withAlphaComponent(0.2)
         
         return button
     }()
@@ -83,7 +91,6 @@ class CameraViewController: BaseViewController {
     // Open History Button
     private let photoHistoryButton: UIButton = {
         let button: UIButton = UIButton()
-        button.setImage(UIImage(named: "sample_history"), for: .normal)
         button.layer.cornerRadius = 3
         button.layer.masksToBounds = true
         return button
@@ -110,11 +117,24 @@ class CameraViewController: BaseViewController {
         super.viewDidLoad()
         checkCameraPermissions()
         addTargets()
+        bind()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        bringPhotoButton.layer.cornerRadius = bringPhotoButton.bounds.height / 2
     }
     
     override func render() {
         view.layer.addSublayer(previewLayer)
         previewLayer.frame = view.bounds
+        
+        view.addSubview(bottomDrawer)
+        bottomDrawer.snp.makeConstraints { make in
+            make.bottom.leading.equalToSuperview()
+            make.width.equalToSuperview()
+            make.height.equalTo(UIScreen.main.bounds.height / 4.157)
+        }
         
         view.addSubview(topDrawer)
         topDrawer.snp.makeConstraints { make in
@@ -123,11 +143,11 @@ class CameraViewController: BaseViewController {
             make.height.equalTo(UIScreen.main.bounds.height / 6.975)
         }
         
-        view.addSubview(bottomDrawer)
-        bottomDrawer.snp.makeConstraints { make in
-            make.bottom.leading.equalToSuperview()
+        view.addSubview(cameraHelpView)
+        cameraHelpView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.width.equalToSuperview()
-            make.height.equalTo(UIScreen.main.bounds.height / 4.157)
+            make.bottom.equalTo(bottomDrawer.snp.top)
         }
         
         view.addSubview(shutterButton)
@@ -139,20 +159,22 @@ class CameraViewController: BaseViewController {
         
         view.addSubview(bringPhotoButton)
         bringPhotoButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(UIScreen.main.bounds.height / 12.98)
-            make.leading.equalToSuperview().inset(UIScreen.main.bounds.width / 16.25)
+            make.top.equalToSuperview().inset(UIScreen.main.bounds.height / 13.95)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(46)
+            make.width.equalTo(150)
         }
         
         view.addSubview(photoHistoryButton)
         photoHistoryButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(UIScreen.main.bounds.width / 19.5)
+            make.centerX.equalTo(view.snp.leading).inset(UIScreen.main.bounds.width / 8.86)
             make.centerY.equalTo(shutterButton)
             make.size.equalTo(UIScreen.main.bounds.width / 7.96)
         }
         
         view.addSubview(cartButton)
         cartButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(UIScreen.main.bounds.width / 19.5)
+            make.centerX.equalTo(view.snp.trailing).inset(UIScreen.main.bounds.width / 8.86)
             make.centerY.equalTo(shutterButton)
             make.size.equalTo(UIScreen.main.bounds.width / 8.125)
         }
@@ -175,6 +197,14 @@ class CameraViewController: BaseViewController {
         navigationItem.backButtonTitle = "카메라"
     }
     
+    func bind() {
+        viewModel.estimateHistorySubject
+            .subscribe(onNext: { [weak self] history in
+                self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     // MARK: - Func
     
     func addTargets() {
@@ -184,6 +214,23 @@ class CameraViewController: BaseViewController {
             #if !targetEnvironment(simulator)
             self.output.capturePhoto(with: AVCapturePhotoSettings(),
                                 delegate: self)
+            #else
+            let takenPictureViewController = TakenPictureViewController()
+            takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
+            takenPictureViewController.modalPresentationStyle = .overFullScreen
+            takenPictureViewController.rx.retake
+                .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
+                .map { [weak self] in
+                    self?.session?.startRunning()
+                }
+                .observe(on: MainScheduler.instance)
+                .subscribe(onNext: {
+                    takenPictureViewController.dismiss(animated: true)
+                }).disposed(by: self.disposeBag)
+            
+            self.present(takenPictureViewController, animated: true)
+            
+            self.session?.stopRunning()
             #endif
         }.disposed(by: disposeBag)
 
@@ -197,13 +244,25 @@ class CameraViewController: BaseViewController {
         
         photoHistoryButton.rx.tap.bind { [weak self] in
             print("clicked history")
-            self?.navigationController?.pushViewController(EstimateHistoryViewController(), animated: true)
+            
+            var estimateHistoryViewController = EstimateHistoryViewController()
+            estimateHistoryViewController.bindViewModel(EstimateHistoryViewModel())
+            
+            self?.navigationController?.pushViewController(estimateHistoryViewController, animated: true)
+
         }.disposed(by: disposeBag)
         
         cartButton.rx.tap.bind {
             // TODO: open cart
             print("clicked cart")
         }.disposed(by: disposeBag)
+        
+        cameraHelpView.rx.tapGesture
+            .subscribe(onNext: { [weak self] _ in
+                self?.cameraHelpView.isHidden = true
+                self?.topDrawer.isHidden = false
+            })
+            .disposed(by: disposeBag)
     }
     
     private func checkCameraPermissions() {
@@ -287,6 +346,15 @@ extension Reactive where Base: TakenPictureViewController {
     var retake: ControlEvent<Void> {
         let source = self.base.getRetakeButton().rx.tap
         return ControlEvent(events: source)
+    }
+}
+
+extension Reactive where Base: UIView {
+public var tapGesture : ControlEvent<UITapGestureRecognizer> {
+        self.base.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer()
+        self.base.addGestureRecognizer(gesture)
+        return gesture.rx.event
     }
 }
 

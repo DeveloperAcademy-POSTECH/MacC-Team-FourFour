@@ -11,11 +11,20 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-class EstimateHistoryViewController: BaseViewController {
+class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     
     // MARK: - Properties
     
-    let viewModel = EstimateHistoryViewModel()
+    var viewModel: EstimateHistoryViewModel!
+    
+    private let helpingLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "견적이 없습니다.\n사진을 찍어보세요!"
+        label.numberOfLines = 2
+        label.textColor = .secondaryGray
+        label.textAlignment = .center
+        return label
+    }()
     
     private let estimateHistoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -32,6 +41,19 @@ class EstimateHistoryViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
+        
+        viewModel.estimateHistorySubject
+            .map { $0.count > 0 ? true : false }
+            .subscribe(onNext: { [weak self] in
+                if $0 {
+                    self?.estimateHistoryCollectionView.isHidden = false
+                    self?.helpingLabel.isHidden = true
+                } else {
+                    self?.estimateHistoryCollectionView.isHidden = true
+                    self?.helpingLabel.isHidden = false
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 
     override func viewDidLoad() {
@@ -39,12 +61,16 @@ class EstimateHistoryViewController: BaseViewController {
         
         estimateHistoryCollectionView.rx.setDelegate(self)
             .disposed(by: viewModel.disposeBag)
-        bind()
     }
     
     override func render() {
         view.addSubview(estimateHistoryCollectionView)
         estimateHistoryCollectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(helpingLabel)
+        helpingLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
@@ -56,7 +82,7 @@ class EstimateHistoryViewController: BaseViewController {
     // MARK: - Func
     
     func bind() {
-        viewModel.estimateHistoryObservable
+        viewModel.estimateHistorySubject
             .bind(to: estimateHistoryCollectionView.rx.items) { collectionView, row, history -> UICollectionViewCell in
                 let cell = collectionView.dequeueReusableCell(withType: EstimateHistoryCollectionViewCell.self, for: IndexPath.init(row: row, section: 0))
                 cell.configure(history: history)

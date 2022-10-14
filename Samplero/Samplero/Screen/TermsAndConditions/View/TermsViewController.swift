@@ -106,6 +106,7 @@ class TermsViewController: BaseViewController {
     let viewModel = TermsViewModel()
     
     
+    
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
@@ -176,12 +177,20 @@ class TermsViewController: BaseViewController {
     
     @objc func buttonTapped() {
         if checkboxImageView.isChecked {
-            // 카카오 채널로 이동
+//            showToastAnimation()
+            
+            // FIXME: - 테스트 용 string입니다. 추후 장바구니 내역으로 수정 필요
+            UIPasteboard.general.string = "장바구니 내역"
+            
+            sleep(2)
+            if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
+                UIApplication.shared.open(url, options: [:])
+            }
         } else {
             makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
         }
     }
-    
+
     @objc func showToastAnimation() {
         toastView.alpha = 1.0
             

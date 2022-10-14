@@ -12,8 +12,4 @@ struct EstimateHistory {
     let width: Double?
     let height: Double?
     let selectedSampleId: Int?
-    
-    func getImage() -> UIImage? {
-        return UIImage(named: "sample_photo_\(imageId)")
-    }
 }
