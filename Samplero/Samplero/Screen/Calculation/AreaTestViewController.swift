@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class AreaTestViewController: BaseViewController, ShowModalDelegate {
+final class AreaTestViewController: BaseViewController {
 
     // MARK: - Properties
     
@@ -26,8 +26,7 @@ final class AreaTestViewController: BaseViewController, ShowModalDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        toBeEstimatedPriceView.delegate = self
-        estimatedPriceView.delegate = self
+        setDelegation()
     }
     
     override func render() {
@@ -46,12 +45,6 @@ final class AreaTestViewController: BaseViewController, ShowModalDelegate {
         }
     }
     
-    func buttonDidTapped() {
-        let viewController = GetAreaViewController()
-        viewController.preferredSheetSizing = .medium
-        present(viewController, animated: true)
-    }
-    
     override func configUI() {
         toBeEstimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         estimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -61,6 +54,19 @@ final class AreaTestViewController: BaseViewController, ShowModalDelegate {
     // MARK: - Func
     
     @objc func buttonDidTap() {
+        let viewController = GetAreaViewController()
+        viewController.preferredSheetSizing = .medium
+        present(viewController, animated: true)
+    }
+    
+    private func setDelegation() {
+        toBeEstimatedPriceView.delegate = self
+        estimatedPriceView.delegate = self
+    }
+}
+
+extension AreaTestViewController: ShowModalDelegate {
+    func buttonDidTapped() {
         let viewController = GetAreaViewController()
         viewController.preferredSheetSizing = .medium
         present(viewController, animated: true)
