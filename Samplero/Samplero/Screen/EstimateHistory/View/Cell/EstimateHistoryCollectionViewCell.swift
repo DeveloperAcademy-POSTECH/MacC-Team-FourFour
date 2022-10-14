@@ -40,7 +40,7 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     
     func configure(history: EstimateHistory) {
         let savingfolderName: String = "estimate-photo"
-        let floorSegmentedImageName: String = "floor-segmented-photo"
+        let floorSegmentedImageName: String = "mat-inserted-photo"
         let imageName: String = floorSegmentedImageName + "-\(history.imageId)"
         
         let historyImage: UIImage = fileManager.getImage(imageName: imageName, folderName: savingfolderName) ?? UIImage()

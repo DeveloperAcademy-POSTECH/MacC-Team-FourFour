@@ -118,6 +118,8 @@ class CameraViewController: BaseViewController {
         checkCameraPermissions()
         addTargets()
         bind()
+        // 뒤로가기 swipe 없애기
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -359,7 +361,7 @@ extension Reactive where Base: TakenPictureViewController {
 }
 
 extension Reactive where Base: UIView {
-public var tapGesture : ControlEvent<UITapGestureRecognizer> {
+    public var tapGesture : ControlEvent<UITapGestureRecognizer> {
         self.base.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer()
         self.base.addGestureRecognizer(gesture)

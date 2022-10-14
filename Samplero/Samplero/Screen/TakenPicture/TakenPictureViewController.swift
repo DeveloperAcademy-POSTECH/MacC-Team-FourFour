@@ -78,9 +78,11 @@ class TakenPictureViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTargets()
+        navigationItem.title = "카메라"
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        // TODO: - DB에 floor inserted 저장
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
     }
