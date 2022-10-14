@@ -12,8 +12,12 @@
 		210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */; };
 		210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68028F26FEF008191A9 /* BottomSheetController.swift */; };
 		210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68228F2700C008191A9 /* GetAreaViewController.swift */; };
+		212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212CFA7928F65D30003D310A /* TermsViewController.swift */; };
+		2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307328F693F500443A1B /* CustomCheckbox.swift */; };
 		2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307928F69FA600443A1B /* UIViewController+Alert.swift */; };
 		216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */; };
+		2188F2FC28F7D59E005BC322 /* TermsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */; };
+		2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2188F2F828F7B434005BC322 /* PaddedLabel.swift */; };
 		2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */; };
 		21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C81DA228F45447000E89DA /* AreaTestViewController.swift */; };
 		21ED8C5E28EFC3E40074C9A3 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21ED8C5D28EFC3E40074C9A3 /* SnapKit */; };
@@ -33,16 +37,19 @@
 		35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35109D3228F551F500EA6F8F /* CGSize+Extension.swift */; };
 		355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85328F0843D001A5731 /* EstimateViewController.swift */; };
 		355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85A28F09B06001A5731 /* SampleDetailView.swift */; };
-		355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85C28F1D15B001A5731 /* CommonStackView.swift */; };
+		355CB85D28F1D15B001A5731 /* EstimateCommonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85C28F1D15B001A5731 /* EstimateCommonStackView.swift */; };
 		355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85E28F1D5DA001A5731 /* Sample.swift */; };
 		355CB86128F295A0001A5731 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86028F295A0001A5731 /* MockData.swift */; };
 		355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */; };
 		355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */; };
 		355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */; };
 		355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB86F28F2F716001A5731 /* ViewModelType.swift */; };
+		35E443E728F689D800320DD6 /* ShopBasketCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443E628F689D800320DD6 /* ShopBasketCollectionViewCell.swift */; };
+		35E443E928F689FA00320DD6 /* ShopBasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE6379E828F6B19C003ED6FA /* CameraHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */; };
+		CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E428F59782003ED6FA /* DBHelper.swift */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
 		CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */; };
 		CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD428EE77C0003D1F49 /* SceneDelegate.swift */; };
@@ -84,8 +91,12 @@
 		210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		210CC68028F26FEF008191A9 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
 		210CC68228F2700C008191A9 /* GetAreaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAreaViewController.swift; sourceTree = "<group>"; };
+		212CFA7928F65D30003D310A /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		2164307328F693F500443A1B /* CustomCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
 		2164307928F69FA600443A1B /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		216CA5B928F56433008C09C7 /* CustomGetSizeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomGetSizeView.swift; sourceTree = "<group>"; };
+		2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewModel.swift; sourceTree = "<group>"; };
+		2188F2F828F7B434005BC322 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		2195EA0B28F2E7C800299B39 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		21C81DA228F45447000E89DA /* AreaTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaTestViewController.swift; sourceTree = "<group>"; };
 		21ED8C7928EFC77B0074C9A3 /* NSObject+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSObject+Extension.swift"; sourceTree = "<group>"; };
@@ -97,16 +108,19 @@
 		35109D3228F551F500EA6F8F /* CGSize+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
 		355CB85328F0843D001A5731 /* EstimateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewController.swift; sourceTree = "<group>"; };
 		355CB85A28F09B06001A5731 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
-		355CB85C28F1D15B001A5731 /* CommonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonStackView.swift; sourceTree = "<group>"; };
+		355CB85C28F1D15B001A5731 /* EstimateCommonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateCommonStackView.swift; sourceTree = "<group>"; };
 		355CB85E28F1D5DA001A5731 /* Sample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sample.swift; sourceTree = "<group>"; };
 		355CB86028F295A0001A5731 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		355CB86728F29F57001A5731 /* SampleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleCollectionViewCell.swift; sourceTree = "<group>"; };
 		355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewModel.swift; sourceTree = "<group>"; };
 		355CB86E28F2F716001A5731 /* ViewModelBindableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelBindableType.swift; sourceTree = "<group>"; };
 		355CB86F28F2F716001A5731 /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		35E443E628F689D800320DD6 /* ShopBasketCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketCollectionViewCell.swift; sourceTree = "<group>"; };
+		35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketViewController.swift; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHelpView.swift; sourceTree = "<group>"; };
+		CE6379E428F59782003ED6FA /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
 		CEF76BCF28EE77C0003D1F49 /* Samplero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samplero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +190,32 @@
 			path = Calculation;
 			sourceTree = "<group>";
 		};
+		212CFA7728F65D09003D310A /* TermsAndConditions */ = {
+			isa = PBXGroup;
+			children = (
+				2188F2FA28F7D590005BC322 /* ViewModel */,
+				212CFA7828F65D14003D310A /* View */,
+			);
+			path = TermsAndConditions;
+			sourceTree = "<group>";
+		};
+		212CFA7828F65D14003D310A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				212CFA7928F65D30003D310A /* TermsViewController.swift */,
+				2164307328F693F500443A1B /* CustomCheckbox.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2188F2FA28F7D590005BC322 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2188F2FB28F7D59E005BC322 /* TermsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		21ED8C6828EFC63A0074C9A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +244,9 @@
 		21ED8C6B28EFC64C0074C9A3 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+
+				35E443E328F6899400320DD6 /* ShopBasket */,
+				212CFA7728F65D09003D310A /* TermsAndConditions */,
 				CE9C460628F4592E00890821 /* TakenPicture */,
 				CE1052DD28F279A900503ECF /* Camera */,
 				210CC68628F29D71008191A9 /* Calculation */,
@@ -257,6 +300,7 @@
 		21ED8C7128EFC66B0074C9A3 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				CE6379E428F59782003ED6FA /* DBHelper.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -305,6 +349,7 @@
 		21ED8C7628EFC6840074C9A3 /* UIComponent */ = {
 			isa = PBXGroup;
 			children = (
+				2188F2F828F7B434005BC322 /* PaddedLabel.swift */,
 			);
 			path = UIComponent;
 			sourceTree = "<group>";
@@ -350,7 +395,7 @@
 			children = (
 				355CB86228F29E89001A5731 /* cell */,
 				355CB85A28F09B06001A5731 /* SampleDetailView.swift */,
-				355CB85C28F1D15B001A5731 /* CommonStackView.swift */,
+				355CB85C28F1D15B001A5731 /* EstimateCommonStackView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -369,6 +414,31 @@
 				355CB86C28F2EFEF001A5731 /* EstimateViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		35E443E328F6899400320DD6 /* ShopBasket */ = {
+			isa = PBXGroup;
+			children = (
+				35E443E428F689B100320DD6 /* View */,
+				35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */,
+			);
+			path = ShopBasket;
+			sourceTree = "<group>";
+		};
+		35E443E428F689B100320DD6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				35E443E528F689B300320DD6 /* Cell */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		35E443E528F689B300320DD6 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				35E443E628F689D800320DD6 /* ShopBasketCollectionViewCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		CE1052DD28F279A900503ECF /* Camera */ = {
@@ -651,6 +721,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35E443E928F689FA00320DD6 /* ShopBasketViewController.swift in Sources */,
 				CEFFE77F28F3C7D4007A7842 /* UICollectionView+Extension.swift in Sources */,
 				CEF76BD728EE77C0003D1F49 /* MainViewController.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
@@ -661,7 +732,9 @@
 				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
+				2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
+				212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
 				216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */,
@@ -673,15 +746,19 @@
 				35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */,
 				21ED8C7C28EFC77B0074C9A3 /* UITableView+Extension.swift in Sources */,
 				355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */,
+				CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */,
 				CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */,
 				CEFFE78528F3CFF9007A7842 /* EstimateHistoryViewModel.swift in Sources */,
 				CEFFE78C28F3D7A3007A7842 /* BaseCollectionViewCell.swift in Sources */,
+				2188F2FC28F7D59E005BC322 /* TermsViewModel.swift in Sources */,
 				35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */,
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
 				355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */,
 				355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */,
+				35E443E728F689D800320DD6 /* ShopBasketCollectionViewCell.swift in Sources */,
+				2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */,
 				21ED8C7B28EFC77B0074C9A3 /* NSObject+Extension.swift in Sources */,
-				355CB85D28F1D15B001A5731 /* CommonStackView.swift in Sources */,
+				355CB85D28F1D15B001A5731 /* EstimateCommonStackView.swift in Sources */,
 				21ED8C7F28EFC7990074C9A3 /* BaseViewController.swift in Sources */,
 				CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */,
 				210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */,
