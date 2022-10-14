@@ -50,6 +50,7 @@
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE567ACD28F8F6D000AEF5E0 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */; };
+		CE567AD528F9099B00AEF5E0 /* ShopBasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567AD428F9099B00AEF5E0 /* ShopBasket.swift */; };
 		CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E428F59782003ED6FA /* DBHelper.swift */; };
 		CE6379E828F6B19C003ED6FA /* CameraHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
@@ -123,6 +124,7 @@
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		CE567AD428F9099B00AEF5E0 /* ShopBasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasket.swift; sourceTree = "<group>"; };
 		CE6379E428F59782003ED6FA /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHelpView.swift; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 				CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */,
 				355CB86028F295A0001A5731 /* MockData.swift */,
 				355CB85E28F1D5DA001A5731 /* Sample.swift */,
+				CE567AD428F9099B00AEF5E0 /* ShopBasket.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
+				CE567AD528F9099B00AEF5E0 /* ShopBasket.swift in Sources */,
 				2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
 				212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */,
