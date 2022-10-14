@@ -76,6 +76,7 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     }
     
     override func configUI() {
+        view.backgroundColor = .white
         navigationItem.title = "견적 내역"
     }
     

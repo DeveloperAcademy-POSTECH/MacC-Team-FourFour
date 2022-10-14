@@ -17,15 +17,18 @@ import RxCocoa
 
 class CameraViewController: BaseViewController {
     // MARK: - Properties
-    private var isOnboardingProvided = UserDefaults.standard.bool(forKey: "isOnboardingProvided")
 
     private let savingFolderName: String = "estimate-photo"
     private let floorSegmentedImageName: String = "floor-segmented-photo-"
     private let matInsertedImageName: String = "mat-inserted-photo-"
     
+
     private var takenPicture = UIImage()
     private var takenPictureIndex: Int!
     var takenPictureViewController = TakenPictureViewController()
+
+    let isClosedHelpView: Bool = UserDefaults.standard.bool(forKey: "isClosedHelpView")
+   
     // Capture Session
     var session: AVCaptureSession?
     // Photo Output
@@ -107,11 +110,26 @@ class CameraViewController: BaseViewController {
     // Open Cart Button
     private let cartButton: UIButton = {
         let button: UIButton = UIButton()
-        button.layer.cornerRadius = UIScreen.main.bounds.width / 16.25
-        button.layer.masksToBounds = true
-        button.backgroundColor = .init(white: 1, alpha: 0.2)
         button.setImage(ImageLiteral.cartLight, for: .normal)
         return button
+    }()
+    
+    private let cartButtonBackground: UIView = {
+        let view: UIView = UIView()
+        view.layer.cornerRadius = UIScreen.main.bounds.width / 16.25
+        view.layer.masksToBounds = true
+        view.backgroundColor = .init(white: 1, alpha: 0.2)
+        return view
+    }()
+    
+    private let cartCountLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.textColor = .white
+        label.backgroundColor = .accent
+        label.font = .boldCaption1
+        label.text = " 99+ "
+        label.layer.masksToBounds = true
+        return label
     }()
     
     // MARK: - Life Cycle
@@ -135,6 +153,7 @@ class CameraViewController: BaseViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         bringPhotoButton.layer.cornerRadius = bringPhotoButton.bounds.height / 2
+        cartCountLabel.layer.cornerRadius = cartCountLabel.layer.bounds.height / 2
     }
     
     override func render() {
@@ -186,11 +205,23 @@ class CameraViewController: BaseViewController {
             make.size.equalTo(UIScreen.main.bounds.width / 7.96)
         }
         
-        view.addSubview(cartButton)
-        cartButton.snp.makeConstraints { make in
+        view.addSubview(cartButtonBackground)
+        cartButtonBackground.snp.makeConstraints { make in
             make.centerX.equalTo(view.snp.trailing).inset(UIScreen.main.bounds.width / 8.86)
             make.centerY.equalTo(shutterButton)
             make.size.equalTo(UIScreen.main.bounds.width / 8.125)
+        }
+        
+        
+        view.addSubview(cartButton)
+        cartButton.snp.makeConstraints { make in
+            make.center.equalTo(cartButtonBackground)
+        }
+        
+        cartButton.addSubview(cartCountLabel)
+        cartCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(cartButtonBackground)
+            make.trailing.equalTo(cartButtonBackground)
         }
     }
     
@@ -209,6 +240,14 @@ class CameraViewController: BaseViewController {
         
         view.backgroundColor = .black
         navigationItem.backButtonTitle = "카메라"
+        
+        if isClosedHelpView {
+            topDrawer.isHidden = false
+            cameraHelpView.isHidden = true
+        } else {
+            topDrawer.isHidden = true
+            cameraHelpView.isHidden = false
+        }
     }
     
     func bind() {
@@ -226,6 +265,16 @@ class CameraViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        viewModel.shopBasketSubject
+            .map { count in
+                if count >= 99 {
+                    return " 99+ "
+                } else {
+                    return " \(count) "
+                }
+            }
+            .bind(to: cartCountLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
     }
     
     // MARK: - Func
@@ -279,11 +328,12 @@ class CameraViewController: BaseViewController {
             print("clicked cart")
         }.disposed(by: disposeBag)
         
-        cameraHelpView.rx.tapGesture
+        cameraHelpView.xMarkButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.cameraHelpView.isHidden = true
                 self?.topDrawer.isHidden = false
-                UserDefaults.standard.set(true, forKey: "isOnboardingProvided")
+
+                UserDefaults.standard.set(true, forKey: "isClosedHelpView")
             })
             .disposed(by: disposeBag)
 

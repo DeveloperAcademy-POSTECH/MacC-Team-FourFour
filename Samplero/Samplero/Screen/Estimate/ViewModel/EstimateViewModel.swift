@@ -18,7 +18,29 @@ final class EstimateViewModel: ViewModelType {
 
     let fileManager = LocalFileManager.instance
 
+    let db = DBHelper.shared
+
     var disposeBag: DisposeBag = DisposeBag()
+    var db = DBHelper.shared
+    
+    let shopBasketSubject: BehaviorSubject<Int> = BehaviorSubject(value: 0)
+    
+    init() {
+        shopBasketSubject.onNext(db.getShopBasketCount())
+    }
+
+    var samples: Samples = Samples()
+
+    let shopBaskets: BehaviorSubject<[ShopBasket]>
+
+    init() {
+        let basketItems = db.getShopBasketItem()
+        shopBaskets = BehaviorSubject(value: basketItems)
+
+        basketItems.forEach { item in
+            samples.addSample(sample: MockData.sampleList[item.sampleId])
+        }
+    }
 
     struct Input {
         let collectionModelSelected: ControlEvent<Sample>
@@ -34,7 +56,6 @@ final class EstimateViewModel: ViewModelType {
 
         let selected = input.collectionModelSelected.asObservable()
 
-
         return Output(SampleList: sampleList, tappedSample: selected)
     }
 }
@@ -49,5 +70,3 @@ extension EstimateViewModel {
         return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingFolderName) ?? UIImage()
     }
 }
-
-

@@ -14,6 +14,8 @@ extension UIColor {
     static let primaryBlack: UIColor = .black
     static let secondaryGray: UIColor = .secondaryLabel
 
+// 헥사코드 컬러 사용 예시
+    static let addedButtonGray: UIColor = UIColor(hex: "F5F5F5")
     }
 
 
