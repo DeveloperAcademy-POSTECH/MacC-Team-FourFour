@@ -27,11 +27,16 @@ private enum Size {
 
 final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
-
     // MARK: - Properties
     // View consists of roomImageView, sampleDetailView, bottomView
-    
-    private let roomImageView: UIImageView = {
+
+    private let matInsertedImageName: String = "mat-inserted-photo-"
+    private let savingFolderName: String = "estimate-photo"
+
+    private var sourceImage: UIImage!
+    private var maskedImage: UIImage!
+
+    var roomImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -110,6 +115,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     var currentSample: Sample = MockData.sampleList[0]
 
+    var lastSelectedImage = UIImage()
+
     private let getAreaVC = GetAreaViewController()
 
 
@@ -143,6 +150,10 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     // MARK: - Life Cycle
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,6 +169,11 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             self.sampleAddButton.setTitle("", for: .normal)
             self.addedButtonLabelStackView.isHidden = false
         }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.fileManager.saveImage(image: self.lastSelectedImage, imageName: self.matInsertedImageName + String(describing: viewModel.imageIndex), folderName: self.savingFolderName)
     }
 
     override func viewDidLayoutSubviews() {
@@ -252,8 +268,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         output.SampleList
             .bind(to: sampleCollectionView.rx.items) { [weak self] collectionView, itemIndex, sample -> UICollectionViewCell in
                 let indexPath = IndexPath(item: itemIndex, section: .zero)
-                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self,
-                                                              for: indexPath)
+                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
                 cell.configure(with: sample.imageName)
 
                 if itemIndex == .zero {
@@ -353,6 +368,10 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
+        sourceImage = viewModel.getImage()
+        maskedImage = viewModel.getMaskedImage()
+
+        roomImageView.image = maskInputImage(with: sample)
     }
 
     private func calculatePrice(width: CGFloat, height: CGFloat) -> [CGFloat] {
@@ -364,11 +383,35 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     }
 
 
+
+    func maskInputImage(with sample: Sample) -> UIImage? {
+        let takenCIImage = CIImage(cgImage: self.sourceImage.cgImage!)
+        let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(sourceImage.imageOrientation))
+        let backgroundImage = UIImage.load(named: "Spread\(sample.imageName)")
+        guard let backgroundCGImage = backgroundImage.cgImage else { return nil }
+        guard let resizedBackgroundImage = backgroundCGImage.resize(size: self.sourceImage.size) else { return nil }
+        let background = CIImage(cgImage: resizedBackgroundImage)
+        let mask = CIImage(cgImage: self.maskedImage.cgImage!)
+
+        let parameters = [
+            kCIInputImageKey: beginImage,
+            kCIInputBackgroundImageKey: background,
+            kCIInputMaskImageKey: mask
+        ]
+
+        guard let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: parameters )?.outputImage else {
+            return nil
+        }
+        let ciContext = CIContext(options: nil)
+        guard let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent) else { return nil }
+        self.lastSelectedImage = UIImage(cgImage: filteredImageRef)
+        return self.lastSelectedImage
+    }
 }
 
 
-// MARK: - configSample: Binder
 
+// MARK: - configSample: Binder
 
 extension Reactive where Base: EstimateViewController {
     var configSample: Binder<Sample> {
@@ -377,6 +420,10 @@ extension Reactive where Base: EstimateViewController {
             estimateVC.toBeEstimatedPriceView.alpha = 1
             estimateVC.estimatedPriceView.alpha = 0
             estimateVC.configure(with: sample)
+            if let matInsertedImage = self.base.maskInputImage(with: sample) {
+                self.base.roomImageView.image = matInsertedImage
+            }
         }
     }
 }
+

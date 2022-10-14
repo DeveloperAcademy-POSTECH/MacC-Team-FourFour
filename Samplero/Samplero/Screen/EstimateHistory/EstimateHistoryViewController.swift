@@ -93,8 +93,10 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
         
         estimateHistoryCollectionView.rx.itemSelected
             .subscribe(onNext: { index in
-                // TODO: select estimate history photo
-                print("clicked \(index.row) cell")
+                var estimateVC = EstimateViewController()
+                estimateVC.bindViewModel(EstimateViewModel())
+                estimateVC.viewModel.imageIndex = index.row + 1
+                self.navigationController?.pushViewController(estimateVC, animated: true)
             })
             .disposed(by: viewModel.disposeBag)
     }

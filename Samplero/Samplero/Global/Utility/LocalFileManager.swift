@@ -20,8 +20,7 @@ class LocalFileManager {
     
     // MARK: - Func
     
-    func saveImage(image: UIImage, imageName: String, folderName: String) {
-        
+    func saveImage(image: UIImage, imageName: String, folderName: String) {        
         // Create Folder
         createFolderIfNeeded(folderName: folderName)
         

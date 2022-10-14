@@ -6,7 +6,9 @@
 //
 
 import AVFoundation
+import CoreML
 import UIKit
+import Vision
 
 import RxCocoa
 import RxSwift
@@ -15,22 +17,16 @@ import SnapKit
 class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
-    
-    private var takenPictureIndex: Int!
-    private var takenPicture: UIImage!
+    var takenPicture: UIImage!
     
     // Image FileManager
-    private let savingfolderName: String = "estimate-photo"
-    private let floorSegmentedImageName: String = "floor-segmented-photo"
-    private let matInsertedImageName: String = "mat-inserted-photo"
     private let fileManager = LocalFileManager.instance
     
     // DB
-    private let db = DBHelper.shared
     
     // Rx
     private var disposeBag = DisposeBag()
-    
+
     // Picture view
     private let takenPictureImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
@@ -75,9 +71,11 @@ class TakenPictureViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTargets()
+        navigationItem.title = "카메라"
     }
     
     override func viewDidDisappear(_ animated: Bool) {
+        // TODO: - DB에 floor inserted 저장
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
     }
@@ -132,22 +130,17 @@ class TakenPictureViewController: BaseViewController {
         
         nextButton.rx.tap.bind {
             // TODO: go next
-            print("clicked next button")
-            
-            self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
-            let imageName: String = self.floorSegmentedImageName + "-\(self.takenPictureIndex!)"
-            
-            // Save image
-            self.fileManager.saveImage(image: self.takenPicture, imageName: imageName, folderName: self.savingfolderName)
-            
-            // Insert estimate history to db
-            self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
-            
-            self.dismiss(animated: true)
+            print("next button tapped")
+//             TODO: activation
         }.disposed(by: disposeBag)
     }
-    
+
+
     func getRetakeButton() -> UIButton {
         return retakeButton
+    }
+
+    func getNextButton() -> UIButton {
+        return nextButton
     }
 }

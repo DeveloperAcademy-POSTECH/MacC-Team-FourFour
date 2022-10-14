@@ -11,10 +11,11 @@ class MainViewController: UIViewController {
 
     @IBAction func estimateButton(_ sender: Any) {
 
-        var estimateVC = EstimateViewController()
-        estimateVC.bindViewModel(EstimateViewModel())
+        var cameraVC = CameraViewController()
+//        var estimateVC = EstimateViewController()
+//        estimateVC.bindViewModel(EstimateViewModel())
 
-        self.navigationController?.pushViewController(estimateVC, animated: true)
+        self.navigationController?.pushViewController(cameraVC, animated: true)
     }
     @IBAction func shopBasketButton(_ sender: Any) {
         var shopBasketVC = ShopBasketViewController()
