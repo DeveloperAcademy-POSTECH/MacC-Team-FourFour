@@ -92,6 +92,7 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
         
         estimateHistoryCollectionView.rx.itemSelected
             .subscribe(onNext: { index in
+                self.navigationController?.popViewController(animated: true)
                 // TODO: select estimate history photo
                 print("clicked \(index.row) cell")
             })

@@ -6,7 +6,9 @@
 //
 
 import AVFoundation
+import CoreML
 import UIKit
+import Vision
 
 import RxCocoa
 import RxSwift
@@ -15,17 +17,12 @@ import SnapKit
 class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
-    private var takenPictureIndex: Int!
-    private var takenPicture: UIImage!
+    var takenPicture: UIImage!
     
     // Image FileManager
-    private let savingfolderName: String = "estimate-photo"
-    private let floorSegmentedImageName: String = "floor-segmented-photo-"
-    private let matInsertedImageName: String = "mat-inserted-photo-"
     private let fileManager = LocalFileManager.instance
     
     // DB
-    private let db = DBHelper.shared
     
     // Rx
     private var disposeBag = DisposeBag()
@@ -134,9 +131,10 @@ class TakenPictureViewController: BaseViewController {
         nextButton.rx.tap.bind {
             // TODO: go next
             print("next button tapped")
-            // TODO: activation
+//             TODO: activation
         }.disposed(by: disposeBag)
     }
+
 
     func getRetakeButton() -> UIButton {
         return retakeButton
@@ -144,9 +142,5 @@ class TakenPictureViewController: BaseViewController {
 
     func getNextButton() -> UIButton {
         return nextButton
-    }
-
-    func getTakenPicture() -> UIImage {
-        return takenPicture
     }
 }

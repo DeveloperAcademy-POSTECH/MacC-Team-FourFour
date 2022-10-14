@@ -87,6 +87,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     var currentSample: Sample = MockData.sampleList[0]
 
+    var lastSelectedImage = UIImage()
+
     private let getAreaVC = GetAreaViewController()
     // MARK: - Life Cycle
 
@@ -97,6 +99,12 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+//        viewModel.fileManager.saveImage(image: self.lastSelectedImage, imageName: , folderName: <#T##String#>)
+        //
     }
 
     override func viewDidLayoutSubviews() {
@@ -260,7 +268,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         }
         let ciContext = CIContext(options: nil)
         guard let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent) else { return nil }
-        return UIImage(cgImage: filteredImageRef)
+        self.lastSelectedImage = UIImage(cgImage: filteredImageRef)
+        return self.lastSelectedImage
     }
 }
 

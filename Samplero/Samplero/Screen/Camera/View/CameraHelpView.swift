@@ -12,7 +12,7 @@ import SnapKit
 class CameraHelpView: UIView {
 
     // MARK: - Properties
-    
+
     private let couchMarkGuideImageView: UIImageView = {
         let imageView: UIImageView = UIImageView()
         imageView.image = UIImage(named: "couchMarkGuideImage")
