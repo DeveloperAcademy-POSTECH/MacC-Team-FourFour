@@ -20,5 +20,14 @@ struct Sample {
     let maker: String
 
 }
+ // To use Set Collection
+extension Sample: Hashable {
+    static func == (lhs: Sample, rhs: Sample) -> Bool {
+        return lhs.id == rhs.id
+    }
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
 
 
