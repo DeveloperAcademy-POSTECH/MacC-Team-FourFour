@@ -25,10 +25,10 @@
             </objects>
             <point key="canvasLocation" x="976.92307692307691" y="-2.1327014218009479"/>
         </scene>
-        <!--Main View Controller-->
+        <!--Camera View Controller-->
         <scene sceneID="Unb-3R-1WM">
             <objects>
-                <viewController id="dZ1-hr-5MG" customClass="MainViewController" customModule="Samplero" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="dZ1-hr-5MG" customClass="CameraViewController" customModule="Samplero" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EaK-zQ-yub">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

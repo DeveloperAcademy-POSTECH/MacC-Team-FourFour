@@ -18,9 +18,7 @@ class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
     private var outputPicture = UIImage()
-    private var takenImage = UIImage()
 
-    
     private var takenPictureIndex: Int!
     private var takenPicture: UIImage!
     
@@ -126,8 +124,6 @@ class TakenPictureViewController: BaseViewController {
     // MARK: - Func
     
     func configPictureImage(image: UIImage) {
-        takenPictureImageView.image = image
-        takenImage = image
         self.takenPicture = image
         takenPictureImageView.image = takenPicture
     }
@@ -139,19 +135,9 @@ class TakenPictureViewController: BaseViewController {
         
         nextButton.rx.tap.bind {
             // TODO: go next
+            print("next button tapped")
             self.segmentFloor()
-            print("clicked next button")
-            
-            self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
-            let imageName: String = self.floorSegmentedImageName + "-\(self.takenPictureIndex!)"
-            
-            // Save image
-            self.fileManager.saveImage(image: self.takenPicture, imageName: imageName, folderName: self.savingfolderName)
-            
-            // Insert estimate history to db
-            self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
-            
-            self.dismiss(animated: true)
+            // TODO: activation
         }.disposed(by: disposeBag)
     }
 
@@ -162,7 +148,7 @@ class TakenPictureViewController: BaseViewController {
 
         request.imageCropAndScaleOption = .scaleFill
         DispatchQueue.global().async {
-            guard let takenImageData = self.takenImage.jpegData(compressionQuality: 1.0) else { return }
+            guard let takenImageData = self.takenPicture.jpegData(compressionQuality: 1.0) else { return }
             let handler = VNImageRequestHandler(data: takenImageData, options: [:])
             do {
                 try handler.perform([request])
@@ -178,16 +164,28 @@ class TakenPictureViewController: BaseViewController {
             if let observations = request.results as? [VNCoreMLFeatureValueObservation],
                let segmentationMap = observations.first?.featureValue.multiArrayValue {
                 guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
-                var estimateVC = EstimateViewController()
 
-                if segmentationMask.size != self.takenImage.size {
-                    guard let resizedMask = segmentationMask.resizedImage(for: self.takenImage.size) else { return }
-                    estimateVC.maskedImage = resizedMask
+                if segmentationMask.size != self.takenPicture.size {
+                    guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
+                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + "-\(String(describing: self.takenPictureIndex))", folderName: self.savingfolderName)
                 } else {
-                    estimateVC.maskedImage = segmentationMask
+                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + "-\(String(describing: self.takenPictureIndex))", folderName: self.savingfolderName)
                 }
-                estimateVC.sourceImage = self.takenImage
+                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + "-\(String(describing: self.takenPictureIndex))", folderName: self.savingfolderName)
+
+                //                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
+                //                let imageName: String = self.floorSegmentedImageName + "-\(self.takenPictureIndex!)"
+                // Save image
+                //                self.fileManager.saveImage(image: self.takenPicture, imageName: imageName, folderName: self.savingfolderName)
+
+
+                // Insert estimate history to db
+                self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
+
+                //                self.dismiss(animated: true)
+                var estimateVC = EstimateViewController()
                 estimateVC.bindViewModel(EstimateViewModel())
+
                 self.navigationController?.pushViewController(estimateVC, animated: true)
             }
         }

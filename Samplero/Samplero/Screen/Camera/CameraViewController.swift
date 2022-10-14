@@ -335,7 +335,7 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             .subscribe(onNext: {
                 takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
-        self.present(takenPictureViewController, animated: true)
+        self.navigationController?.pushViewController(takenPictureViewController, animated: true)
 
         session?.stopRunning()
     }
@@ -376,7 +376,7 @@ extension CameraViewController: UIImagePickerControllerDelegate, UINavigationCon
             }).disposed(by: disposeBag)
         
         picker.dismiss(animated: true, completion: nil)
-        self.present(takenPictureViewController, animated: true)
+        self.navigationController?.pushViewController(takenPictureViewController, animated: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
