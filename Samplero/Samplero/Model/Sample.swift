@@ -7,6 +7,17 @@
 
 import Foundation
 
+struct Samples {
+    var samples: [Sample] = []
+
+    func isAdded(sample: Sample) -> Bool {
+        return samples.contains(sample)
+    }
+
+    mutating func addSample(sample: Sample) {
+        samples.append(sample)
+    }
+}
 
 struct Sample {
     let id: Int
@@ -18,7 +29,6 @@ struct Sample {
     let thickness: Double
     let size: CGSize
     let maker: String
-
 }
  // To use Set Collection
 extension Sample: Hashable {

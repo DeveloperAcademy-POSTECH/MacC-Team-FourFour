@@ -46,9 +46,9 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     private let sampleAddButton: UIButton = {
         let button = UIButton()
         button.setTitle("샘플담기", for: .normal)
+        button.backgroundColor = .accent
         button.titleLabel?.font = .boldBody
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .accent
         button.layer.cornerRadius = Size.sampleAddButtonCornerRadius
         return button
     }()
@@ -105,17 +105,59 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     var viewModel: EstimateViewModel!
 
-     let toBeEstimatedPriceView = ToBeEstimatedPriceView()
-     let estimatedPriceView = EstimatedPriceView(estimatedPrice: -1, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: -1)
+    let toBeEstimatedPriceView = ToBeEstimatedPriceView()
+    let estimatedPriceView = EstimatedPriceView(estimatedPrice: -1, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: -1)
 
     var currentSample: Sample = MockData.sampleList[0]
 
     private let getAreaVC = GetAreaViewController()
+
+
+    private var addedButtonLabelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fillProportionally
+        stackView.isHidden = true
+        stackView.spacing = 12
+        return stackView
+    }()
+    private let addedButtonLabel: UILabel = {
+        let label = UILabel()
+        label.text = "샘플 장바구니에 담김"
+        label.textColor = .accent
+        label.font = .regularCaption1
+        return label
+    }()
+
+    private let goShopBasketLabel: UILabel = {
+        let label = UILabel()
+        label.text = "보러가기＞"
+        label.textColor = .accent
+        label.font = .boldSubheadline
+        return label
+    }()
+
+    private var shopBaskets = [ShopBasket]()
+
+
     // MARK: - Life Cycle
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        if !self.viewModel.samples.isAdded(sample: currentSample) {
+            self.sampleAddButton.backgroundColor = .accent
+            self.sampleAddButton.isEnabled = true
+            self.sampleAddButton.setTitle("샘플 담기", for: .normal)
+            self.addedButtonLabelStackView.isHidden = true
+        } else {
+            self.sampleAddButton.backgroundColor = .addedButtonGray
+            self.sampleAddButton.isEnabled = false
+            self.sampleAddButton.setTitle("", for: .normal)
+            self.addedButtonLabelStackView.isHidden = false
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -170,6 +212,12 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             make.size.equalTo(UIScreen.main.bounds.width / 8.125)
         }
 
+        view.addSubview(addedButtonLabelStackView)
+        addedButtonLabelStackView.snp.makeConstraints { make in
+            make.centerX.centerY.equalTo(sampleAddButton)
+        }
+        addedButtonLabelStackView.addArrangedSubview(addedButtonLabel)
+        addedButtonLabelStackView.addArrangedSubview(goShopBasketLabel)
         cartButtonBackground.addSubview(cartButton)
         cartButton.snp.makeConstraints { make in
             make.center.equalTo(cartButtonBackground)
@@ -179,7 +227,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             make.top.equalTo(cartButtonBackground)
             make.trailing.equalTo(cartButtonBackground)
         }
-        
     }
 
     override func configUI() {
@@ -224,13 +271,29 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             .disposed(by: viewModel.disposeBag)
 
         output.tappedSample
-            .bind(to: rx.configSample)
+            .subscribe(onNext: { sample in
+                self.currentSample = sample
+                self.toBeEstimatedPriceView.alpha = 1
+                self.estimatedPriceView.alpha = 0
+                self.configure(with: sample)
+                if !self.viewModel.samples.isAdded(sample: sample) {
+                    self.sampleAddButton.backgroundColor = .accent
+                    self.sampleAddButton.isEnabled = true
+                    self.sampleAddButton.setTitle("샘플 담기", for: .normal)
+                    self.addedButtonLabelStackView.isHidden = true
+                } else {
+                    self.sampleAddButton.backgroundColor = .addedButtonGray
+                    self.sampleAddButton.isEnabled = false
+                    self.sampleAddButton.setTitle("", for: .normal)
+                    self.addedButtonLabelStackView.isHidden = false
+                }
+            })
             .disposed(by: viewModel.disposeBag)
-
 
         toBeEstimatedPriceView.textButton.rx.tap
             .subscribe(onNext: {
                 self.getAreaVC.preferredSheetSizing = .medium
+                self.getAreaVC.getWidthView.textField.becomeFirstResponder()
                 self.present(self.getAreaVC, animated: true)
             })
             .disposed(by: viewModel.disposeBag)
@@ -238,6 +301,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         estimatedPriceView.textButton.rx.tap
             .subscribe(onNext: {
                 self.getAreaVC.preferredSheetSizing = .medium
+                self.getAreaVC.getWidthView.textField.becomeFirstResponder()
                 self.present(self.getAreaVC, animated: true)
             })
             .disposed(by: viewModel.disposeBag)
@@ -251,7 +315,26 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
             })
             .disposed(by: viewModel.disposeBag)
-        
+        sampleAddButton.rx.tap
+            .subscribe(onNext: {
+                self.sampleAddButton.backgroundColor = .addedButtonGray
+                self.sampleAddButton.isEnabled = false
+                self.sampleAddButton.setTitle("", for: .normal)
+                self.addedButtonLabelStackView.isHidden = false
+                self.viewModel.samples.addSample(sample: self.currentSample)
+                self.viewModel.db.insertItemToShopBasket(item: ShopBasket(id: 0, sampleId: self.currentSample.id))
+            }).disposed(by: viewModel.disposeBag)
+
+        goShopBasketLabel
+            .rx.tapGesture
+            .map { _ in }
+            .subscribe(onNext: {
+                var shopBasketVC = ShopBasketViewController()
+                shopBasketVC.bindViewModel(ShopBasketViewModel())
+                self.navigationController?.pushViewController(shopBasketVC, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
+
         viewModel.shopBasketSubject
             .map { count in
                 if count >= 99 {
