@@ -128,21 +128,29 @@ final class DBHelper {
         }
     }
     
-    func insertItmeToShopBasket(item: ShopBasket) {
+    func insertItemToShopBasket(item: ShopBasket) {
+        print("아이템 아이디", item.id, item.sampleId)
         var statement: OpaquePointer?
-        let insertQuery = "INSERT INTO SHOP_BASKET (SAMPLE_ID, IS_SELECTED) VALUES (?, ?);"
-        
-        if sqlite3_prepare_v2(self.db, insertQuery, -1, &statement, nil) == SQLITE_OK {
-            sqlite3_bind_int(statement, 2, Int32(item.sampleId))
-            sqlite3_bind_double(statement, 3, item.isSelected ? 1 : 0)
+
+        let isExist: Bool = isSampleExistInShopBasket(sampleId: item.sampleId)
+
+        if isExist {
+            print("SQLite:", "already exist")
         } else {
-            print("SQLite:", "sqlite binding failure")
-        }
-        
-        if sqlite3_step(statement) == SQLITE_DONE {
-            print("SQLite:", "sqlite insertion success")
-        } else {
-            print("SQLite:", "sqlite step failure")
+            let insertQuery = "INSERT INTO SHOP_BASKET (SAMPLE_ID, IS_SELECTED) VALUES (?, ?);"
+
+            if sqlite3_prepare_v2(self.db, insertQuery, -1, &statement, nil) == SQLITE_OK {
+                sqlite3_bind_int(statement, 1, Int32(item.sampleId))
+                sqlite3_bind_double(statement, 2, item.isSelected ? 1 : 0)
+            } else {
+                print("SQLite:", "sqlite binding failure")
+            }
+
+            if sqlite3_step(statement) == SQLITE_DONE {
+                print("SQLite:", "sqlite insertion success")
+            } else {
+                print("SQLite:", "sqlite step failure")
+            }
         }
     }
     
@@ -206,6 +214,7 @@ final class DBHelper {
             let id: Int = Int(sqlite3_column_int(statement, 0))
             let sampleId: Int = Int(sqlite3_column_int(statement, 1))
             var isSelected: Bool = sqlite3_column_int(statement, 2) == 1 ? true : false
+            print("\(id) \(sampleId) \(isSelected)")
             
             shopBasket.append(ShopBasket(id: id, sampleId: sampleId, isSelected: isSelected))
         }
@@ -213,6 +222,26 @@ final class DBHelper {
         sqlite3_finalize(statement)
         
         return shopBasket
+    }
+
+    private func isSampleExistInShopBasket(sampleId id: Int) -> Bool {
+        var statement: OpaquePointer?
+        var count: Int = 0
+        let query: String = "SELECT COUNT(*) FROM SHOP_BASKET WHERE SAMPLE_ID=\(id);"
+
+        if sqlite3_prepare(self.db, query, -1, &statement, nil) != SQLITE_OK {
+            let errorMessage = String(cString: sqlite3_errmsg(db)!)
+            print("SQLite:", "error while prepare: \(errorMessage)")
+            return false
+        }
+
+        while sqlite3_step(statement) == SQLITE_ROW {
+            count = Int(sqlite3_column_int(statement, 0))
+        }
+
+        sqlite3_finalize(statement)
+
+        return count == 0 ? false : true
     }
     
     func updateEstimateHistory(imageId id: Int, history: EstimateHistory) {
