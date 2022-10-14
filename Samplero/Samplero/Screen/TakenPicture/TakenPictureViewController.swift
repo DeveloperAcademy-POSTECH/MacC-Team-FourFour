@@ -6,9 +6,7 @@
 //
 
 import AVFoundation
-import CoreML
 import UIKit
-import Vision
 
 import RxCocoa
 import RxSwift
@@ -136,61 +134,19 @@ class TakenPictureViewController: BaseViewController {
         nextButton.rx.tap.bind {
             // TODO: go next
             print("next button tapped")
-            self.segmentFloor()
             // TODO: activation
         }.disposed(by: disposeBag)
     }
 
-    private func segmentFloor() {
-        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
-        else { return }
-        let request = VNCoreMLRequest(model: model, completionHandler: self.visionRequestDidComplete)
-
-        request.imageCropAndScaleOption = .scaleFill
-        DispatchQueue.global().async {
-            guard let takenImageData = self.takenPicture.jpegData(compressionQuality: 1.0) else { return }
-            let handler = VNImageRequestHandler(data: takenImageData, options: [:])
-            do {
-                try handler.perform([request])
-            } catch {
-                print(error)
-            }
-        }
-    }
-
-
-    private func visionRequestDidComplete(request: VNRequest, error: Error?) {
-        DispatchQueue.main.async {
-            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
-               let segmentationMap = observations.first?.featureValue.multiArrayValue {
-                guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
-
-                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
-
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
-
-                if segmentationMask.size != self.takenPicture.size {
-                    guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
-                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
-                } else {
-                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
-                }
-
-
-                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
-
-
-                self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
-
-                estimateVC.viewModel.imageIndex = self.takenPictureIndex
-
-                self.navigationController?.pushViewController(estimateVC, animated: true)
-            }
-        }
-    }
-
     func getRetakeButton() -> UIButton {
         return retakeButton
+    }
+
+    func getNextButton() -> UIButton {
+        return nextButton
+    }
+
+    func getTakenPicture() -> UIImage {
+        return takenPicture
     }
 }

@@ -27,10 +27,18 @@ class CameraViewController: BaseViewController {
     let previewLayer = AVCaptureVideoPreviewLayer()
     
     let fileManager = LocalFileManager.instance
+    let db = DBHelper.shared
     
     // Rx
     let viewModel = CameraViewModel()
     var disposeBag = DisposeBag()
+    
+    private var takenPicture: UIImage!
+    private var takenPictureIndex: Int!
+
+    private let savingfolderName: String = "estimate-photo"
+    private let floorSegmentedImageName: String = "floor-segmented-photo-"
+    private let matInsertedImageName: String = "mat-inserted-photo-"
 
     // Shutter Button
     private let shutterButton: UIButton = {
@@ -183,7 +191,7 @@ class CameraViewController: BaseViewController {
     }
     
     override func configUI() {
-        #if targetEnvironment(simulator)
+#if targetEnvironment(simulator)
         let image = UIImage(named: "sample_photo")
         
         session?.stopRunning()
@@ -193,7 +201,7 @@ class CameraViewController: BaseViewController {
         imageView.frame = view.bounds
         imageView.layer.zPosition = -1
         view.addSubview(imageView)
-        #endif
+#endif
         
         view.backgroundColor = .black
         navigationItem.backButtonTitle = "카메라"
@@ -222,10 +230,10 @@ class CameraViewController: BaseViewController {
         shutterButton.rx.tap.bind {
             print("clicked take photo button")
             
-            #if !targetEnvironment(simulator)
+#if !targetEnvironment(simulator)
             self.output.capturePhoto(with: AVCapturePhotoSettings(),
-                                delegate: self)
-            #else
+                                     delegate: self)
+#else
             let takenPictureViewController = TakenPictureViewController()
             takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
             takenPictureViewController.modalPresentationStyle = .overFullScreen
@@ -238,11 +246,20 @@ class CameraViewController: BaseViewController {
                 .subscribe(onNext: {
                     takenPictureViewController.dismiss(animated: true)
                 }).disposed(by: self.disposeBag)
+
+            takenPictureViewController.rx.nextClicked
+                .subscribe(onNext: {
+                    let takenPictureController = takenPictureViewController()
+                    self.takenPicture = takenPictureViewController.getTakenPicture()
+                    segmentFloor()
+                    takenPictureViewController.dismiss(animated: true)
+                    self.present(estimateVC, animated: true)
+                }).disposed(by: self.disposeBag)
             
             self.present(takenPictureViewController, animated: true)
             
             self.session?.stopRunning()
-            #endif
+#endif
         }.disposed(by: disposeBag)
 
         bringPhotoButton.rx.tap.bind {
@@ -324,6 +341,54 @@ class CameraViewController: BaseViewController {
             }
         }
     }
+
+    private func segmentFloor() {
+        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
+        else { return }
+        let request = VNCoreMLRequest(model: model, completionHandler: self.visionRequestDidComplete)
+
+        request.imageCropAndScaleOption = .scaleFill
+        DispatchQueue.global().async {
+            let takenPicture = TakenPictureViewController().getTakenPicture()
+
+            guard let takenImageData = takenPicture.jpegData(compressionQuality: 1.0) else { return }
+            let handler = VNImageRequestHandler(data: takenImageData, options: [:])
+            do {
+                try handler.perform([request])
+            } catch {
+                print(error)
+            }
+        }
+    }
+
+
+    private func visionRequestDidComplete(request: VNRequest, error: Error?) {
+        DispatchQueue.main.async {
+            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
+               let segmentationMap = observations.first?.featureValue.multiArrayValue {
+                guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
+
+                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
+
+                if segmentationMask.size != TakenPictureViewController().getTakenPicture().size {
+                    guard let resizedMask = segmentationMask.resizedImage(for: TakenPictureViewController().getTakenPicture().size) else { return }
+                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
+                } else {
+                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
+                }
+
+
+                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
+
+
+                self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
+                var estimateVC = EstimateViewController()
+                estimateVC.bindViewModel(EstimateViewModel())
+                estimateVC.viewModel.imageIndex = self.takenPictureIndex
+
+            }
+        }
+    }
 }
 
 // MARK: - Extension
@@ -345,10 +410,8 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             .subscribe(onNext: {
                 takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
-        let navigationController = UINavigationController(rootViewController: takenPictureViewController)
-        navigationController.navigationBar.tintColor = .black
-        navigationController.modalPresentationStyle = .overFullScreen
-        self.present(navigationController, animated: true)
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        self.present(takenPictureViewController, animated: true)
 
         session?.stopRunning()
     }
@@ -358,6 +421,11 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 extension Reactive where Base: TakenPictureViewController {
     var retake: ControlEvent<Void> {
         let source = self.base.getRetakeButton().rx.tap
+        return ControlEvent(events: source)
+    }
+
+    var nextClicked: ControlEvent<Void> {
+        let source = self.base.getNextButton().rx.tap
         return ControlEvent(events: source)
     }
 }
@@ -388,10 +456,8 @@ extension CameraViewController: UIImagePickerControllerDelegate, UINavigationCon
             }).disposed(by: disposeBag)
         
         picker.dismiss(animated: true, completion: nil)
-        let navigationController = UINavigationController(rootViewController: takenPictureViewController)
-        navigationController.modalPresentationStyle = .overFullScreen
-        navigationController.navigationBar.tintColor = .black
-        self.present(navigationController, animated: true)
+        takenPictureViewController.modalPresentationStyle = .overFullScreen
+        self.present(takenPictureViewController, animated: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
