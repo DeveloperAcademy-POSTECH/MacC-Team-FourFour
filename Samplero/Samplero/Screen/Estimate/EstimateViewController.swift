@@ -324,7 +324,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         getAreaVC.saveButton
             .rx.tap.subscribe(onNext: {
                 let quantityAndPrice = self.calculatePrice(width: self.getAreaVC.areaWidth, height: self.getAreaVC.areaHeight)
-                self.estimatedPriceView.changeEstimation(estimatedPrice: Int(quantityAndPrice[1]), width: Int(self.getAreaVC.areaWidth), height: Int(self.getAreaVC.areaHeight), estimatedQuantity: Int(quantityAndPrice[0]), pricePerBlock: self.self.currentSample.samplePrice)
+                self.estimatedPriceView.changeEstimation(estimatedPrice: Int(quantityAndPrice[1]), width: Int(self.getAreaVC.areaWidth), height: Int(self.getAreaVC.areaHeight), estimatedQuantity: Int(quantityAndPrice[0]), pricePerBlock: self.self.currentSample.matPrice)
                 self.toBeEstimatedPriceView.alpha = 0
                 self.estimatedPriceView.alpha = 1
 
@@ -377,7 +377,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     private func calculatePrice(width: CGFloat, height: CGFloat) -> [CGFloat] {
         let sampleArea = currentSample.size.width * currentSample.size.height
         let estimatedQuantity = width*height / sampleArea
-        let estimatedPrice = currentSample.samplePrice == -1 ? -1 : CGFloat(currentSample.samplePrice) * estimatedQuantity
+        let estimatedPrice = currentSample.matPrice == -1 ? -1 : CGFloat(currentSample.matPrice) * estimatedQuantity
         // FIXME: - 배열 말고 다른 방식 사용하기
         return [estimatedQuantity, estimatedPrice]
     }
