@@ -21,6 +21,8 @@ class ShopBasketViewModel {
 
     // MARK: - Properties
     
+    let db = DBHelper.shared
+    
     var shopBasketCopy = BehaviorSubject(value: "")
 
     var disposeBag: DisposeBag = DisposeBag()
@@ -88,6 +90,12 @@ class ShopBasketViewModel {
         }
         .bind(to: wishedSampleRelay)
         .disposed(by: disposeBag)
+        
+        removedSubject
+            .subscribe(onNext: { removedCheckSample in
+                self.db.deleteItemFromShopBasket(itemId: removedCheckSample.sample.id)
+            })
+            .disposed(by: disposeBag)
     }
 }
 

@@ -31,6 +31,8 @@ class TermsViewController: BaseViewController {
     
     private var shopBasketString: String = ""
     
+    private let db = DBHelper.shared
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "샘플 발송을 위해 약관동의가 필요합니다."
@@ -117,6 +119,11 @@ class TermsViewController: BaseViewController {
         showToastAnimation()
         
         bind()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        db.deleteAllItemFromShopBasket()
     }
     
     override func render() {
