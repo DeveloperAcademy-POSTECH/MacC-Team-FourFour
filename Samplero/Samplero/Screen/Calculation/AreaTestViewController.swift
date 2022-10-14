@@ -38,7 +38,6 @@ final class AreaTestViewController: BaseViewController {
             make.center.equalToSuperview()
             make.height.equalTo(80)
         }
-        toBeEstimatedPriceView.alpha = 1
 
         view.addSubview(estimatedPriceView)
         estimatedPriceView.snp.makeConstraints { make in
@@ -46,12 +45,13 @@ final class AreaTestViewController: BaseViewController {
             make.center.equalToSuperview()
             make.height.equalTo(80)
         }
-        estimatedPriceView.alpha = 0
     }
     
     override func configUI() {
         toBeEstimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        toBeEstimatedPriceView.alpha = 1
         estimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        estimatedPriceView.alpha = 0
     }
     
     
