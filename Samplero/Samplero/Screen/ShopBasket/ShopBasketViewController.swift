@@ -149,9 +149,6 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         super.viewDidLoad()
 
     }
-    override func viewWillAppear(_ animated: Bool) {
-        showNavBar()
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -237,7 +234,6 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     override func configUI() {
         view.backgroundColor = .systemBackground
         navigationItem.title = "장바구니"
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     func bind() {

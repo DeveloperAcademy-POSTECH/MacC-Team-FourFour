@@ -153,6 +153,18 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = false
+        
+        viewModel.shopBasketSubject
+            .map {_ in return self.viewModel.db.getShopBasketCount() }
+            .map { count in
+                if count >= 99 {
+                    return " 99+ "
+                } else {
+                    return " \(count) "
+                }
+            }
+            .bind(to: cartCountLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
     }
 
     override func viewDidLoad() {
@@ -339,6 +351,11 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                 self.viewModel.samples.addSample(sample: self.currentSample)
                 self.viewModel.db.insertItemToShopBasket(item: ShopBasket(id: 0, sampleId: self.currentSample.id))
             }).disposed(by: viewModel.disposeBag)
+        
+        sampleAddButton.rx.tap
+            .subscribe(onNext: {
+                self.viewModel.shopBasketSubject.onNext(self.viewModel.db.getShopBasketCount())
+            })
 
         goShopBasketLabel
             .rx.tapGesture
@@ -349,17 +366,15 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                 self.navigationController?.pushViewController(shopBasketVC, animated: true)
             })
             .disposed(by: viewModel.disposeBag)
-
-        viewModel.shopBasketSubject
-            .map { count in
-                if count >= 99 {
-                    return " 99+ "
-                } else {
-                    return " \(count) "
-                }
-            }
-            .bind(to: cartCountLabel.rx.text)
+        
+        cartButton.rx.tap
+            .subscribe(onNext: {
+                var vc = ShopBasketViewController()
+                vc.bindViewModel(ShopBasketViewModel())
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
             .disposed(by: viewModel.disposeBag)
+        
     }
 
 

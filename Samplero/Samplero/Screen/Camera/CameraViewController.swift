@@ -140,6 +140,21 @@ class CameraViewController: BaseViewController {
             self?.session?.startRunning()
         }
         navigationController?.isNavigationBarHidden = true
+        
+        viewModel.shopBasketSubject
+            .map { _ in }
+            .map {
+                return self.viewModel.db.getShopBasketCount()
+            }
+            .map { count in
+                if count >= 99 {
+                    return " 99+ "
+                } else {
+                    return " \(count) "
+                }
+            }
+            .bind(to: cartCountLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
     }
     
     override func viewDidLoad() {
@@ -148,6 +163,11 @@ class CameraViewController: BaseViewController {
         addTargets()
         bind()
         // 뒤로가기 swipe 없애기
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -263,16 +283,6 @@ class CameraViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
-        viewModel.shopBasketSubject
-            .map { count in
-                if count >= 99 {
-                    return " 99+ "
-                } else {
-                    return " \(count) "
-                }
-            }
-            .bind(to: cartCountLabel.rx.text)
-            .disposed(by: viewModel.disposeBag)
     }
     
     // MARK: - Func
@@ -322,8 +332,9 @@ class CameraViewController: BaseViewController {
         }.disposed(by: disposeBag)
         
         cartButton.rx.tap.bind {
-            // TODO: open cart
-            print("clicked cart")
+            var vc = ShopBasketViewController()
+            vc.bindViewModel(ShopBasketViewModel())
+            self.navigationController?.pushViewController(vc, animated: true)
         }.disposed(by: disposeBag)
         
         cameraHelpView.xMarkButton.rx.tap

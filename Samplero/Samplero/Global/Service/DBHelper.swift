@@ -323,7 +323,7 @@ final class DBHelper {
     
     func deleteItemFromShopBasket(itemId id: Int) {
         var statement: OpaquePointer?
-        let queryString = "DELETE FROM SHOP_BASKET WHERE ID == \(id)"
+        let queryString = "DELETE FROM SHOP_BASKET WHERE SAMPLE_ID == \(id)"
         
         if sqlite3_prepare(db, queryString, -1, &statement, nil) != SQLITE_OK {
             let errorMessage = String(cString: sqlite3_errmsg(db))
