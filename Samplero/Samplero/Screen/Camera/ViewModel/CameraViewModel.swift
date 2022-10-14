@@ -18,10 +18,14 @@ class CameraViewModel {
     
     let estimateHistoryObservable: Observable<[EstimateHistory]>
     
+    let shopBasketSubject: BehaviorSubject<Int> = BehaviorSubject(value: 0)
+    
     init () {
         var estimateHistories: [EstimateHistory] = []
         estimateHistories = db.getEstimateHistories()
         
         estimateHistoryObservable = Observable.of(estimateHistories)
+        
+        shopBasketSubject.onNext(db.getShopBasketCount())
     }
 }

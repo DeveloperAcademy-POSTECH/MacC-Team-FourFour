@@ -74,6 +74,31 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         collectionView.allowsMultipleSelection = false
         return collectionView
     }()
+    
+    
+    // Open Cart Button
+    private let cartButton: UIButton = {
+        let button: UIButton = UIButton()
+        button.setImage(ImageLiteral.cartDark, for: .normal)
+        return button
+    }()
+    
+    private let cartButtonBackground: UIView = {
+        let view: UIView = UIView()
+        view.layer.cornerRadius = UIScreen.main.bounds.width / 16.25
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    private let cartCountLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.textColor = .white
+        label.backgroundColor = .accent
+        label.font = .boldCaption1
+        label.text = " 99+ "
+        label.layer.masksToBounds = true
+        return label
+    }()
 
     // variable for selecting first item in default
     private var lastSelectedIndexPath: IndexPath?
@@ -96,6 +121,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     override func viewDidLayoutSubviews() {
         toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height/2
         estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height/2
+        cartCountLabel.layer.cornerRadius = cartCountLabel.layer.bounds.height / 2
     }
 
     override func render() {
@@ -139,12 +165,28 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             make.height.equalTo(Size.sampleAddButtonHeight)
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(Size.sampleAddButtonBottomOffset)
         }
+        
+        cartButtonBackground.snp.makeConstraints { make in
+            make.size.equalTo(UIScreen.main.bounds.width / 8.125)
+        }
 
+        cartButtonBackground.addSubview(cartButton)
+        cartButton.snp.makeConstraints { make in
+            make.center.equalTo(cartButtonBackground)
+        }
+        cartButtonBackground.addSubview(cartCountLabel)
+        cartCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(cartButtonBackground)
+            make.trailing.equalTo(cartButtonBackground)
+        }
+        
     }
 
     override func configUI() {
         super.configUI()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.cartDark, style: .plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButtonBackground)
+        
+        
         self.navigationItem.rightBarButtonItem?.tintColor = .black
 
         toBeEstimatedPriceView.backgroundColor = .black.withAlphaComponent(0.5)
@@ -210,7 +252,16 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             })
             .disposed(by: viewModel.disposeBag)
         
-
+        viewModel.shopBasketSubject
+            .map { count in
+                if count >= 99 {
+                    return " 99+ "
+                } else {
+                    return " \(count) "
+                }
+            }
+            .bind(to: cartCountLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
     }
 
 
