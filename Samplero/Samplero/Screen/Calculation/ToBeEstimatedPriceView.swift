@@ -64,5 +64,6 @@ class ToBeEstimatedPriceView: UIView {
     @objc func tapButton(sender: UIButton) {
         delegate?.buttonDidTapped()
     }
+
     
 }
