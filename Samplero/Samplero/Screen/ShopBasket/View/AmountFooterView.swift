@@ -22,6 +22,11 @@ class AmountFooterView: UICollectionReusableView {
         return stackView
     }()
 
+    private let divider: UIView = {
+        let divider = UIView()
+        divider.backgroundColor = .separator
+        return divider
+    }()
     private let topSapcingView = UIView()
     private let totalPriceView = AmountStackView(detailName: "합계")
     private let deliveryFeeView = AmountStackView(detailName: "배송비")
@@ -51,6 +56,12 @@ class AmountFooterView: UICollectionReusableView {
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
 
         }
+        verticalStackView.addSubview(divider)
+        divider.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(1)
+        }
+//
         verticalStackView.addArrangedSubview(topSapcingView)
         topSapcingView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()

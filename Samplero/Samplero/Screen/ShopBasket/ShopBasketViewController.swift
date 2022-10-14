@@ -69,6 +69,12 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         return button
     }()
     
+    private let upperDivider: UIView = {
+        let divider = UIView()
+        divider.backgroundColor = UIColor.separator
+        return divider
+    }()
+    
     // orderButton consists of buttonTextStackView( buttonFirstLabel, buttonSecondLabel )
     private let orderButton: UIButton = {
         let button = UIButton()
@@ -109,6 +115,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = Size.cellSpacing
+        layout.sectionInset = .init(top: 24, left: 0, bottom: 24, right: 24)
         return layout
     }()
     
@@ -178,6 +185,14 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         allDeleteButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(Size.defaultOffset)
+        }
+        
+        
+        view.addSubview(upperDivider)
+        upperDivider.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(allButtonsBackgroundView)
         }
         
         orderButton.addSubview(buttonTextStackView)
