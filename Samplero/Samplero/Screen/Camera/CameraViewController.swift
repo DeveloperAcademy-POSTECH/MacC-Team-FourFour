@@ -336,7 +336,6 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 
         let takenPictureViewController = TakenPictureViewController()
         takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
-        takenPictureViewController.modalPresentationStyle = .overFullScreen
         takenPictureViewController.rx.retake
             .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
             .map { [weak self] in
@@ -346,7 +345,10 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
             .subscribe(onNext: {
                 takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
-        self.navigationController?.pushViewController(takenPictureViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: takenPictureViewController)
+        navigationController.navigationBar.tintColor = .black
+        navigationController.modalPresentationStyle = .overFullScreen
+        self.present(navigationController, animated: true)
 
         session?.stopRunning()
     }
@@ -372,10 +374,9 @@ extension Reactive where Base: UIView {
 extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage ?? UIImage()
-        
+
         let takenPictureViewController = TakenPictureViewController()
         takenPictureViewController.configPictureImage(image: selectedImage)
-        takenPictureViewController.modalPresentationStyle = .overFullScreen
         takenPictureViewController.rx.retake
             .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
             .map { [weak self] in
@@ -387,7 +388,10 @@ extension CameraViewController: UIImagePickerControllerDelegate, UINavigationCon
             }).disposed(by: disposeBag)
         
         picker.dismiss(animated: true, completion: nil)
-        self.navigationController?.pushViewController(takenPictureViewController, animated: true)
+        let navigationController = UINavigationController(rootViewController: takenPictureViewController)
+        navigationController.modalPresentationStyle = .overFullScreen
+        navigationController.navigationBar.tintColor = .black
+        self.present(navigationController, animated: true)
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
