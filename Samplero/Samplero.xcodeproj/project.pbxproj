@@ -51,6 +51,7 @@
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE6379E828F6B19C003ED6FA /* CameraHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */; };
 		CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E428F59782003ED6FA /* DBHelper.swift */; };
+		CE6379ED28F7F16E003ED6FA /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379EC28F7F16E003ED6FA /* LocalFileManager.swift */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
 		CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */; };
 		CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF76BD428EE77C0003D1F49 /* SceneDelegate.swift */; };
@@ -123,6 +124,7 @@
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHelpView.swift; sourceTree = "<group>"; };
 		CE6379E428F59782003ED6FA /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
+		CE6379EC28F7F16E003ED6FA /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
 		CEF76BCF28EE77C0003D1F49 /* Samplero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Samplero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF76BD228EE77C0003D1F49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 		21ED8C6A28EFC6460074C9A3 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				CE6379EB28F7F152003ED6FA /* Utility */,
 				21ED8C7128EFC66B0074C9A3 /* Service */,
 				21ED8C7228EFC6710074C9A3 /* Literal */,
 				21ED8C7828EFC68F0074C9A3 /* Resource */,
@@ -452,6 +455,12 @@
 			path = Camera;
 			sourceTree = "<group>";
 		};
+		CE6379EB28F7F152003ED6FA /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				CE6379EC28F7F16E003ED6FA /* LocalFileManager.swift */,
+			);
+			path = Utility;
 		CE6379E628F6B16A003ED6FA /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -732,6 +741,7 @@
 				CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */,
 				CEFFE78728F3D0E5007A7842 /* EstimateHistory.swift in Sources */,
 				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
+				CE6379ED28F7F16E003ED6FA /* LocalFileManager.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */,

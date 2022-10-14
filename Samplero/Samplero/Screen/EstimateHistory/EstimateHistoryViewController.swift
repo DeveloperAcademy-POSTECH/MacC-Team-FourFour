@@ -11,11 +11,11 @@ import RxCocoa
 import RxSwift
 import SnapKit
 
-class EstimateHistoryViewController: BaseViewController {
+class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     
     // MARK: - Properties
     
-    let viewModel = EstimateHistoryViewModel()
+    var viewModel: EstimateHistoryViewModel!
     
     private let helpingLabel: UILabel = {
         let label: UILabel = UILabel()
@@ -61,7 +61,6 @@ class EstimateHistoryViewController: BaseViewController {
         
         estimateHistoryCollectionView.rx.setDelegate(self)
             .disposed(by: viewModel.disposeBag)
-        bind()
     }
     
     override func render() {
@@ -83,7 +82,7 @@ class EstimateHistoryViewController: BaseViewController {
     // MARK: - Func
     
     func bind() {
-        viewModel.estimateHistoryObservable
+        viewModel.estimateHistorySubject
             .bind(to: estimateHistoryCollectionView.rx.items) { collectionView, row, history -> UICollectionViewCell in
                 let cell = collectionView.dequeueReusableCell(withType: EstimateHistoryCollectionViewCell.self, for: IndexPath.init(row: row, section: 0))
                 cell.configure(history: history)

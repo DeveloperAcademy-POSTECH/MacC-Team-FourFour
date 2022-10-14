@@ -85,12 +85,12 @@ final class DBHelper {
     
     func insertEstimateHistory(history: EstimateHistory) {
         var statement: OpaquePointer?
-        let insertQuery = "INSERT INTO ESTIMATE_HISTORY (IMAGE_ID, WIDTH, HEIGHT, SELECTED_SAMPLE_ID) VALUE (?, ?, ?, ?, ?);"
+        let insertQuery = "INSERT INTO ESTIMATE_HISTORY (IMAGE_ID, WIDTH, HEIGHT, SELECTED_SAMPLE_ID) VALUES (?, ?, ?, ?);"
         
         if sqlite3_prepare_v2(self.db, insertQuery, -1, &statement, nil) == SQLITE_OK {
             sqlite3_bind_double(statement, 2, history.width ?? 0.0)
             sqlite3_bind_double(statement, 3, history.height ?? 0.0)
-            sqlite3_bind_int(statement, 4, Int32(history.selectedSampleId ?? -1))
+            sqlite3_bind_int(statement, 4, Int32(history.selectedSampleId ?? 1))
         } else {
             print("SQLite:", "sqlite binding failure")
         }
@@ -127,9 +127,29 @@ final class DBHelper {
         return estimateHistories
     }
     
+    func getEstimateHistoryCount() -> Int {
+        var statement: OpaquePointer?
+        var estimateHistoryCount: Int = 0
+        let query: String = "SELECT COUNT(*) FROM ESTIMATE_HISTORY;"
+        
+        if sqlite3_prepare(self.db, query, -1, &statement, nil) != SQLITE_OK {
+            let errorMessage = String(cString: sqlite3_errmsg(db)!)
+            print("SQLite:", "error while prepare: \(errorMessage)")
+            return estimateHistoryCount
+        }
+        
+        while sqlite3_step(statement) == SQLITE_ROW {
+            estimateHistoryCount = Int(sqlite3_column_int(statement, 0))
+        }
+        
+        sqlite3_finalize(statement)
+        
+        return estimateHistoryCount
+    }
+    
     func updateEstimateHistory(imageId id: Int, history: EstimateHistory) {
         var statement: OpaquePointer?
-        let query = "UPDATE ESTIMATE_HISTORY SET IMAGE_ID = '\(history.imageId)', WIDTH = '\(history.width ?? 0.0)', HEIGHT = '\(history.height ?? 0.0)', SELECTED_ID = '\(history.selectedSampleId ?? -1) WHERE IMAGE_ID == \(id)"
+        let query = "UPDATE ESTIMATE_HISTORY SET IMAGE_ID = '\(history.imageId)', WIDTH = '\(history.width ?? 0.0)', HEIGHT = '\(history.height ?? 0.0)', SELECTED_SAMPLE_ID = '\(history.selectedSampleId ?? 1) WHERE IMAGE_ID == \(id)"
         
         if sqlite3_prepare(db, query, -1, &statement, nil) != SQLITE_OK {
             let errorMessage = String(cString: sqlite3_errmsg(db))

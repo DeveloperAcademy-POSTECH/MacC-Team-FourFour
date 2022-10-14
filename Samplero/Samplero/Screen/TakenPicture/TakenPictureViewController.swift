@@ -16,6 +16,18 @@ class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
     
+    private var takenPictureIndex: Int!
+    private var takenPicture: UIImage!
+    
+    // Image FileManager
+    private let savingfolderName: String = "estimate-photo"
+    private let floorSegmentedImageName: String = "floor-segmented-photo"
+    private let matInsertedImageName: String = "mat-inserted-photo"
+    private let fileManager = LocalFileManager.instance
+    
+    // DB
+    private let db = DBHelper.shared
+    
     // Rx
     private var disposeBag = DisposeBag()
     
@@ -109,7 +121,8 @@ class TakenPictureViewController: BaseViewController {
     // MARK: - Func
     
     func configPictureImage(image: UIImage) {
-        takenPictureImageView.image = image
+        self.takenPicture = image
+        takenPictureImageView.image = takenPicture
     }
     
     private func addTargets() {
@@ -120,6 +133,17 @@ class TakenPictureViewController: BaseViewController {
         nextButton.rx.tap.bind {
             // TODO: go next
             print("clicked next button")
+            
+            self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
+            let imageName: String = self.floorSegmentedImageName + "-\(self.takenPictureIndex!)"
+            
+            // Save image
+            self.fileManager.saveImage(image: self.takenPicture, imageName: imageName, folderName: self.savingfolderName)
+            
+            // Insert estimate history to db
+            self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
+            
+            self.dismiss(animated: true)
         }.disposed(by: disposeBag)
     }
     

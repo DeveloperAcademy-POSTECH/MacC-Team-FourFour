@@ -13,6 +13,8 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     
+    private let fileManager = LocalFileManager.instance
+    
     private let estimatedImageView: UIImageView = UIImageView()
     
     // MARK: - Life Cycle
@@ -37,7 +39,12 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configure(history: EstimateHistory) {
-        estimatedImageView.image = history.getImage()
+        let savingfolderName: String = "estimate-photo"
+        let floorSegmentedImageName: String = "floor-segmented-photo"
+        let imageName: String = floorSegmentedImageName + "-\(history.imageId)"
+        
+        let historyImage: UIImage = fileManager.getImage(imageName: imageName, folderName: savingfolderName) ?? UIImage()
+        estimatedImageView.image = historyImage
     }
     
 }
