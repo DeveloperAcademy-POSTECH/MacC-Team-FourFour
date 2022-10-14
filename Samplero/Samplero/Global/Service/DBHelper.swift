@@ -234,7 +234,7 @@ final class DBHelper {
         print("SQLite:", "Update has been successfully done")
     }
     
-    func updateShopBasketItem(itemId id: Int, shopBasketItem item: ShopBasket) {
+    func updateShopBasketItemSelectedState(itemId id: Int, shopBasketItem item: ShopBasket) {
         var statement: OpaquePointer?
         let query = "UPDATE SHOP_BASKET SET IS_SELECTED = '\(item.isSelected ? 1 : 0)' WHERE IMAGE_ID == \(id)"
         
