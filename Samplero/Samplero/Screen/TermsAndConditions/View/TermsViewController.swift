@@ -29,6 +29,8 @@ class TermsViewController: BaseViewController {
     
     // MARK: - Properties
     
+    private var shopBasketString: String = ""
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "샘플 발송을 위해 약관동의가 필요합니다."
@@ -112,6 +114,8 @@ class TermsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        showToastAnimation()
+        
         bind()
     }
     
@@ -175,12 +179,15 @@ class TermsViewController: BaseViewController {
             .disposed(by: viewModel.disposeBag)
     }
     
+    func setShopBasketString(str: String) {
+        self.shopBasketString = str
+    }
+    
     @objc func buttonTapped() {
         if checkboxImageView.isChecked {
-//            showToastAnimation()
             
             // FIXME: - 테스트 용 string입니다. 추후 장바구니 내역으로 수정 필요
-            UIPasteboard.general.string = "장바구니 내역"
+            UIPasteboard.general.string = "장바구니 내역\n\(shopBasketString)"
             
             sleep(2)
             if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
