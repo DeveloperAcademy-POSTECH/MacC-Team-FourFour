@@ -12,7 +12,22 @@ import RxSwift
 
 final class EstimateViewModel: ViewModelType {
 
+    let db = DBHelper.shared
+
     var disposeBag: DisposeBag = DisposeBag()
+
+    var samples: Samples = Samples()
+
+    let shopBaskets: BehaviorSubject<[ShopBasket]>
+
+    init() {
+        let basketItems = db.getShopBasketItem()
+        shopBaskets = BehaviorSubject(value: basketItems)
+
+        basketItems.forEach { item in
+            samples.addSample(sample: MockData.sampleList[item.sampleId])
+        }
+    }
 
     struct Input {
         let collectionModelSelected: ControlEvent<Sample>
@@ -28,7 +43,7 @@ final class EstimateViewModel: ViewModelType {
 
         let selected = input.collectionModelSelected.asObservable()
 
-
         return Output(SampleList: sampleList, tappedSample: selected)
     }
 }
+

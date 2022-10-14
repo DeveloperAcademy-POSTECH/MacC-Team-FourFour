@@ -140,7 +140,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setDelegation()
+
     }
     override func viewWillAppear(_ animated: Bool) {
         showNavBar()
@@ -214,6 +214,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     }
     
     func bind() {
+        setDelegation()
         // Reactive collectionView ( more than one section )
         let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, CheckSample>> {(_, collectionView, indexPath, checkSample) -> UICollectionViewCell in
             
