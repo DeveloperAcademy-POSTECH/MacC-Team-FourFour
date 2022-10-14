@@ -350,6 +350,26 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
                 }
             })
             .disposed(by: viewModel.disposeBag)
+        
+        viewModel.selectionState
+            .subscribe(onNext: { samples in
+                var copyString: String = ""
+                var number: Int = 0
+                for sample in samples {
+                    number += 1
+                    copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
+                }
+                self.viewModel.shopBasketCopy = copyString
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+        orderButton.rx.tap
+            .subscribe(onNext: {
+                let vc = TermsViewController()
+                vc.setShopBasketString(str: self.viewModel.shopBasketCopy)
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
     // MARK: - Func
@@ -415,7 +435,7 @@ extension Reactive where Base: UIButton {
                 button.backgroundColor = .accent
             case false :
                 button.isHidden = false
-                button.backgroundColor = .systemGray4
+                button.backgroundColor = .boxBackground
             }
         }
     }

@@ -20,7 +20,8 @@ class ShopBasketViewModel {
 
 
     // MARK: - Properties
-
+    
+    var shopBasketCopy: String = ""
 
     var disposeBag: DisposeBag = DisposeBag()
     let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: MockData.sampleList.map {CheckSample(sample: $0)})
