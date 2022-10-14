@@ -53,6 +53,7 @@
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE567ACD28F8F6D000AEF5E0 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */; };
+		CE567AD328F9038700AEF5E0 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567AD228F9038700AEF5E0 /* CameraViewModel.swift */; };
 		CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E428F59782003ED6FA /* DBHelper.swift */; };
 		CE6379E828F6B19C003ED6FA /* CameraHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
@@ -129,6 +130,7 @@
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		CE567AD228F9038700AEF5E0 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		CE6379E428F59782003ED6FA /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHelpView.swift; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 		CE1052DD28F279A900503ECF /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				CE567AD128F9037D00AEF5E0 /* ViewModel */,
 				CE6379E628F6B16A003ED6FA /* View */,
 				CE1052E028F279DB00503ECF /* CameraViewController.swift */,
 			);
@@ -470,6 +473,14 @@
 				CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		CE567AD128F9037D00AEF5E0 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE567AD228F9038700AEF5E0 /* CameraViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CE6379E628F6B16A003ED6FA /* View */ = {
@@ -791,6 +802,7 @@
 				212135F928F8499E0049B28D /* PaddedButton.swift in Sources */,
 				355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */,
 				2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */,
+				CE567AD328F9038700AEF5E0 /* CameraViewModel.swift in Sources */,
 				212135FB28F84CC20049B28D /* EstimatedPriceView.swift in Sources */,
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
 				CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */,
