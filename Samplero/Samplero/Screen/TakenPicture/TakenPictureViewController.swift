@@ -167,6 +167,8 @@ class TakenPictureViewController: BaseViewController {
 
                 self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
 
+                var estimateVC = EstimateViewController()
+                estimateVC.bindViewModel(EstimateViewModel())
 
                 if segmentationMask.size != self.takenPicture.size {
                     guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
@@ -174,23 +176,14 @@ class TakenPictureViewController: BaseViewController {
                 } else {
                     self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
                 }
+
+
                 self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
 
-                //                let imageName: String = self.floorSegmentedImageName + "-\(self.takenPictureIndex!)"
-                // Save image
-                //                self.fileManager.saveImage(image: self.takenPicture, imageName: imageName, folderName: self.savingfolderName)
-
-
-                // Insert estimate history to db
 
                 self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
 
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
                 estimateVC.viewModel.imageIndex = self.takenPictureIndex
-
-//                estimateVC.sourceImage = self.takenPicture
-
 
                 self.navigationController?.pushViewController(estimateVC, animated: true)
             }

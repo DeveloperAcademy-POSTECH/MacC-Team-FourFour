@@ -41,12 +41,12 @@ final class EstimateViewModel: ViewModelType {
 
 extension EstimateViewModel {
     func getImage() -> UIImage {
-        return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
+        return self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
     }
 
     func getMaskedImage() -> UIImage {
 
-        return self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
+        return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
     }
 }
 

@@ -172,27 +172,13 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     }
 
     func maskInputImage(with sample: Sample) -> UIImage? {
-//        guard let takenImageData = self.sourceImage.jpegData(compressionQuality: 1.0) else { return nil }
-//        guard let takenCIImage = CIImage(data: takenImageData) else { return nil }
-//        guard let takenUIImage = UIImage(data: takenImageData) else { return nil }
         let takenCIImage = CIImage(cgImage: self.sourceImage.cgImage!)
-        let beginImage = takenCIImage
-
-//        let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(takenUIImage.imageOrientation))
-
+        let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(sourceImage.imageOrientation))
         let backgroundImage = UIImage.load(named: "Spread\(sample.imageName)")
         guard let backgroundCGImage = backgroundImage.cgImage else { return nil }
         guard let resizedBackgroundImage = backgroundCGImage.resize(size: self.sourceImage.size) else { return nil }
         let background = CIImage(cgImage: resizedBackgroundImage)
-
-        guard let maskedCGImage = self.maskedImage.cgImage else { return nil }
-        let mask = CIImage(cgImage: maskedCGImage) .oriented(CGImagePropertyOrientation(self.maskedImage.imageOrientation))
-
-//        let parameters = [
-//            kCIInputImageKey: beginImage,
-//            kCIInputBackgroundImageKey: background,
-//            kCIInputMaskImageKey: mask
-//        ]
+        let mask = CIImage(cgImage: self.maskedImage.cgImage!)
 
         let parameters = [
             kCIInputImageKey: beginImage,
@@ -223,3 +209,4 @@ extension Reactive where Base: EstimateViewController {
         }
     }
 }
+
