@@ -10,6 +10,8 @@ final class GetAreaViewController: BottomSheetController {
     
     // MARK: - Properties
     
+    var delegate: SaveSizeDelegate?
+    
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.font = .systemFont(ofSize: 17, weight: .semibold)
@@ -103,6 +105,16 @@ final class GetAreaViewController: BottomSheetController {
     // MARK: - Func
 
     @objc func buttonDidTap() {
-        dismiss(animated: true)
+        save()
     }
+    
+    func save() {
+        dismiss(animated: true) {
+            self.delegate?.saveButtonTapped(widthString: self.getWidthView.textField.text ?? "", heightString: self.getHeightView.textField.text ?? "")
+        }
+    }
+}
+
+protocol SaveSizeDelegate {
+    func saveButtonTapped(widthString: String, heightString: String)
 }

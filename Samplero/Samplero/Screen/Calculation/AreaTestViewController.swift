@@ -14,7 +14,9 @@ final class AreaTestViewController: BaseViewController {
     // MARK: - Properties
     
     private let toBeEstimatedPriceView = ToBeEstimatedPriceView()
-    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: "1,200,000원", width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: "15,000")
+    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: 1200000, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: 15000)
+    
+    let getAreaViewController = GetAreaViewController()
     
     // MARK: - Life Cycle
     
@@ -33,16 +35,18 @@ final class AreaTestViewController: BaseViewController {
         view.addSubview(toBeEstimatedPriceView)
         toBeEstimatedPriceView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.center.equalToSuperview().inset(100)
+            make.center.equalToSuperview()
             make.height.equalTo(80)
         }
-        
+        toBeEstimatedPriceView.alpha = 1
+
         view.addSubview(estimatedPriceView)
         estimatedPriceView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.center.equalToSuperview().offset(100)
+            make.center.equalToSuperview()
             make.height.equalTo(80)
         }
+        estimatedPriceView.alpha = 0
     }
     
     override func configUI() {
@@ -53,22 +57,42 @@ final class AreaTestViewController: BaseViewController {
     
     // MARK: - Func
     
-    @objc func buttonDidTap() {
-        let viewController = GetAreaViewController()
-        viewController.preferredSheetSizing = .medium
-        present(viewController, animated: true)
-    }
-    
     private func setDelegation() {
         toBeEstimatedPriceView.delegate = self
         estimatedPriceView.delegate = self
+        getAreaViewController.delegate = self
+    }
+    
+    // TODO: - 샘플 정보에서 가져올 것: 장 당 가격, 샘플 크기
+    let exampleSamplePrice = 15000
+    let exampleSampleArea = 14400
+    
+    private func calculatePrice(width: Int, height: Int) -> [Int] {
+        let estimatedQuantity = width*height / exampleSampleArea
+        let estimatedPrice = exampleSamplePrice * estimatedQuantity
+        // FIXME: - 배열 말고 다른 방식 사용하기
+        return [estimatedQuantity, estimatedPrice]
     }
 }
 
 extension AreaTestViewController: ShowModalDelegate {
     func buttonDidTapped() {
-        let viewController = GetAreaViewController()
-        viewController.preferredSheetSizing = .medium
-        present(viewController, animated: true)
+        getAreaViewController.preferredSheetSizing = .medium
+        present(getAreaViewController, animated: true)
+    }
+}
+
+extension AreaTestViewController: SaveSizeDelegate {
+    func saveButtonTapped(widthString: String, heightString: String) {
+        // FIXME: - 더 안정적으로 수정
+        if widthString == "" || heightString == "" {
+            toBeEstimatedPriceView.alpha = 1
+            estimatedPriceView.alpha = 0
+        } else {
+            let quantityAndPrice = calculatePrice(width: Int(widthString) ?? 0, height: Int(heightString) ?? 0)
+            estimatedPriceView.changeEstimation(estimatedPrice: quantityAndPrice[1], width: Int(widthString) ?? 0, height: Int(heightString) ?? 0, estimatedQuantity: quantityAndPrice[0], pricePerBlock: exampleSamplePrice)
+            toBeEstimatedPriceView.alpha = 0
+            estimatedPriceView.alpha = 1
+        }
     }
 }
