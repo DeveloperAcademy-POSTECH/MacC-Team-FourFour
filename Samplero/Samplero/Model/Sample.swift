@@ -18,7 +18,6 @@ struct Sample {
     let thickness: Double
     let size: CGSize
     let maker: String
-    var isChecked: Bool = false
 
 }
  // To use Set Collection
