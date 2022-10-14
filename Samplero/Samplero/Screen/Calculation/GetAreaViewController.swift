@@ -6,6 +6,8 @@
 //
 import UIKit
 
+import RxCocoa
+import RxSwift
 final class GetAreaViewController: BottomSheetController {
     
     // MARK: - Properties
@@ -35,9 +37,10 @@ final class GetAreaViewController: BottomSheetController {
         return stackView
     }()
     
-    let saveButton: UIButton = {
+    lazy var saveButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
+        button.isEnabled = false
         button.setTitle("저장", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         button.tintColor = .black
@@ -47,12 +50,17 @@ final class GetAreaViewController: BottomSheetController {
         return button
     }()
     
+    var disposeBag = DisposeBag()
+
+     var areaWidth = 0.0
+     var areaHeight = 0.0
 
     // MARK: - Life Cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()
+        bind()
     }
     
     override func render() {
@@ -99,6 +107,28 @@ final class GetAreaViewController: BottomSheetController {
     override func configUI() {
         separator.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         view.backgroundColor = .systemBackground
+    }
+
+    func bind() {
+        Observable.combineLatest(getWidthView.textField.rx.text.compactMap({$0}), getHeightView.textField.rx.text.compactMap({$0}))
+            .map { width, height in
+                if width != "",
+                   height != "",
+                   let doubleWidth = Double(width),
+                   let doubleHeight = Double(height) {
+                    self.areaWidth = doubleWidth
+                    self.areaHeight = doubleHeight
+                    return true }
+                return false
+            }
+            .bind(to: saveButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        saveButton.rx.tap
+            .subscribe(onNext: {
+                
+            })
+
     }
     
     

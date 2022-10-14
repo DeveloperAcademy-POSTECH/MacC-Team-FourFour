@@ -27,7 +27,6 @@ final class AreaTestViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setDelegation()
     }
     

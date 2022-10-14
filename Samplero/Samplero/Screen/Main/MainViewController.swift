@@ -18,7 +18,8 @@ class MainViewController: UIViewController {
         self.navigationController?.pushViewController(cameraVC, animated: true)
     }
     @IBAction func shopBasketButton(_ sender: Any) {
-        let shopBasketVC = ShopBasketViewController()
+        var shopBasketVC = ShopBasketViewController()
+        shopBasketVC.bindViewModel(ShopBasketViewModel())
                 self.navigationController?.pushViewController(shopBasketVC, animated: true)
     }
     override func viewDidLoad() {

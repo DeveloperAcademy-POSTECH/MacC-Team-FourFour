@@ -56,10 +56,17 @@
 		B51AF44C28F858130076F21B /* CGImage+Resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF44B28F858130076F21B /* CGImage+Resize.swift */; };
 		35E443E728F689D800320DD6 /* ShopBasketCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443E628F689D800320DD6 /* ShopBasketCollectionViewCell.swift */; };
 		35E443E928F689FA00320DD6 /* ShopBasketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */; };
+		35E443F428F692CF00320DD6 /* AmountFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443F328F692CF00320DD6 /* AmountFooterView.swift */; };
+		35E443F628F6991D00320DD6 /* AmountStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443F528F6991D00320DD6 /* AmountStackView.swift */; };
+		35E443F928F6AF4D00320DD6 /* ShopBasketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443F828F6AF4D00320DD6 /* ShopBasketViewModel.swift */; };
+		35E443FC28F6CE7C00320DD6 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 35E443FB28F6CE7C00320DD6 /* RxDataSources */; };
+		35E443FE28F85BE500320DD6 /* CheckSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E443FD28F85BE500320DD6 /* CheckSample.swift */; };
 		35E4440228F8E9C600320DD6 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E4440128F8E9C600320DD6 /* UIFont+Extension.swift */; };
 		CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1052E028F279DB00503ECF /* CameraViewController.swift */; };
 		CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE13B6C628F1600B00216EB2 /* .swiftlint.yml */; };
 		CE567ACD28F8F6D000AEF5E0 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */; };
+		CE567AD528F9099B00AEF5E0 /* ShopBasket.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567AD428F9099B00AEF5E0 /* ShopBasket.swift */; };
+		CE567AD328F9038700AEF5E0 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE567AD228F9038700AEF5E0 /* CameraViewModel.swift */; };
 		CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E428F59782003ED6FA /* DBHelper.swift */; };
 		CE6379E828F6B19C003ED6FA /* CameraHelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */; };
 		CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C460728F4595900890821 /* TakenPictureViewController.swift */; };
@@ -139,10 +146,16 @@
 		B51AF44B28F858130076F21B /* CGImage+Resize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+Resize.swift"; sourceTree = "<group>"; };
 		35E443E628F689D800320DD6 /* ShopBasketCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketCollectionViewCell.swift; sourceTree = "<group>"; };
 		35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketViewController.swift; sourceTree = "<group>"; };
+		35E443F328F692CF00320DD6 /* AmountFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountFooterView.swift; sourceTree = "<group>"; };
+		35E443F528F6991D00320DD6 /* AmountStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountStackView.swift; sourceTree = "<group>"; };
+		35E443F828F6AF4D00320DD6 /* ShopBasketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketViewModel.swift; sourceTree = "<group>"; };
+		35E443FD28F85BE500320DD6 /* CheckSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckSample.swift; sourceTree = "<group>"; };
 		35E4440128F8E9C600320DD6 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		CE1052E028F279DB00503ECF /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CE13B6C628F1600B00216EB2 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
+		CE567AD428F9099B00AEF5E0 /* ShopBasket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasket.swift; sourceTree = "<group>"; };
+		CE567AD228F9038700AEF5E0 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		CE6379E428F59782003ED6FA /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		CE6379E728F6B19C003ED6FA /* CameraHelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraHelpView.swift; sourceTree = "<group>"; };
 		CE9C460728F4595900890821 /* TakenPictureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenPictureViewController.swift; sourceTree = "<group>"; };
@@ -175,6 +188,7 @@
 				21ED8C6328EFC4130074C9A3 /* RxRelay in Frameworks */,
 				21ED8C6128EFC4130074C9A3 /* RxCocoa in Frameworks */,
 				21ED8C6528EFC4130074C9A3 /* RxSwift in Frameworks */,
+				35E443FC28F6CE7C00320DD6 /* RxDataSources in Frameworks */,
 				21ED8C5E28EFC3E40074C9A3 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +262,8 @@
 				CEFFE78628F3D0E5007A7842 /* EstimateHistory.swift */,
 				355CB86028F295A0001A5731 /* MockData.swift */,
 				355CB85E28F1D5DA001A5731 /* Sample.swift */,
+				CE567AD428F9099B00AEF5E0 /* ShopBasket.swift */,
+				35E443FD28F85BE500320DD6 /* CheckSample.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -454,6 +470,7 @@
 		35E443E328F6899400320DD6 /* ShopBasket */ = {
 			isa = PBXGroup;
 			children = (
+				35E443F728F6AF3F00320DD6 /* ViewModel */,
 				35E443E428F689B100320DD6 /* View */,
 				35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */,
 			);
@@ -464,6 +481,8 @@
 			isa = PBXGroup;
 			children = (
 				35E443E528F689B300320DD6 /* Cell */,
+				35E443F328F692CF00320DD6 /* AmountFooterView.swift */,
+				35E443F528F6991D00320DD6 /* AmountStackView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -476,9 +495,18 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		35E443F728F6AF3F00320DD6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				35E443F828F6AF4D00320DD6 /* ShopBasketViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		CE1052DD28F279A900503ECF /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				CE567AD128F9037D00AEF5E0 /* ViewModel */,
 				CE6379E628F6B16A003ED6FA /* View */,
 				CE1052E028F279DB00503ECF /* CameraViewController.swift */,
 			);
@@ -491,6 +519,14 @@
 				CE567ACC28F8F6D000AEF5E0 /* LocalFileManager.swift */,
 			);
 			path = Utility;
+			sourceTree = "<group>";
+		};
+		CE567AD128F9037D00AEF5E0 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE567AD228F9038700AEF5E0 /* CameraViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CE6379E628F6B16A003ED6FA /* View */ = {
@@ -615,6 +651,7 @@
 				21ED8C6028EFC4130074C9A3 /* RxCocoa */,
 				21ED8C6228EFC4130074C9A3 /* RxRelay */,
 				21ED8C6428EFC4130074C9A3 /* RxSwift */,
+				35E443FB28F6CE7C00320DD6 /* RxDataSources */,
 			);
 			productName = Samplero;
 			productReference = CEF76BCF28EE77C0003D1F49 /* Samplero.app */;
@@ -699,6 +736,7 @@
 			packageReferences = (
 				21ED8C5C28EFC3E40074C9A3 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				21ED8C5F28EFC4130074C9A3 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				35E443FA28F6CE7C00320DD6 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = CEF76BD028EE77C0003D1F49 /* Products */;
 			projectDirPath = "";
@@ -776,10 +814,12 @@
 				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
 				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
 				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
+				CE567AD528F9099B00AEF5E0 /* ShopBasket.swift in Sources */,
 				2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
 				212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
+				35E443F928F6AF4D00320DD6 /* ShopBasketViewModel.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
 				216CA5BA28F56433008C09C7 /* CustomGetSizeView.swift in Sources */,
 				B51AF43B28F6EDA40076F21B /* CGImagePropertyOrientation.swift in Sources */,
@@ -818,10 +858,14 @@
 				212135F928F8499E0049B28D /* PaddedButton.swift in Sources */,
 				355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */,
 				2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */,
+				CE567AD328F9038700AEF5E0 /* CameraViewModel.swift in Sources */,
 				212135FB28F84CC20049B28D /* EstimatedPriceView.swift in Sources */,
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
 				CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */,
 				B51AF43728F6EDA40076F21B /* Math.swift in Sources */,
+				35E443F628F6991D00320DD6 /* AmountStackView.swift in Sources */,
+				35E443FE28F85BE500320DD6 /* CheckSample.swift in Sources */,
+				35E443F428F692CF00320DD6 /* AmountFooterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -999,6 +1043,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y7G824SH3W;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Samplero/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1189,6 +1234,14 @@
 				kind = branch;
 			};
 		};
+		35E443FA28F6CE7C00320DD6 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1231,6 +1284,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 21ED8C5F28EFC4130074C9A3 /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxTest;
+		};
+		35E443FB28F6CE7C00320DD6 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35E443FA28F6CE7C00320DD6 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

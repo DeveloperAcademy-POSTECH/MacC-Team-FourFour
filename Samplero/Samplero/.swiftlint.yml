@@ -24,5 +24,6 @@
     # 후행 공백 제한
     - trailing_whitespace
     - large_tuple
+    - function_body_length
 
 

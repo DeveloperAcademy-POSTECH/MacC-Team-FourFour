@@ -82,11 +82,22 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     var viewModel: EstimateViewModel!
 
+     let toBeEstimatedPriceView = ToBeEstimatedPriceView()
+     let estimatedPriceView = EstimatedPriceView(estimatedPrice: -1, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: -1)
+
+    var currentSample: Sample = MockData.sampleList[0]
+
+    private let getAreaVC = GetAreaViewController()
     // MARK: - Life Cycle
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+
+    override func viewDidLayoutSubviews() {
+        toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height/2
+        estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height/2
     }
 
     override func render() {
@@ -95,6 +106,18 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             make.height.equalTo(Size.deviceHeight * 0.69)
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
+        }
+        roomImageView.addSubview(toBeEstimatedPriceView)
+        toBeEstimatedPriceView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.height.equalTo(80)
+        }
+
+        roomImageView.addSubview(estimatedPriceView)
+        estimatedPriceView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(80)
         }
 
         roomImageView.addSubview(sampleCollectionView)
@@ -125,6 +148,11 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         super.configUI()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.cartDark, style: .plain, target: self, action: nil)
         self.navigationItem.rightBarButtonItem?.tintColor = .black
+
+        toBeEstimatedPriceView.backgroundColor = .black.withAlphaComponent(0.5)
+        toBeEstimatedPriceView.alpha = 1
+        estimatedPriceView.backgroundColor = .black.withAlphaComponent(0.5)
+        estimatedPriceView.alpha = 0
     }
 
     func bind() {
@@ -157,6 +185,33 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         output.tappedSample
             .bind(to: rx.configSample)
             .disposed(by: viewModel.disposeBag)
+
+
+        toBeEstimatedPriceView.textButton.rx.tap
+            .subscribe(onNext: {
+                self.getAreaVC.preferredSheetSizing = .medium
+                self.present(self.getAreaVC, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        estimatedPriceView.textButton.rx.tap
+            .subscribe(onNext: {
+                self.getAreaVC.preferredSheetSizing = .medium
+                self.present(self.getAreaVC, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        getAreaVC.saveButton
+            .rx.tap.subscribe(onNext: {
+                let quantityAndPrice = self.calculatePrice(width: self.getAreaVC.areaWidth, height: self.getAreaVC.areaHeight)
+                self.estimatedPriceView.changeEstimation(estimatedPrice: Int(quantityAndPrice[1]), width: Int(self.getAreaVC.areaWidth), height: Int(self.getAreaVC.areaHeight), estimatedQuantity: Int(quantityAndPrice[0]), pricePerBlock: self.self.currentSample.samplePrice)
+                self.toBeEstimatedPriceView.alpha = 0
+                self.estimatedPriceView.alpha = 1
+
+            })
+            .disposed(by: viewModel.disposeBag)
+        
+
     }
 
 
@@ -170,6 +225,16 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
         roomImageView.image = maskInputImage(with: sample)
     }
+
+    private func calculatePrice(width: CGFloat, height: CGFloat) -> [CGFloat] {
+        let sampleArea = currentSample.size.width * currentSample.size.height
+        let estimatedQuantity = width*height / sampleArea
+        let estimatedPrice = currentSample.samplePrice == -1 ? -1 : CGFloat(currentSample.samplePrice) * estimatedQuantity
+        // FIXME: - 배열 말고 다른 방식 사용하기
+        return [estimatedQuantity, estimatedPrice]
+    }
+
+
 
     func maskInputImage(with sample: Sample) -> UIImage? {
         let takenCIImage = CIImage(cgImage: self.sourceImage.cgImage!)
@@ -201,11 +266,14 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
 extension Reactive where Base: EstimateViewController {
     var configSample: Binder<Sample> {
-        return Binder(self.base) { _, sample in
+        return Binder(self.base) { estimateVC, sample in
+            estimateVC.currentSample = sample
+            estimateVC.toBeEstimatedPriceView.alpha = 1
+            estimateVC.estimatedPriceView.alpha = 0
+            estimateVC.configure(with: sample)
             if let matInsertedImage = self.base.maskInputImage(with: sample) {
                 self.base.roomImageView.image = matInsertedImage
             }
-            self.base.configure(with: sample)
         }
     }
 }

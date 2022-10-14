@@ -25,11 +25,11 @@ class CameraViewController: BaseViewController {
     let output = AVCapturePhotoOutput()
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
-
-
-
+    
+    let fileManager = LocalFileManager.instance
+    
     // Rx
-    let viewModel = EstimateHistoryViewModel()
+    let viewModel = CameraViewModel()
     var disposeBag = DisposeBag()
 
     // Shutter Button
@@ -198,9 +198,18 @@ class CameraViewController: BaseViewController {
     }
     
     func bind() {
-        viewModel.estimateHistorySubject
+        viewModel.estimateHistoryObservable
             .subscribe(onNext: { [weak self] history in
-                self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
+                let savingfolderName: String = "estimate-photo"
+                let floorSegmentedImageName: String = "floor-segmented-photo"
+                let imageName = floorSegmentedImageName + "-\(history.last?.imageId ?? 0)"
+                let image = self?.fileManager.getImage(imageName: imageName, folderName: savingfolderName)
+                
+                if image == nil {
+                    self?.photoHistoryButton.backgroundColor = .white
+                } else {
+                    self?.photoHistoryButton.setImage(image, for: .normal)
+                }
             })
             .disposed(by: disposeBag)
     }
