@@ -127,7 +127,6 @@ class CameraViewController: BaseViewController {
         addTargets()
         bind()
         // 뒤로가기 swipe 없애기
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func viewDidLayoutSubviews() {
