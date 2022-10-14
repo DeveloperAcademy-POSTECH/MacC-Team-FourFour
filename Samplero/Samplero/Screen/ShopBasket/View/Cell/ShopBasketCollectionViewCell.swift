@@ -11,8 +11,9 @@ import RxCocoa
 import RxSwift
 
 private enum Size {
-    static let sampleImageSize = 80.0
+    static let sampleImage = 80.0
     static let defaultOffset = 20.0
+    static let checkBox = 20.0
     static let secondaryOffset = 16
     static let checkBoxFrameSize = 36.0
 }
@@ -54,7 +55,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
     }()
 
     // firstHorizontalStackView consists of makerLabel,deleteButton
-    private let firstHorizontalStackView: UIStackView = {
+    private let horizontalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -146,12 +147,13 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(Size.defaultOffset)
             make.size.equalTo(Size.checkBoxFrameSize)
+
         }
 
         contentView.addSubview(sampleImageView)
         sampleImageView.snp.makeConstraints { make in
-            make.size.equalTo(Size.sampleImageSize)
             make.leading.equalTo(checkBox.snp.trailing)
+            make.size.equalTo(Size.sampleImage)
             make.top.bottom.equalToSuperview()
         }
 
@@ -162,13 +164,13 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
             make.trailing.equalToSuperview().inset(Size.defaultOffset)
         }
 
-        verticalStackView.addArrangedSubview(firstHorizontalStackView)
-        firstHorizontalStackView.snp.makeConstraints { make in
+        verticalStackView.addArrangedSubview(horizontalStackView)
+        horizontalStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
 
-        firstHorizontalStackView.addArrangedSubview(makerLabel)
-        firstHorizontalStackView.addArrangedSubview(deleteButton)
+        horizontalStackView.addArrangedSubview(makerLabel)
+        horizontalStackView.addArrangedSubview(deleteButton)
         deleteButton.snp.makeConstraints { make in
             make.size.equalTo(Size.defaultOffset)
         }

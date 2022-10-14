@@ -1,28 +1,27 @@
 //
-//  EstimateHistoryViewModel.swift
+//  CameraViewModel.swift
 //  Samplero
 //
-//  Created by JiwKang on 2022/10/10.
+//  Created by JiwKang on 2022/10/14.
 //
 
 import Foundation
 
 import RxSwift
 
-class EstimateHistoryViewModel {
-    
+class CameraViewModel {
     // MARK: - Properties
     
     let db = DBHelper.shared
     
     var disposeBag = DisposeBag()
     
-    let estimateHistorySubject: BehaviorSubject<[EstimateHistory]>
+    let estimateHistoryObservable: Observable<[EstimateHistory]>
     
     init () {
         var estimateHistories: [EstimateHistory] = []
         estimateHistories = db.getEstimateHistories()
         
-        estimateHistorySubject = BehaviorSubject(value: estimateHistories)
+        estimateHistoryObservable = Observable.of(estimateHistories)
     }
 }

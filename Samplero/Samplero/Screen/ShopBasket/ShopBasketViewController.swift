@@ -17,7 +17,7 @@ private enum Size {
     static let noticeBackgroundHeight = 42.0
     static let defaultOffset = 20.0
     static let allButtonsBackgroundHeight = 51.0
-    static let orderButtonCorneradius = 14.0
+    static let orderButtonCorneRadius = 14.0
     static let orderButtonHeight = 64.0
     static let buttonTextStackViewSpacing = 2.0
     static let zPositionValue = 1.0
@@ -99,7 +99,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     private let buttonSecondLabel: UILabel = {
         let label = UILabel()
         label.text = "주문하기"
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize,weight: .bold)
         label.textColor = .white
         return label
     }()
@@ -142,7 +142,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         setDelegation()
     }
     override func viewWillAppear(_ animated: Bool) {
-        hideNavBar()
+        showNavBar()
     }
     override func viewDidLayoutSubviews() {
         shopBasketFlowLayout.footerReferenceSize = CGSizeMake(shopBasketCollectionView.bounds.width, Size.footerViewHeight)
@@ -356,8 +356,8 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     private func setDelegation() {
         shopBasketCollectionView.rx.setDelegate(self).disposed(by: viewModel.disposeBag)
     }
-    
-    private func hideNavBar() {
+
+    private func showNavBar() {
         navigationController?.navigationBar.isHidden = false
     }
 

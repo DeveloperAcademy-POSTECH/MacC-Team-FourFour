@@ -11,13 +11,13 @@ import Foundation
 #if DEBUG
 struct MockData {
 
-    static var sampleList: [Sample] = [
+    static let sampleList: [Sample] = [
         Sample(id: 0,
                matName: "화이트마블",
                imageName: "WhiteMarble",
                matPrice: 12_000,
                samplePrice: 5_000,
-               material: "TPU",
+               material: "프리미엄 TPU 필름, PU폼",
                thickness: 4,
                size: CGSize(width: 120, height: 120),
                maker: "봄봄매트"),
@@ -49,6 +49,41 @@ struct MockData {
                size: CGSize(width: 200, height: 200),
                maker: "밀리매트")
 
+    ]
+    
+    static let estimateHistories: [EstimateHistory] = [
+        EstimateHistory(imageId: 0,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 1,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 2,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 3,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 4,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 5,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 6,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil),
+        EstimateHistory(imageId: 7,
+                        width: nil,
+                        height: nil,
+                        selectedSampleId: nil)
     ]
 }
 #endif

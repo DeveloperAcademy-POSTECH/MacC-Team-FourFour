@@ -12,89 +12,87 @@ import SnapKit
 final class AreaTestViewController: BaseViewController {
 
     // MARK: - Properties
-    private let priceLabel: UILabel = {
-        let label = UILabel()
-        label.text = "예상 가격"
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
-        label.textColor = .white
-        label.textAlignment = .center
-        return label
-    }()
     
-    private let getAreaButton = UIView()
+    private let toBeEstimatedPriceView = ToBeEstimatedPriceView()
+    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: 1200000, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: 15000)
     
-    private let textButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
-        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .light)
-        button.tintColor = .white
-        button.setTitle("견적 계산을 위해 공간의 면적을 입력해주세요", for: .normal)
-        return button
-    }()
-    
-    private let roundedRectangle: UIView = {
-        let rect = UIView()
-        rect.backgroundColor = .black
-        rect.alpha = 0.5
-        return rect
-    }()
-    
-    private let priceAndAreaStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.backgroundColor = .black
-        stackView.alpha = 0.5
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .center
-        return stackView
-    }()
+    let getAreaViewController = GetAreaViewController()
     
     // MARK: - Life Cycle
     
     override func viewDidLayoutSubviews() {
-        roundedRectangle.layer.cornerRadius = roundedRectangle.bounds.height/2
-        roundedRectangle.layer.borderWidth = 1
-        roundedRectangle.layer.borderColor = UIColor.white.cgColor
+        toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height/2
+        estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height/2
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setDelegation()
     }
     
     override func render() {
-        view.addSubview(priceAndAreaStackView)
-        getAreaButton.addSubview(roundedRectangle)
-        getAreaButton.addSubview(textButton)
-        
-        textButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(23)
+        view.addSubview(toBeEstimatedPriceView)
+        toBeEstimatedPriceView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
             make.center.equalToSuperview()
+            make.height.equalTo(80)
         }
-        roundedRectangle.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+
+        view.addSubview(estimatedPriceView)
+        estimatedPriceView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
             make.center.equalToSuperview()
-            make.width.equalTo(textButton).multipliedBy(1.1)
-            make.height.equalTo(40)
-        }
-        
-        priceAndAreaStackView.addArrangedSubview(priceLabel)
-        priceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(23)
-        }
-        
-        priceAndAreaStackView.addArrangedSubview(getAreaButton)
-        priceAndAreaStackView.snp.makeConstraints { make in
-            make.center.equalTo(view)
-            make.leading.trailing.equalTo(view)
             make.height.equalTo(80)
         }
     }
     
     override func configUI() {
+        toBeEstimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        toBeEstimatedPriceView.alpha = 1
+        estimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        estimatedPriceView.alpha = 0
     }
     
     
     // MARK: - Func
     
-    @objc func buttonDidTap() {
-        let viewController = GetAreaViewController()
-        viewController.preferredSheetSizing = .medium
-        present(viewController, animated: true)
+    private func setDelegation() {
+        toBeEstimatedPriceView.delegate = self
+        estimatedPriceView.delegate = self
+        getAreaViewController.delegate = self
+    }
+    
+    // TODO: - 샘플 정보에서 가져올 것: 장 당 가격, 샘플 크기
+    let exampleSamplePrice = 15000
+    let exampleSampleArea = 14400
+    
+    private func calculatePrice(width: Int, height: Int) -> [Int] {
+        let estimatedQuantity = width*height / exampleSampleArea
+        let estimatedPrice = exampleSamplePrice * estimatedQuantity
+        // FIXME: - 배열 말고 다른 방식 사용하기
+        return [estimatedQuantity, estimatedPrice]
+    }
+}
+
+extension AreaTestViewController: ShowModalDelegate {
+    func buttonDidTapped() {
+        getAreaViewController.preferredSheetSizing = .medium
+        present(getAreaViewController, animated: true)
+    }
+}
+
+extension AreaTestViewController: SaveSizeDelegate {
+    func saveButtonTapped(widthString: String, heightString: String) {
+        // FIXME: - 더 안정적으로 수정
+        if widthString == "" || heightString == "" {
+            toBeEstimatedPriceView.alpha = 1
+            estimatedPriceView.alpha = 0
+        } else {
+            let quantityAndPrice = calculatePrice(width: Int(widthString) ?? 0, height: Int(heightString) ?? 0)
+            estimatedPriceView.changeEstimation(estimatedPrice: quantityAndPrice[1], width: Int(widthString) ?? 0, height: Int(heightString) ?? 0, estimatedQuantity: quantityAndPrice[0], pricePerBlock: exampleSamplePrice)
+            toBeEstimatedPriceView.alpha = 0
+            estimatedPriceView.alpha = 1
+        }
     }
 }
