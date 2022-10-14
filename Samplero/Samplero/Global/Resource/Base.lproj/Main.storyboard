@@ -32,33 +32,8 @@
                     <view key="view" contentMode="scaleToFill" id="EaK-zQ-yub">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y2I-Q5-z01">
-                                <rect key="frame" x="114.66666666666669" y="404.66666666666669" width="161" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="견적내기뷰 들어가기"/>
-                                <connections>
-                                    <action selector="estimateButton:" destination="dZ1-hr-5MG" eventType="touchUpInside" id="tB5-Rt-dXA"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="euA-Cd-ciZ">
-                                <rect key="frame" x="114.66666666666669" y="555.66666666666663" width="161" height="35.333333333333371"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="장바구니뷰 들어가기"/>
-                                <connections>
-                                    <action selector="shopBasketButton:" destination="dZ1-hr-5MG" eventType="touchUpInside" id="m9C-br-Pv7"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="clg-bC-gZ1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="euA-Cd-ciZ" firstAttribute="centerX" secondItem="EaK-zQ-yub" secondAttribute="centerX" id="5nF-cN-eiA"/>
-                            <constraint firstItem="Y2I-Q5-z01" firstAttribute="centerY" secondItem="EaK-zQ-yub" secondAttribute="centerY" id="6g7-j8-9nm"/>
-                            <constraint firstItem="Y2I-Q5-z01" firstAttribute="centerX" secondItem="EaK-zQ-yub" secondAttribute="centerX" id="eHo-ti-wXh"/>
-                            <constraint firstItem="euA-Cd-ciZ" firstAttribute="top" secondItem="Y2I-Q5-z01" secondAttribute="bottom" constant="116.33" id="nOo-Dw-QCq"/>
-                            <constraint firstItem="clg-bC-gZ1" firstAttribute="bottom" secondItem="euA-Cd-ciZ" secondAttribute="bottom" constant="219" id="yUb-c0-SQS"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Cyv-ON-dqs"/>
                 </viewController>

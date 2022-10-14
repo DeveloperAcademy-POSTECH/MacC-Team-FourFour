@@ -459,6 +459,13 @@ extension CameraViewController: UIImagePickerControllerDelegate, UINavigationCon
             .subscribe(onNext: {
                 takenPictureViewController.dismiss(animated: true)
             }).disposed(by: disposeBag)
+
+        takenPictureViewController.rx.nextButton
+            .subscribe(onNext: {
+                self.takenPicture = takenPictureViewController.takenPicture
+                self.takenPictureViewController = takenPictureViewController
+                self.segmentFloor()
+            }).disposed(by: disposeBag)
         
         picker.dismiss(animated: true, completion: nil)
         takenPictureViewController.modalPresentationStyle = .overFullScreen
