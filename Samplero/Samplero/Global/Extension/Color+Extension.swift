@@ -9,7 +9,7 @@ import UIKit
 extension UIColor {
 
 //  에셋 컬러 사용 예시
-    static let accent: UIColor = .systemBlue
+    static let accent: UIColor = UIColor(hex: "2F2B2B")
     static let boxBackground: UIColor = .secondarySystemBackground
     static let primaryBlack: UIColor = .black
     static let secondaryGray: UIColor = .secondaryLabel
