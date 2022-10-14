@@ -30,6 +30,9 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     // MARK: - Properties
     // View consists of roomImageView, sampleDetailView, bottomView
 
+    private let matInsertedImageName: String = "mat-inserted-photo-"
+    private let savingFolderName: String = "estimate-photo"
+
     private var sourceImage: UIImage!
     private var maskedImage: UIImage!
 
@@ -103,8 +106,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        viewModel.fileManager.saveImage(image: self.lastSelectedImage, imageName: , folderName: <#T##String#>)
-        //
+        viewModel.fileManager.saveImage(image: self.lastSelectedImage, imageName: self.matInsertedImageName + String(describing: viewModel.imageIndex), folderName: self.savingFolderName)
     }
 
     override func viewDidLayoutSubviews() {
