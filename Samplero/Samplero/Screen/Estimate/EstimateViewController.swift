@@ -177,8 +177,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     }
 
     override func viewDidLayoutSubviews() {
-        toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height/2
-        estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height/2
+        toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height / 2
+        estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height / 2
         cartCountLabel.layer.cornerRadius = cartCountLabel.layer.bounds.height / 2
     }
 
@@ -368,6 +368,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
+
         sourceImage = viewModel.getImage()
         maskedImage = viewModel.getMaskedImage()
 
@@ -387,9 +388,12 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     func maskInputImage(with sample: Sample) -> UIImage? {
         let takenCIImage = CIImage(cgImage: self.sourceImage.cgImage!)
         let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(sourceImage.imageOrientation))
-        let backgroundImage = UIImage.load(named: "Spread\(sample.imageName)")
+        let spreadMatName = sample.imageName.replacingOccurrences(of: "Thumbnail", with: "Spread")
+        let backgroundImage = UIImage.load(named: spreadMatName)
         guard let backgroundCGImage = backgroundImage.cgImage else { return nil }
+
         guard let resizedBackgroundImage = backgroundCGImage.resize(size: self.sourceImage.size) else { return nil }
+
         let background = CIImage(cgImage: resizedBackgroundImage)
         let mask = CIImage(cgImage: self.maskedImage.cgImage!)
 

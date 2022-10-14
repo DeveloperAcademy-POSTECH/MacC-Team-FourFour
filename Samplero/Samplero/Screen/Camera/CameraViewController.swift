@@ -174,15 +174,13 @@ class CameraViewController: BaseViewController {
             make.height.equalTo(UIScreen.main.bounds.height / 6.975)
         }
 
-        if isOnboardingProvided == false {
-            view.addSubview(cameraHelpView)
-            cameraHelpView.snp.makeConstraints { make in
-                make.top.equalToSuperview()
-                make.width.equalToSuperview()
-                make.bottom.equalTo(bottomDrawer.snp.top)
-            }
+        view.addSubview(cameraHelpView)
+        cameraHelpView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.width.equalToSuperview()
+            make.bottom.equalTo(bottomDrawer.snp.top)
         }
-        
+
         view.addSubview(shutterButton)
         shutterButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(UIScreen.main.bounds.height / 10.55)
