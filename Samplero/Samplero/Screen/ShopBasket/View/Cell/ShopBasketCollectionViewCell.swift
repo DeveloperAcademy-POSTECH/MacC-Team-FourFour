@@ -107,7 +107,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
     var isChecked: Bool = false {
         didSet {
             if isChecked {
-                checkBox.setImage(UIImage(systemName: "square.fill"), for: .normal)
+                checkBox.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
                 checkBox.imageView?.tintColor = .accent
 
             } else {

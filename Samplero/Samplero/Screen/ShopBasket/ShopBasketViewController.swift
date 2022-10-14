@@ -335,7 +335,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .subscribe(onNext: { currentCount in
                 self.checkedCount = currentCount
                 if currentCount == self.viewModel.wishedSampleRelay.value.count {
-                    self.allChoiceButton.setImage(UIImage(systemName: "square.fill"), for: .normal)
+                    self.allChoiceButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
                     self.allChoiceButton.imageView?.tintColor = .accent
 
                 } else {
@@ -426,7 +426,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     }
 
     private func changeAllChoiceButtonUI(checked: Bool) {
-        self.allChoiceButton.setImage(UIImage(systemName: checked ? "square.fill" : "square"), for: .normal)
+        self.allChoiceButton.setImage(UIImage(systemName: checked ? "checkmark.square.fill" : "square"), for: .normal)
         self.allChoiceButton.imageView?.tintColor = checked ? .accent : .boxBackground
     }
 }
