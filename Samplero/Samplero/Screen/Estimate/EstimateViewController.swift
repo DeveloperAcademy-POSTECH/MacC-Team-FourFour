@@ -29,6 +29,10 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     // MARK: - Properties
     // View consists of roomImageView, sampleDetailView, bottomView
+
+    var sourceImage = UIImage()
+    var maskedImage = UIImage()
+
     var roomImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.masksToBounds = true
@@ -165,7 +169,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         super.configUI()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.cartDark, style: .plain, target: self, action: nil)
         self.navigationItem.rightBarButtonItem?.tintColor = .black
-
     }
 
     func bind() {
@@ -208,16 +211,43 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
         samplePriceValueLabel.text = "\(sample.samplePrice.description)원"
+        roomImageView.image = maskInputImage(with: sample)
+    }
+
+    func maskInputImage(with sample: Sample) -> UIImage? {
+        guard let takenImageData = self.sourceImage.jpegData(compressionQuality: 1.0) else { return nil }
+        guard let takenCIImage = CIImage(data: takenImageData) else { return nil }
+        guard let takenUIImage = UIImage(data: takenImageData) else { return nil }
+        let backgroundImage = UIImage.load(named: "Spread\(sample.imageName)")
+        let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(takenUIImage.imageOrientation))
+        guard let backgroundCGImage = backgroundImage.cgImage else { return nil }
+        guard let resizedBackgroundImage = backgroundCGImage.resize(size: self.sourceImage.size) else { return nil }
+        let background = CIImage(cgImage: resizedBackgroundImage)
+        guard let maskedCGImage = self.maskedImage.cgImage else { return nil }
+        let mask = CIImage(cgImage: maskedCGImage)
+
+        guard let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: [
+            kCIInputImageKey: beginImage,
+            kCIInputBackgroundImageKey: background,
+            kCIInputMaskImageKey: mask])?.outputImage else {
+            return nil
+        }
+        let ciContext = CIContext(options: nil)
+        guard let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent) else { return nil }
+        return UIImage(cgImage: filteredImageRef)
     }
 }
 
 
-// MARK: - configSample: Binder
 
+// MARK: - configSample: Binder
 
 extension Reactive where Base: EstimateViewController {
     var configSample: Binder<Sample> {
         return Binder(self.base) { _, sample in
+            if let matInsertedImage = self.base.maskInputImage(with: sample) {
+                self.base.roomImageView.image = matInsertedImage
+            }
             self.base.configure(with: sample)
         }
     }

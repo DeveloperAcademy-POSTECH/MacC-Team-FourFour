@@ -32,3 +32,7 @@ final class EstimateViewModel: ViewModelType {
         return Output(SampleList: sampleList, tappedSample: selected)
     }
 }
+//
+//extension EstimateViewModel {
+//
+//}
