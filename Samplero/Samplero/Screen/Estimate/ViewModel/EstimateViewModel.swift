@@ -12,7 +12,7 @@ import RxSwift
 
 final class EstimateViewModel: ViewModelType {
     var imageIndex: Int = 0
-    private let savingfolderName: String = "estimate-photo"
+    private let savingFolderName: String = "estimate-photo"
     private let floorSegmentedImageName: String = "floor-segmented-photo-"
     private let matInsertedImageName: String = "mat-inserted-photo-"
 
@@ -41,12 +41,12 @@ final class EstimateViewModel: ViewModelType {
 
 extension EstimateViewModel {
     func getImage() -> UIImage {
-        return self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
+        return self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageIndex)", folderName: savingFolderName) ?? UIImage()
     }
 
     func getMaskedImage() -> UIImage {
 
-        return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
+        return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingFolderName) ?? UIImage()
     }
 }
 

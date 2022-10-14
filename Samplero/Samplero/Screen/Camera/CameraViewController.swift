@@ -214,10 +214,10 @@ class CameraViewController: BaseViewController {
     func bind() {
         viewModel.estimateHistoryObservable
             .subscribe(onNext: { [weak self] history in
-                let savingfolderName: String = "estimate-photo"
+                let savingFolderName: String = "estimate-photo"
                 let floorSegmentedImageName: String = "mat-inserted-photo"
                 let imageName = floorSegmentedImageName + "-\(history.last?.imageId ?? 0)"
-                let image = self?.fileManager.getImage(imageName: imageName, folderName: savingfolderName)
+                let image = self?.fileManager.getImage(imageName: imageName, folderName: savingFolderName)
                 
                 if image == nil {
                     self?.photoHistoryButton.backgroundColor = .white
