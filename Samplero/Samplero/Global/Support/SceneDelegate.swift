@@ -20,8 +20,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             return
         }
-        print("111111111111111111111111111111111", url)
-
         guard let _ = (scene as? UIWindowScene) else { return }
     }
 
