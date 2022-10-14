@@ -10,10 +10,13 @@ import UIKit
 private enum Size {
     static let defaultOffset = 20.0
     static let horizontalLineHeight = 1
-    static let horizontalLineTopOffset = 17
-    static let vStackViewTopOffset = 10
+    static let horizontalLineTopOffset = 12
+    static let vStackViewTopOffset = 12
     static let vStackViewSpacing = 8.0
-    static let nameStackViewTopOffset = 27
+    static let nameStackViewTopOffset = 2
+    static let materialStackViewWidth = 276.0
+    static let makerLabelTopOffset = 12.0
+    static let samplePriceStackViewSpacing = 24.0
 }
 
 
@@ -22,36 +25,61 @@ final class SampleDetailView: UIView {
 
     // MARK: - Properties
 
+    private let makerLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment =  .left
+        label.font = .regularCaption1
+        label.textColor = .secondaryGray
+        return label
+    }()
     private let sampleNameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .boldBody
         label.textColor = .black
         return label
     }()
 
-    private let matPriceLabel: UILabel = {
+    private let samplePriceLabel: UILabel = {
         let label = UILabel()
-        label.textAlignment =  .right
-        label.font = .systemFont(ofSize: 16, weight: .bold)
-        label.textColor = .black
+        label.textAlignment =  .left
+        label.font = .regularSubheadline
+        label.text = "샘플가격"
+        label.textColor = .secondaryGray
         return label
+    }()
+
+    private let samplePriceValueLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment =  .left
+        label.font = .boldSubheadline
+        label.textColor = .primaryBlack
+        return label
+    }()
+
+    private let samplePriceStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .fill
+        stackView.spacing = Size.samplePriceStackViewSpacing
+        return stackView
     }()
 
     private let nameStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fill
         return stackView
     }()
 
     private let horizontalLine: UIView = {
         let view = UIView()
-        view.backgroundColor = .black
+        view.backgroundColor = .primaryBlack
+        view.layer.opacity = 0.5
         return view
     }()
-
 
     private let materialStackView = EstimateCommonStackView(detailName: "소재")
 
@@ -59,14 +87,11 @@ final class SampleDetailView: UIView {
 
     private let sizeStackView = EstimateCommonStackView(detailName: "크기")
 
-    private let makerStackView = EstimateCommonStackView(detailName: "제조사")
-
     private let firstHorizontalView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
-        stackView.distribution = .fillEqually
-        stackView.spacing = Size.defaultOffset
+        stackView.distribution = .fill
         return stackView
     }()
 
@@ -74,8 +99,7 @@ final class SampleDetailView: UIView {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .leading
-        stackView.distribution = .fillEqually
-        stackView.spacing = Size.defaultOffset
+        stackView.distribution = .fill
         return stackView
     }()
 
@@ -107,11 +131,19 @@ final class SampleDetailView: UIView {
 
     private func render() {
         nameStackView.addArrangedSubview(sampleNameLabel)
-        nameStackView.addArrangedSubview(matPriceLabel)
+        nameStackView.addArrangedSubview(UIView())
+        nameStackView.addArrangedSubview(samplePriceStackView)
+        samplePriceStackView.addArrangedSubview(samplePriceLabel)
+        samplePriceStackView.addArrangedSubview(samplePriceValueLabel)
 
+        self.addSubview(makerLabel)
+        makerLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(Size.makerLabelTopOffset)
+            make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
+        }
         self.addSubview(nameStackView)
         nameStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(Size.nameStackViewTopOffset)
+            make.top.equalTo(makerLabel.snp.bottom).offset(Size.nameStackViewTopOffset)
             make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
         }
 
@@ -132,13 +164,17 @@ final class SampleDetailView: UIView {
         verticalStackView.addArrangedSubview(secondHorizontalView)
 
         firstHorizontalView.addArrangedSubview(materialStackView)
-        firstHorizontalView.addArrangedSubview(thicknessStackView)
+        materialStackView.setValueLabelWidth(Size.materialStackViewWidth)
+        firstHorizontalView.addArrangedSubview(UIView())
+
+       // firstHorizontalView.addArrangedSubview(thicknessStackView)
         firstHorizontalView.snp.makeConstraints { make in
             make.width.equalToSuperview()
         }
         
         secondHorizontalView.addArrangedSubview(sizeStackView)
-        secondHorizontalView.addArrangedSubview(makerStackView)
+        secondHorizontalView.addArrangedSubview(thicknessStackView)
+        secondHorizontalView.addArrangedSubview(UIView())
         secondHorizontalView.snp.makeConstraints { make in
             make.width.equalToSuperview()
         }
@@ -146,12 +182,12 @@ final class SampleDetailView: UIView {
     }
 
      func configure(with sample: Sample) {
-        sampleNameLabel.text = sample.matName
-        matPriceLabel.text = "장당 \(sample.matPrice)원"
-        materialStackView.setValueLabel(with: sample.material)
+         sampleNameLabel.text = sample.matName
+         materialStackView.setValueLabel(with: sample.material)
          thicknessStackView.setValueLabel(with: "\(sample.thickness.description)cm")
          sizeStackView.setValueLabel(with: sample.size.toString)
-        makerStackView.setValueLabel(with: sample.maker)
+         makerLabel.text = sample.maker
+         samplePriceValueLabel.text = (sample.samplePrice == .zero ? "무료" : "\(sample.samplePrice.description)원")
     }
 
 
