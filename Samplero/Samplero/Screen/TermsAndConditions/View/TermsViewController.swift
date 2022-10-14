@@ -29,6 +29,10 @@ class TermsViewController: BaseViewController {
     
     // MARK: - Properties
     
+    private var shopBasketString: String = ""
+    
+    private let db = DBHelper.shared
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "샘플 발송을 위해 약관동의가 필요합니다."
@@ -115,6 +119,11 @@ class TermsViewController: BaseViewController {
         bind()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        db.deleteAllItemFromShopBasket()
+    }
+    
     override func render() {
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -175,24 +184,24 @@ class TermsViewController: BaseViewController {
             .disposed(by: viewModel.disposeBag)
     }
     
+    func setShopBasketString(str: String) {
+        self.shopBasketString = str
+    }
+    
     @objc func buttonTapped() {
         if checkboxImageView.isChecked {
-//            showToastAnimation()
+            UIPasteboard.general.string = "장바구니 내역\n\(shopBasketString)"
             
+            showToastAnimation()
             // FIXME: - 테스트 용 string입니다. 추후 장바구니 내역으로 수정 필요
-            UIPasteboard.general.string = "장바구니 내역"
             
-            sleep(2)
-            if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
-                UIApplication.shared.open(url, options: [:])
-            }
         } else {
             makeAlert(title: "알림", message: "약관에 동의하지 않으면 샘플을 주문할 수 없어요.")
         }
     }
 
     @objc func showToastAnimation() {
-        toastView.alpha = 1.0
+        toastView.alpha = 0.0
             
         self.view.addSubview(toastView)
         toastView.snp.makeConstraints { make in
@@ -200,10 +209,28 @@ class TermsViewController: BaseViewController {
             make.bottom.equalToSuperview().inset(147)
         }
         
-        UIView.animate(withDuration: 1.5, delay: 1.4, options: .curveEaseIn, animations: {
-            self.toastView.alpha = 0.0
-        }, completion: { _ in
-            self.toastView.removeFromSuperview()
+        UIView.animateKeyframes(withDuration: 3.5, delay: 0, options: .calculationModeLinear, animations: {
+            UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.1) {
+                self.toastView.alpha = 0.0
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.1, relativeDuration: 0.2) {
+                self.toastView.alpha = 1.0
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.3, relativeDuration: 0.5) {
+                self.toastView.alpha = 1.0
+            }
+            
+            UIView.addKeyframe(withRelativeStartTime: 0.8, relativeDuration: 0.2) {
+                self.toastView.alpha = 0.0
+            }
+        }, completion: { isCompleted in
+            if isCompleted {
+                if let url = URL(string: "https://pf.kakao.com/_xalMTxj/chat") {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            }
         })
     }
 }

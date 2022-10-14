@@ -38,7 +38,7 @@ class EstimatedPriceView: UIView {
         return stackView
     }()
     
-    let textButton: PaddedButton = {
+    lazy var textButton: PaddedButton = {
         let button = PaddedButton(topInset: 4, bottomInset: 4, leftInset: 8, rightInset: 8)
         button.addTarget(self, action: #selector(tapButton(sender:)), for: .touchUpInside)
         button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
@@ -74,6 +74,8 @@ class EstimatedPriceView: UIView {
     
     init(estimatedPrice: Int, width: Int, height: Int, estimatedQuantity: Int, pricePerBlock: Int) {
         super.init(frame: .zero)
+        self.backgroundColor = .red
+
         changeEstimation(estimatedPrice: estimatedPrice, width: width, height: height, estimatedQuantity: estimatedQuantity, pricePerBlock: pricePerBlock)
         render()
     }
