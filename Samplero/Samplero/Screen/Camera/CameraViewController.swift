@@ -16,6 +16,8 @@ class CameraViewController: BaseViewController {
     
     // MARK: - Properties
     
+    let isClosedHelpView: Bool = UserDefaults.standard.bool(forKey: "isClosedHelpView")
+    
     // Capture Session
     var session: AVCaptureSession?
     // Photo Output
@@ -220,6 +222,14 @@ class CameraViewController: BaseViewController {
         
         view.backgroundColor = .black
         navigationItem.backButtonTitle = "카메라"
+        
+        if isClosedHelpView {
+            topDrawer.isHidden = false
+            cameraHelpView.isHidden = true
+        } else {
+            topDrawer.isHidden = true
+            cameraHelpView.isHidden = false
+        }
     }
     
     func bind() {
@@ -301,10 +311,11 @@ class CameraViewController: BaseViewController {
             print("clicked cart")
         }.disposed(by: disposeBag)
         
-        cameraHelpView.rx.tapGesture
+        cameraHelpView.xMarkButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.cameraHelpView.isHidden = true
                 self?.topDrawer.isHidden = false
+                UserDefaults.standard.set(true, forKey: "isClosedHelpView")
             })
             .disposed(by: disposeBag)
     }
