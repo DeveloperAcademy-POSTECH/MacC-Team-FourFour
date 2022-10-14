@@ -42,7 +42,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     private let sampleDetailView = SampleDetailView()
 
-
     // subView of bottomView
     private let sampleAddButton: UIButton = {
         let button = UIButton()
@@ -81,8 +80,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     var viewModel: EstimateViewModel!
 
-    private let toBeEstimatedPriceView = ToBeEstimatedPriceView()
-    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: 1200000, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: 15000)
+     let toBeEstimatedPriceView = ToBeEstimatedPriceView()
+     let estimatedPriceView = EstimatedPriceView(estimatedPrice: 1200000, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: 15000)
 
     var currentSample: Sample = MockData.sampleList[0]
 
@@ -92,7 +91,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 
     override func viewDidLayoutSubviews() {
@@ -114,8 +112,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         }
 
         roomImageView.addSubview(estimatedPriceView)
-        toBeEstimatedPriceView.snp.makeConstraints { make in
-            make.top.equalTo(toBeEstimatedPriceView.snp.bottom)
+        estimatedPriceView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(80)
         }
@@ -126,7 +124,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             make.bottom.equalToSuperview().inset(Size.sampleCollectionBottomOffset)
             make.height.equalTo(Size.cellItemSize)
         }
-        
 
         view.addSubview(sampleDetailView)
         sampleDetailView.snp.makeConstraints { make in
@@ -150,9 +147,9 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: ImageLiteral.cartDark, style: .plain, target: self, action: nil)
         self.navigationItem.rightBarButtonItem?.tintColor = .black
 
-        toBeEstimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        toBeEstimatedPriceView.backgroundColor = .black.withAlphaComponent(0.5)
         toBeEstimatedPriceView.alpha = 1
-        estimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        estimatedPriceView.backgroundColor = .black.withAlphaComponent(0.5)
         estimatedPriceView.alpha = 0
     }
 
@@ -196,15 +193,23 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             })
             .disposed(by: viewModel.disposeBag)
 
-        getAreaVC.saveButton
-            .rx.tap.subscribe(onNext:{
+        estimatedPriceView.textButton.rx.tap
+            .subscribe(onNext: {
+                self.getAreaVC.preferredSheetSizing = .medium
+                self.present(self.getAreaVC, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
 
+        getAreaVC.saveButton
+            .rx.tap.subscribe(onNext: {
                 let quantityAndPrice = self.calculatePrice(width: self.getAreaVC.areaWidth, height: self.getAreaVC.areaHeight)
                 self.estimatedPriceView.changeEstimation(estimatedPrice: Int(quantityAndPrice[1]), width: Int(self.getAreaVC.areaWidth), height: Int(self.getAreaVC.areaHeight), estimatedQuantity: Int(quantityAndPrice[0]), pricePerBlock: self.self.currentSample.samplePrice)
                 self.toBeEstimatedPriceView.alpha = 0
                 self.estimatedPriceView.alpha = 1
 
             })
+            .disposed(by: viewModel.disposeBag)
+        
 
     }
 
@@ -223,7 +228,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         // FIXME: - 배열 말고 다른 방식 사용하기
         return [estimatedQuantity, estimatedPrice]
     }
-
 }
 
 
@@ -232,21 +236,11 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
 extension Reactive where Base: EstimateViewController {
     var configSample: Binder<Sample> {
-        return Binder(self.base) { _, sample in
-            self.base.currentSample = sample
-            self.base.configure(with: sample)
+        return Binder(self.base) { estimateVC, sample in
+            estimateVC.currentSample = sample
+            estimateVC.toBeEstimatedPriceView.alpha = 1
+            estimateVC.estimatedPriceView.alpha = 0
+            estimateVC.configure(with: sample)
         }
     }
 }
-
-//extension Reactive where Base: GetAreaViewController {
-//    var saveArea: ControlEvent<Void> {
-//        let source = base.saveButton.rx.tap
-//            .map { base.dismiss(animated: true)
-//          //      print(Int.random(in: 0..<100))
-//            }
-//            .withLatestFrom(base.getTextField().rx.text) //두 Observable중 첫번째 Observable에서 아이템이 방출될 때마다 그 아이템을 두번째 Observable의 가장 최근 아이템과 결합해 방출
-//
-//        return ControlEvent(events: <#T##Ev#>)
-//    }
-//}

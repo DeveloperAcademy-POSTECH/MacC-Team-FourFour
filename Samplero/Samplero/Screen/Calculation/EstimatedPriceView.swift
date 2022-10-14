@@ -74,6 +74,8 @@ class EstimatedPriceView: UIView {
     
     init(estimatedPrice: Int, width: Int, height: Int, estimatedQuantity: Int, pricePerBlock: Int) {
         super.init(frame: .zero)
+        self.backgroundColor = .red
+
         changeEstimation(estimatedPrice: estimatedPrice, width: width, height: height, estimatedQuantity: estimatedQuantity, pricePerBlock: pricePerBlock)
         render()
     }
