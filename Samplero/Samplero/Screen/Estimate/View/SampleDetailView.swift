@@ -92,7 +92,6 @@ final class SampleDetailView: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.distribution = .fill
-      //  stackView.spacing = Size.defaultOffset
         return stackView
     }()
 
@@ -101,7 +100,6 @@ final class SampleDetailView: UIView {
         stackView.axis = .horizontal
         stackView.alignment = .leading
         stackView.distribution = .fill
-       // stackView.spacing = Size.defaultOffset
         return stackView
     }()
 
@@ -138,7 +136,6 @@ final class SampleDetailView: UIView {
         samplePriceStackView.addArrangedSubview(samplePriceLabel)
         samplePriceStackView.addArrangedSubview(samplePriceValueLabel)
 
-      //  samplePriceStackView.setValueLabelWidth(100)
         self.addSubview(makerLabel)
         makerLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(Size.makerLabelTopOffset)
@@ -186,7 +183,6 @@ final class SampleDetailView: UIView {
 
      func configure(with sample: Sample) {
          sampleNameLabel.text = sample.matName
-     //    matPriceLabel.text = "장당 \(sample.matPrice)원"
          materialStackView.setValueLabel(with: sample.material)
          thicknessStackView.setValueLabel(with: "\(sample.thickness.description)cm")
          sizeStackView.setValueLabel(with: sample.size.toString)
