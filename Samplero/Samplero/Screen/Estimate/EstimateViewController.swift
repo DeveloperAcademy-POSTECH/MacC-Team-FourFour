@@ -27,7 +27,6 @@ private enum Size {
 
 final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
-
     // MARK: - Properties
     // View consists of roomImageView, sampleDetailView, bottomView
 
@@ -44,7 +43,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     }()
 
     private let sampleDetailView = SampleDetailView()
-
 
     // subView of bottomView
     private let sampleAddButton: UIButton = {
@@ -139,8 +137,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         output.SampleList
             .bind(to: sampleCollectionView.rx.items) { [weak self] collectionView, itemIndex, sample -> UICollectionViewCell in
                 let indexPath = IndexPath(item: itemIndex, section: .zero)
-                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self,
-                                                              for: indexPath)
+                let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
                 cell.configure(with: sample.imageName)
 
                 if itemIndex == .zero {
@@ -148,7 +145,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     collectionView.selectItem(at: indexPath,
                                               animated: true,
                                               scrollPosition: .left)
-                    self?.configure(with: sample)
+                        self?.configure(with: sample)
                 }
 
                 cell.isSelected = (self?.lastSelectedIndexPath == indexPath)
@@ -168,7 +165,9 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
-        samplePriceValueLabel.text = "\(sample.samplePrice.description)원"
+        sourceImage = viewModel.getImage()
+        maskedImage = viewModel.getMaskedImage()
+
         roomImageView.image = maskInputImage(with: sample)
     }
 
@@ -176,18 +175,29 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         guard let takenImageData = self.sourceImage.jpegData(compressionQuality: 1.0) else { return nil }
         guard let takenCIImage = CIImage(data: takenImageData) else { return nil }
         guard let takenUIImage = UIImage(data: takenImageData) else { return nil }
-        let backgroundImage = UIImage.load(named: "Spread\(sample.imageName)")
         let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(takenUIImage.imageOrientation))
+
+        let backgroundImage = UIImage.load(named: "Spread\(sample.imageName)")
         guard let backgroundCGImage = backgroundImage.cgImage else { return nil }
         guard let resizedBackgroundImage = backgroundCGImage.resize(size: self.sourceImage.size) else { return nil }
         let background = CIImage(cgImage: resizedBackgroundImage)
-        guard let maskedCGImage = self.maskedImage.cgImage else { return nil }
-        let mask = CIImage(cgImage: maskedCGImage)
 
-        guard let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: [
-            kCIInputImageKey: beginImage,
+        guard let maskedCGImage = self.maskedImage.cgImage else { return nil }
+        let mask = CIImage(cgImage: maskedCGImage) .oriented(CGImagePropertyOrientation(takenUIImage.imageOrientation))
+
+//        let parameters = [
+//            kCIInputImageKey: beginImage,
+//            kCIInputBackgroundImageKey: background,
+//            kCIInputMaskImageKey: mask
+//        ]
+
+        let parameters = [
+            kCIInputImageKey: self.sourceImage.ciImage!,
             kCIInputBackgroundImageKey: background,
-            kCIInputMaskImageKey: mask])?.outputImage else {
+            kCIInputMaskImageKey: mask
+        ]
+
+        guard let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: parameters )?.outputImage else {
             return nil
         }
         let ciContext = CIContext(options: nil)

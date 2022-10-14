@@ -24,8 +24,8 @@ class TakenPictureViewController: BaseViewController {
     
     // Image FileManager
     private let savingfolderName: String = "estimate-photo"
-    private let floorSegmentedImageName: String = "floor-segmented-photo"
-    private let matInsertedImageName: String = "mat-inserted-photo"
+    private let floorSegmentedImageName: String = "floor-segmented-photo-"
+    private let matInsertedImageName: String = "mat-inserted-photo-"
     private let fileManager = LocalFileManager.instance
     
     // DB
@@ -165,26 +165,32 @@ class TakenPictureViewController: BaseViewController {
                let segmentationMap = observations.first?.featureValue.multiArrayValue {
                 guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
 
+                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
+
+
                 if segmentationMask.size != self.takenPicture.size {
                     guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
-                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + "-\(String(describing: self.takenPictureIndex))", folderName: self.savingfolderName)
+                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
                 } else {
-                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + "-\(String(describing: self.takenPictureIndex))", folderName: self.savingfolderName)
+                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
                 }
-                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + "-\(String(describing: self.takenPictureIndex))", folderName: self.savingfolderName)
+                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingfolderName)
 
-                //                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
                 //                let imageName: String = self.floorSegmentedImageName + "-\(self.takenPictureIndex!)"
                 // Save image
                 //                self.fileManager.saveImage(image: self.takenPicture, imageName: imageName, folderName: self.savingfolderName)
 
 
                 // Insert estimate history to db
+
                 self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
 
-                //                self.dismiss(animated: true)
                 var estimateVC = EstimateViewController()
                 estimateVC.bindViewModel(EstimateViewModel())
+                estimateVC.viewModel.imageIndex = self.takenPictureIndex
+
+//                estimateVC.sourceImage = self.takenPicture
+
 
                 self.navigationController?.pushViewController(estimateVC, animated: true)
             }

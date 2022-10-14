@@ -10,7 +10,7 @@
 
 
 # 사용하지 않을 규칙
-disabled_rules:
+    disabled_rules:
     # 공백인 라인을 제한
     - vertical_whitespace
     # 공백 라인 수를 1개로 제한

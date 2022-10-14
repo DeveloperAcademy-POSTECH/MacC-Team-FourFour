@@ -11,10 +11,12 @@ import RxCocoa
 import RxSwift
 
 final class EstimateViewModel: ViewModelType {
-
+    var imageIndex: Int = 0
     private let savingfolderName: String = "estimate-photo"
     private let floorSegmentedImageName: String = "floor-segmented-photo-"
     private let matInsertedImageName: String = "mat-inserted-photo-"
+
+    let fileManager = LocalFileManager.instance
 
     var disposeBag: DisposeBag = DisposeBag()
 
@@ -38,30 +40,13 @@ final class EstimateViewModel: ViewModelType {
 }
 
 extension EstimateViewModel {
-    func getImage(imageId id: Int) -> UIImage {
-        var image: UIImage!
-        estimateHistorySubject
-            .map { histories in
-                histories.filter { $0.imageId == id }.first?.imageId
-            }
-            .subscribe(onNext: { imageId in
-                image = self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageId ?? 0)", folderName: self.savingfolderName)
-            })
-            .disposed(by: disposeBag)
-        return image
+    func getImage() -> UIImage {
+        return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
     }
 
-    func getMaskedImage(imageId id: Int) -> UIImage {
-        var image: UIImage!
-        estimateHistorySubject
-            .map { histories in
-                histories.filter { $0.imageId == id }.first?.imageId
-            }
-            .subscribe(onNext: { imageId in
-                image = self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageId ?? 0)", folderName: self.savingfolderName)
-            })
-            .disposed(by: disposeBag)
-        return image
+    func getMaskedImage() -> UIImage {
+
+        return self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageIndex)", folderName: savingfolderName) ?? UIImage()
     }
 }
 
