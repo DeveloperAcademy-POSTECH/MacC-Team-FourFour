@@ -14,7 +14,7 @@ final class AreaTestViewController: BaseViewController {
     // MARK: - Properties
     
     private let toBeEstimatedPriceView = ToBeEstimatedPriceView()
-    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: 1200000, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: 15000)
+    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: -1, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: -1)
     
     let getAreaViewController = GetAreaViewController()
     
@@ -63,12 +63,13 @@ final class AreaTestViewController: BaseViewController {
     }
     
     // TODO: - 샘플 정보에서 가져올 것: 장 당 가격, 샘플 크기
-    let exampleSamplePrice = 15000
+//    let exampleSamplePrice = 15000
+    let exampleSamplePrice = -1
     let exampleSampleArea = 14400
     
     private func calculatePrice(width: Int, height: Int) -> [Int] {
         let estimatedQuantity = width*height / exampleSampleArea
-        let estimatedPrice = exampleSamplePrice * estimatedQuantity
+        let estimatedPrice = exampleSamplePrice == -1 ? -1 : exampleSamplePrice * estimatedQuantity
         // FIXME: - 배열 말고 다른 방식 사용하기
         return [estimatedQuantity, estimatedPrice]
     }

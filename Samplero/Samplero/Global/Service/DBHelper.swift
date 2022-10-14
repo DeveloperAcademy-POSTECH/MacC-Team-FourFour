@@ -244,6 +244,26 @@ final class DBHelper {
         return count == 0 ? false : true
     }
     
+    func getShopBasketCount() -> Int {
+        var statement: OpaquePointer?
+        var shopBasketCount: Int = 0
+        let query: String = "SELECT COUNT(*) FROM SHOP_BASKET;"
+        
+        if sqlite3_prepare(self.db, query, -1, &statement, nil) != SQLITE_OK {
+            let errorMessage = String(cString: sqlite3_errmsg(db)!)
+            print("SQLite:", "error while prepare: \(errorMessage)")
+            return shopBasketCount
+        }
+        
+        while sqlite3_step(statement) == SQLITE_ROW {
+            shopBasketCount = Int(sqlite3_column_int(statement, 0))
+        }
+        
+        sqlite3_finalize(statement)
+        
+        return shopBasketCount
+    }
+    
     func updateEstimateHistory(imageId id: Int, history: EstimateHistory) {
         var statement: OpaquePointer?
         let query = "UPDATE ESTIMATE_HISTORY SET WIDTH = '\(history.width ?? 0.0)', HEIGHT = '\(history.height ?? 0.0)', SELECTED_SAMPLE_ID = '\(history.selectedSampleId ?? 1) WHERE IMAGE_ID == \(id)"
@@ -263,9 +283,9 @@ final class DBHelper {
         print("SQLite:", "Update has been successfully done")
     }
     
-    func updateShopBasketItemSelectedState(itemId id: Int, shopBasketItem item: ShopBasket) {
+    func updateShopBasketItemSelectedState(itemId id: Int, shopBasketItem item: Bool) {
         var statement: OpaquePointer?
-        let query = "UPDATE SHOP_BASKET SET IS_SELECTED = '\(item.isSelected ? 1 : 0)' WHERE IMAGE_ID == \(id)"
+        let query = "UPDATE SHOP_BASKET SET IS_SELECTED = '\(item ? 1 : 0)' WHERE ID == \(id)"
         
         if sqlite3_prepare(db, query, -1, &statement, nil) != SQLITE_OK {
             let errorMessage = String(cString: sqlite3_errmsg(db))

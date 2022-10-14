@@ -69,6 +69,12 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         return button
     }()
     
+    private let upperDivider: UIView = {
+        let divider = UIView()
+        divider.backgroundColor = UIColor.separator
+        return divider
+    }()
+    
     // orderButton consists of buttonTextStackView( buttonFirstLabel, buttonSecondLabel )
     private let orderButton: UIButton = {
         let button = UIButton()
@@ -109,6 +115,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = Size.cellSpacing
+        layout.sectionInset = .init(top: 24, left: 0, bottom: 24, right: 0)
         return layout
     }()
     
@@ -145,6 +152,18 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     override func viewWillAppear(_ animated: Bool) {
         showNavBar()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.wishedSampleRelay
+            .subscribe(onNext: { items in
+                for item in items {
+                    self.viewModel.db.updateShopBasketItemSelectedState(itemId: item.sample.id, shopBasketItem: item.isChecked)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+    
     override func viewDidLayoutSubviews() {
         shopBasketFlowLayout.footerReferenceSize = CGSizeMake(shopBasketCollectionView.bounds.width, Size.footerViewHeight)
     }
@@ -178,6 +197,14 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         allDeleteButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(Size.defaultOffset)
+        }
+        
+        
+        view.addSubview(upperDivider)
+        upperDivider.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(allButtonsBackgroundView)
         }
         
         orderButton.addSubview(buttonTextStackView)
@@ -285,6 +312,13 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .drive(viewModel.selectionState)
             .disposed(by: viewModel.disposeBag)
         
+        // allDeleteButton tap action
+        allDeleteButton.rx.tap
+            .subscribe(onNext: {
+                self.viewModel.db.deleteAllItemFromShopBasket()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
         // selectionState binding to buttonFirstLabel
         viewModel.selectionState
             .map { "\($0.count)개의 샘플"}
@@ -353,26 +387,27 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectionState
-                  .map({ samples in
-                      var copyString: String = ""
-                      var number: Int = 0
-                      for sample in samples {
-                          number += 1
-                          copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
-                      }
-                      return copyString
-                  })
-                  .bind(to: viewModel.shopBasketCopy)
-                  .disposed(by: viewModel.disposeBag)
-
-              orderButton.rx.tap
-                  .withLatestFrom(viewModel.shopBasketCopy.asObservable())
-                  .subscribe(onNext: {
-                      let vc = TermsViewController()
-                      vc.setShopBasketString(str: $0)
-                      self.navigationController?.pushViewController(vc, animated: true)
-                  })
-                  .disposed(by: viewModel.disposeBag)
+            .map({ samples in
+                var copyString: String = ""
+                var number: Int = 0
+                for sample in samples {
+                    number += 1
+                    copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
+                }
+                
+                return copyString
+            })
+            .bind(to: viewModel.shopBasketCopy)
+            .disposed(by: viewModel.disposeBag)
+        
+        orderButton.rx.tap
+            .withLatestFrom(viewModel.shopBasketCopy.asObservable())
+            .subscribe(onNext: {
+                let vc = TermsViewController()
+                vc.setShopBasketString(str: $0)
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
         
     }
     
