@@ -295,7 +295,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         viewModel.selectionState
             .map { !$0.isEmpty }
             .asDriver(onErrorJustReturn: false)
-            .drive(orderButton.rx.enableStatus)
+            .drive(orderButton.rx.buttonEnabledStatus)
             .disposed(by: viewModel.disposeBag)
 
         // selectionState binding to allChoiceButton
@@ -407,7 +407,7 @@ extension Reactive where Base: UICollectionView {
 
 
 extension Reactive where Base: UIButton {
-    var enableStatus: Binder<Bool> {
+    var buttonEnabledStatus: Binder<Bool> {
         return Binder(self.base) { button, boolValue in
             switch boolValue {
             case true :
