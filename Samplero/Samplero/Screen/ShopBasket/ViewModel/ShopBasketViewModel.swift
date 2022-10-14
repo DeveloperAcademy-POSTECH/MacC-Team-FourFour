@@ -81,8 +81,8 @@ class ShopBasketViewModel {
                 checkSample.sample.id == removedCheckSample.sample.id && checkSample.isChecked == true
             }
         }
-        .filter {!$0.isEmpty}
-        .map { $0[0]}
+        .filter { !$0.isEmpty }
+        .map { $0[0] }
         .bind(to: selectedSubject)
         .disposed(by: disposeBag)
 
@@ -95,11 +95,13 @@ class ShopBasketViewModel {
         .bind(to: wishedSampleRelay)
         .disposed(by: disposeBag)
         
-        removedSubject
-            .subscribe(onNext: { removedCheckSample in
-                self.db.deleteItemFromShopBasket(itemId: removedCheckSample.sample.id)
-            })
-            .disposed(by: disposeBag)
+        removedSubject.map { $0.sample.id }
+        .subscribe(onNext: { id in
+            self.db.deleteItemFromShopBasket(itemId: id)
+        })
+        .disposed(by: disposeBag)
+        
+        
     }
 }
 

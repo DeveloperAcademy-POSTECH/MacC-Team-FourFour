@@ -140,6 +140,21 @@ class CameraViewController: BaseViewController {
             self?.session?.startRunning()
         }
         navigationController?.isNavigationBarHidden = true
+        
+        viewModel.shopBasketSubject
+            .map { _ in }
+            .map {
+                return self.viewModel.db.getShopBasketCount()
+            }
+            .map { count in
+                if count >= 99 {
+                    return " 99+ "
+                } else {
+                    return " \(count) "
+                }
+            }
+            .bind(to: cartCountLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
     }
     
     override func viewDidLoad() {
@@ -268,16 +283,6 @@ class CameraViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
-        viewModel.shopBasketSubject
-            .map { count in
-                if count >= 99 {
-                    return " 99+ "
-                } else {
-                    return " \(count) "
-                }
-            }
-            .bind(to: cartCountLabel.rx.text)
-            .disposed(by: viewModel.disposeBag)
     }
     
     // MARK: - Func
