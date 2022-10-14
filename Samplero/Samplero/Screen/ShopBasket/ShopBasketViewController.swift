@@ -352,24 +352,27 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectionState
-            .subscribe(onNext: { samples in
-                var copyString: String = ""
-                var number: Int = 0
-                for sample in samples {
-                    number += 1
-                    copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
-                }
-                self.viewModel.shopBasketCopy = copyString
-            })
-            .disposed(by: viewModel.disposeBag)
+                  .map({ samples in
+                      var copyString: String = ""
+                      var number: Int = 0
+                      for sample in samples {
+                          number += 1
+                          copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
+                      }
+                      return copyString
+                  })
+                  .bind(to: viewModel.shopBasketCopy)
+                  .disposed(by: viewModel.disposeBag)
+
+              orderButton.rx.tap
+                  .withLatestFrom(viewModel.shopBasketCopy.asObservable())
+                  .subscribe(onNext: {
+                      let vc = TermsViewController()
+                      vc.setShopBasketString(str: $0)
+                      self.navigationController?.pushViewController(vc, animated: true)
+                  })
+                  .disposed(by: viewModel.disposeBag)
         
-        orderButton.rx.tap
-            .subscribe(onNext: {
-                let vc = TermsViewController()
-                vc.setShopBasketString(str: self.viewModel.shopBasketCopy)
-                self.navigationController?.pushViewController(vc, animated: true)
-            })
-            .disposed(by: viewModel.disposeBag)
     }
     
     // MARK: - Func
