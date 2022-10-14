@@ -294,6 +294,13 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .drive(allButtonsBackgroundView.rx.isHidden)
             .disposed(by: viewModel.disposeBag)
 
+        // wishedSampleRelay binding to upperDivider's isHidden
+        viewModel.wishedSampleRelay
+            .map { $0.isEmpty }
+            .asDriver(onErrorJustReturn: true)
+            .drive(upperDivider.rx.isHidden)
+            .disposed(by: viewModel.disposeBag)
+
         // allDeleteButton binding to wishedSampleRelay
         allDeleteButton.rx.tap
             .asDriver()

@@ -32,7 +32,7 @@ class AmountFooterView: UICollectionReusableView {
     private let deliveryFeeView = AmountStackView(detailName: "배송비")
     private let totalAmountView = AmountStackView(detailName: "총 결제예정 금액")
 
-    private let deliveryFee = 5000
+    private let deliveryFee = 0
     // MARK: - Init
 
 
