@@ -19,7 +19,7 @@ class BaseViewController: UIViewController {
     private let lottieViewBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.alpha = 0.9
+        view.alpha = 0.2
         view.layer.cornerRadius = 10
         return view
     }()
@@ -45,7 +45,7 @@ class BaseViewController: UIViewController {
     }
 
     func setupLottieView() {
-        lottieView = LottieAnimationView(name: "dots")
+        lottieView = LottieAnimationView(name: "dot")
         guard let lottieView = lottieView else { return }
         backgroundView.frame = view.frame
 
@@ -64,8 +64,8 @@ class BaseViewController: UIViewController {
         view.addSubview(lottieView)
         lottieView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
-            make.width.equalTo(250)
-            make.height.equalTo(250)
+            make.width.equalTo(300)
+            make.height.equalTo(300)
         }
 
         lottieView.loopMode = .loop
