@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-#if DEBUG
 struct MockData {
 
     static let sampleList: [Sample] = [
@@ -121,4 +119,3 @@ struct MockData {
                         selectedSampleId: nil)
     ]
 }
-#endif

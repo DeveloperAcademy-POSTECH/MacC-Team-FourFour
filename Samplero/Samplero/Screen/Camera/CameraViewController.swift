@@ -285,19 +285,19 @@ class CameraViewController: BaseViewController {
             self.output.capturePhoto(with: AVCapturePhotoSettings(),
                                 delegate: self)
             #else
-            takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
-            takenPictureViewController.modalPresentationStyle = .overFullScreen
-            takenPictureViewController.rx.retake
+            self.takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
+            self.takenPictureViewController.modalPresentationStyle = .overFullScreen
+            self.takenPictureViewController.rx.retake
                 .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
                 .map { [weak self] in
                     self?.session?.startRunning()
                 }
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: {
-                    takenPictureViewController.dismiss(animated: true)
+                    self.takenPictureViewController.dismiss(animated: true)
                 }).disposed(by: self.disposeBag)
             
-            self.present(takenPictureViewController, animated: true)
+            self.present(self.takenPictureViewController, animated: true)
             
             self.session?.stopRunning()
             #endif
