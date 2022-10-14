@@ -73,7 +73,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     private let orderButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .boxBackground
-        button.layer.cornerRadius = Size.orderButtonCorneradius
+        button.layer.cornerRadius = Size.orderButtonCorneRadius
         button.layer.zPosition = Size.zPositionValue
         button.isEnabled = false
         return button
@@ -85,6 +85,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         view.axis = .vertical
         view.distribution = .fillEqually
         view.spacing = Size.buttonTextStackViewSpacing
+        view.isUserInteractionEnabled = false
         return view
     }()
     
@@ -179,17 +180,11 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             make.trailing.equalToSuperview().inset(Size.defaultOffset)
         }
         
-        view.addSubview(orderButton)
-        orderButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(Size.orderButtonHeight)
-        }
-        
         orderButton.addSubview(buttonTextStackView)
         buttonTextStackView.snp.makeConstraints { make in
             make.centerX.centerY.equalToSuperview()
         }
+        
         buttonTextStackView.addArrangedSubview(buttonFirstLabel)
         buttonTextStackView.addArrangedSubview(buttonSecondLabel)
         
@@ -197,6 +192,13 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         shopBasketCollectionView.snp.makeConstraints { make in
             make.top.equalTo(allButtonsBackgroundView.snp.bottom)
             make.leading.bottom.trailing.equalToSuperview()
+        }
+        
+        view.addSubview(orderButton)
+        orderButton.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(Size.defaultOffset)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.height.equalTo(Size.orderButtonHeight)
         }
         
         view.addSubview(noSampleLabel)
