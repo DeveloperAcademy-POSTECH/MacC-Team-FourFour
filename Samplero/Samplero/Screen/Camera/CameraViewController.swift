@@ -24,7 +24,7 @@ class CameraViewController: BaseViewController {
     let previewLayer = AVCaptureVideoPreviewLayer()
     
     // Rx
-    let viewModel = EstimateHistoryViewModel()
+    let viewModel = CameraViewModel()
     var disposeBag = DisposeBag()
     
     // Shutter Button
@@ -193,9 +193,8 @@ class CameraViewController: BaseViewController {
     }
     
     func bind() {
-        viewModel.estimateHistorySubject
+        viewModel.estimateHistoryObservable
             .subscribe(onNext: { [weak self] history in
-                self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
             })
             .disposed(by: disposeBag)
     }
