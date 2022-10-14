@@ -180,7 +180,7 @@ class CameraViewController: BaseViewController {
             make.width.equalToSuperview()
             make.bottom.equalTo(bottomDrawer.snp.top)
         }
-        
+
         view.addSubview(shutterButton)
         shutterButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(UIScreen.main.bounds.height / 10.55)
