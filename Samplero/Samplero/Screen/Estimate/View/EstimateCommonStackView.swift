@@ -7,7 +7,9 @@
 
 import UIKit
 
-
+private enum Size {
+    static let valueLabelWidth = 101
+}
 final class EstimateCommonStackView: UIStackView {
 
 
@@ -17,15 +19,15 @@ final class EstimateCommonStackView: UIStackView {
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .systemGray2
+        label.font = .regularSubheadline
+        label.textColor = .secondaryGray
         return label
     }()
 
     private let valueLabel: UILabel = {
         let label = UILabel()
         label.textAlignment =  .left
-        label.font = .systemFont(ofSize: 14)
+        label.font = .regularSubheadline
         label.textColor = .black
         return label
     }()
@@ -39,7 +41,8 @@ final class EstimateCommonStackView: UIStackView {
         nameLabel.text = detailName
         self.axis = .horizontal
         self.alignment = .leading
-        self.distribution = .fillEqually
+        self.distribution = .fill
+        self.spacing = 24
         render()
     }
 
@@ -53,12 +56,9 @@ final class EstimateCommonStackView: UIStackView {
 
     private func render() {
         self.addArrangedSubview(nameLabel)
-        nameLabel.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.5)
-        }
         self.addArrangedSubview(valueLabel)
         valueLabel.snp.makeConstraints { make in
-            make.width.equalToSuperview().multipliedBy(0.5)
+            make.width.equalTo(Size.valueLabelWidth)
         }
     }
 
@@ -66,4 +66,11 @@ final class EstimateCommonStackView: UIStackView {
         valueLabel.text = value
     }
 
+    func setValueLabelWidth(_ width: CGFloat) {
+        valueLabel.snp.updateConstraints { make in
+            make.width.equalTo(width)
+        }
+    }
+
 }
+
