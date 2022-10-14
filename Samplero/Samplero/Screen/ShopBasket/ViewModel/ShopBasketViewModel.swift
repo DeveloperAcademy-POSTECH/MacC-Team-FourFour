@@ -24,7 +24,7 @@ class ShopBasketViewModel {
 
     var disposeBag: DisposeBag = DisposeBag()
     let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: MockData.sampleList.map {CheckSample(sample: $0)})
-    let removedSubejct = PublishSubject<CheckSample>()
+    let removedSubject = PublishSubject<CheckSample>()
     // current selected checkSample collection
     var selectionState = PublishSubject<Set<CheckSample>>()
     // selected checkSample
@@ -69,7 +69,7 @@ class ShopBasketViewModel {
             .disposed(by: disposeBag)
 
         // removedSubejct binding to selectedSubject
-        removedSubejct.map { removedCheckSample in
+        removedSubject.map { removedCheckSample in
             return self.wishedSampleRelay.value.filter { checkSample -> Bool in
                 checkSample.sample.id == removedCheckSample.sample.id && checkSample.isChecked == true
             }
@@ -80,7 +80,7 @@ class ShopBasketViewModel {
         .disposed(by: disposeBag)
 
         // removedSubejct binding to wishedSampleRelay
-        removedSubejct.map { removedCheckSample in
+        removedSubject.map { removedCheckSample in
             return self.wishedSampleRelay.value.filter { checkSample -> Bool in
                 checkSample.sample.id != removedCheckSample.sample.id
             }

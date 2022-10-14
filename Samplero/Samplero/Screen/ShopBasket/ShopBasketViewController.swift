@@ -234,7 +234,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             // each cell's deleteButton Binding
             cell.getDeleteButton().rx.tap
                 .map { _ in checkSample }
-                .bind(to: self.viewModel.removedSubejct)
+                .bind(to: self.viewModel.removedSubject)
                 .disposed(by: cell.disposeBag!)
             return cell
             
