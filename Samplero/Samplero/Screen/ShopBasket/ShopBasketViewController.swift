@@ -145,6 +145,18 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     override func viewWillAppear(_ animated: Bool) {
         showNavBar()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewModel.wishedSampleRelay
+            .subscribe(onNext: { items in
+                for item in items {
+                    self.viewModel.db.updateShopBasketItemSelectedState(itemId: item.sample.id, shopBasketItem: item.isChecked)
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+    
     override func viewDidLayoutSubviews() {
         shopBasketFlowLayout.footerReferenceSize = CGSizeMake(shopBasketCollectionView.bounds.width, Size.footerViewHeight)
     }
@@ -284,6 +296,13 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .drive(viewModel.selectionState)
             .disposed(by: viewModel.disposeBag)
         
+        // allDeleteButton tap action
+        allDeleteButton.rx.tap
+            .subscribe(onNext: {
+                self.viewModel.db.deleteAllItemFromShopBasket()
+            })
+            .disposed(by: viewModel.disposeBag)
+        
         // selectionState binding to buttonFirstLabel
         viewModel.selectionState
             .map { "\($0.count)개의 샘플"}
@@ -352,26 +371,27 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .disposed(by: viewModel.disposeBag)
         
         viewModel.selectionState
-                  .map({ samples in
-                      var copyString: String = ""
-                      var number: Int = 0
-                      for sample in samples {
-                          number += 1
-                          copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
-                      }
-                      return copyString
-                  })
-                  .bind(to: viewModel.shopBasketCopy)
-                  .disposed(by: viewModel.disposeBag)
-
-              orderButton.rx.tap
-                  .withLatestFrom(viewModel.shopBasketCopy.asObservable())
-                  .subscribe(onNext: {
-                      let vc = TermsViewController()
-                      vc.setShopBasketString(str: $0)
-                      self.navigationController?.pushViewController(vc, animated: true)
-                  })
-                  .disposed(by: viewModel.disposeBag)
+            .map({ samples in
+                var copyString: String = ""
+                var number: Int = 0
+                for sample in samples {
+                    number += 1
+                    copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
+                }
+                
+                return copyString
+            })
+            .bind(to: viewModel.shopBasketCopy)
+            .disposed(by: viewModel.disposeBag)
+        
+        orderButton.rx.tap
+            .withLatestFrom(viewModel.shopBasketCopy.asObservable())
+            .subscribe(onNext: {
+                let vc = TermsViewController()
+                vc.setShopBasketString(str: $0)
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
+            .disposed(by: viewModel.disposeBag)
         
     }
     
