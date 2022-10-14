@@ -12,6 +12,9 @@
 		210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */; };
 		210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68028F26FEF008191A9 /* BottomSheetController.swift */; };
 		210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 210CC68228F2700C008191A9 /* GetAreaViewController.swift */; };
+		212135F928F8499E0049B28D /* PaddedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212135F828F8499E0049B28D /* PaddedButton.swift */; };
+		212135FB28F84CC20049B28D /* EstimatedPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212135FA28F84CC20049B28D /* EstimatedPriceView.swift */; };
+		212135FD28F858D10049B28D /* ToBeEstimatedPriceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212135FC28F858D10049B28D /* ToBeEstimatedPriceView.swift */; };
 		212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212CFA7928F65D30003D310A /* TermsViewController.swift */; };
 		2164307428F693F500443A1B /* CustomCheckbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307328F693F500443A1B /* CustomCheckbox.swift */; };
 		2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2164307928F69FA600443A1B /* UIViewController+Alert.swift */; };
@@ -93,6 +96,9 @@
 		210CC67E28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitioningDelegate.swift; sourceTree = "<group>"; };
 		210CC68028F26FEF008191A9 /* BottomSheetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetController.swift; sourceTree = "<group>"; };
 		210CC68228F2700C008191A9 /* GetAreaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetAreaViewController.swift; sourceTree = "<group>"; };
+		212135F828F8499E0049B28D /* PaddedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedButton.swift; sourceTree = "<group>"; };
+		212135FA28F84CC20049B28D /* EstimatedPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimatedPriceView.swift; sourceTree = "<group>"; };
+		212135FC28F858D10049B28D /* ToBeEstimatedPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToBeEstimatedPriceView.swift; sourceTree = "<group>"; };
 		212CFA7928F65D30003D310A /* TermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		2164307328F693F500443A1B /* CustomCheckbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCheckbox.swift; sourceTree = "<group>"; };
 		2164307928F69FA600443A1B /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
@@ -190,6 +196,8 @@
 				210CC67C28F26FBD008191A9 /* BottomSheetPresentationController.swift */,
 				210CC67A28F26F8B008191A9 /* BottomSheetInteractiveDismissalTransition.swift */,
 				21C81DA228F45447000E89DA /* AreaTestViewController.swift */,
+				212135FA28F84CC20049B28D /* EstimatedPriceView.swift */,
+				212135FC28F858D10049B28D /* ToBeEstimatedPriceView.swift */,
 			);
 			path = Calculation;
 			sourceTree = "<group>";
@@ -355,6 +363,7 @@
 			isa = PBXGroup;
 			children = (
 				2188F2F828F7B434005BC322 /* PaddedLabel.swift */,
+				212135F828F8499E0049B28D /* PaddedButton.swift */,
 			);
 			path = UIComponent;
 			sourceTree = "<group>";
@@ -767,6 +776,7 @@
 				35E4440228F8E9C600320DD6 /* UIFont+Extension.swift in Sources */,
 				2188F2FC28F7D59E005BC322 /* TermsViewModel.swift in Sources */,
 				35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */,
+				212135FD28F858D10049B28D /* ToBeEstimatedPriceView.swift in Sources */,
 				21ED8C8028EFC7990074C9A3 /* BaseTableViewCell.swift in Sources */,
 				355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */,
 				355CB86D28F2EFEF001A5731 /* EstimateViewModel.swift in Sources */,
@@ -778,8 +788,10 @@
 				CE9C460828F4595900890821 /* TakenPictureViewController.swift in Sources */,
 				210CC68128F26FEF008191A9 /* BottomSheetController.swift in Sources */,
 				210CC67D28F26FBD008191A9 /* BottomSheetPresentationController.swift in Sources */,
+				212135F928F8499E0049B28D /* PaddedButton.swift in Sources */,
 				355CB87128F2F716001A5731 /* ViewModelType.swift in Sources */,
 				2164307A28F69FA600443A1B /* UIViewController+Alert.swift in Sources */,
+				212135FB28F84CC20049B28D /* EstimatedPriceView.swift in Sources */,
 				35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */,
 				CEFFE77D28F3C689007A7842 /* EstimateHistoryCollectionViewCell.swift in Sources */,
 			);

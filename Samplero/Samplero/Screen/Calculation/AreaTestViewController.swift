@@ -12,87 +12,61 @@ import SnapKit
 final class AreaTestViewController: BaseViewController {
 
     // MARK: - Properties
-    private let priceLabel: UILabel = {
-        let label = UILabel()
-        label.text = "예상 가격"
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
-        label.textColor = .white
-        label.textAlignment = .center
-        return label
-    }()
     
-    private let getAreaButton = UIView()
-    
-    private let textButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.addTarget(self, action: #selector(buttonDidTap), for: .touchUpInside)
-        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .light)
-        button.tintColor = .white
-        button.setTitle("견적 계산을 위해 공간의 면적을 입력해주세요", for: .normal)
-        return button
-    }()
-    
-    private let roundedRectangle: UIView = {
-        let rect = UIView()
-        rect.backgroundColor = .black
-        rect.alpha = 0.5
-        return rect
-    }()
-    
-    private let priceAndAreaStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.backgroundColor = .black
-        stackView.alpha = 0.5
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .center
-        return stackView
-    }()
+    private let toBeEstimatedPriceView = ToBeEstimatedPriceView()
+    private let estimatedPriceView = EstimatedPriceView(estimatedPrice: "1,200,000원", width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: "15,000")
     
     // MARK: - Life Cycle
     
     override func viewDidLayoutSubviews() {
-        roundedRectangle.layer.cornerRadius = roundedRectangle.bounds.height/2
-        roundedRectangle.layer.borderWidth = 1
-        roundedRectangle.layer.borderColor = UIColor.white.cgColor
+        toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height/2
+        estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height/2
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setDelegation()
     }
     
     override func render() {
-        view.addSubview(priceAndAreaStackView)
-        getAreaButton.addSubview(roundedRectangle)
-        getAreaButton.addSubview(textButton)
-        
-        textButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(23)
-            make.center.equalToSuperview()
-        }
-        roundedRectangle.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.center.equalToSuperview()
-            make.width.equalTo(textButton).multipliedBy(1.1)
-            make.height.equalTo(40)
+        view.addSubview(toBeEstimatedPriceView)
+        toBeEstimatedPriceView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.center.equalToSuperview().inset(100)
+            make.height.equalTo(80)
         }
         
-        priceAndAreaStackView.addArrangedSubview(priceLabel)
-        priceLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(23)
-        }
-        
-        priceAndAreaStackView.addArrangedSubview(getAreaButton)
-        priceAndAreaStackView.snp.makeConstraints { make in
-            make.center.equalTo(view)
-            make.leading.trailing.equalTo(view)
+        view.addSubview(estimatedPriceView)
+        estimatedPriceView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.center.equalToSuperview().offset(100)
             make.height.equalTo(80)
         }
     }
     
     override func configUI() {
+        toBeEstimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        estimatedPriceView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     
     // MARK: - Func
     
     @objc func buttonDidTap() {
+        let viewController = GetAreaViewController()
+        viewController.preferredSheetSizing = .medium
+        present(viewController, animated: true)
+    }
+    
+    private func setDelegation() {
+        toBeEstimatedPriceView.delegate = self
+        estimatedPriceView.delegate = self
+    }
+}
+
+extension AreaTestViewController: ShowModalDelegate {
+    func buttonDidTapped() {
         let viewController = GetAreaViewController()
         viewController.preferredSheetSizing = .medium
         present(viewController, animated: true)
