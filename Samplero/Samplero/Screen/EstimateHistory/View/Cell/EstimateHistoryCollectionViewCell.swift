@@ -15,7 +15,12 @@ class EstimateHistoryCollectionViewCell: BaseCollectionViewCell {
     
     private let fileManager = LocalFileManager.instance
     
-    private let estimatedImageView: UIImageView = UIImageView()
+    private let estimatedImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.layer.borderWidth = 0.5
+        imageView.layer.borderColor = UIColor.white.cgColor
+        return imageView
+    }()
     
     // MARK: - Life Cycle
     
