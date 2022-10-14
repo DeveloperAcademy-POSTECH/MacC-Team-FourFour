@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "CozyGray.png",
+      "filename" : "플로리아스노우화이트.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "CozyGray@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "CozyGray@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

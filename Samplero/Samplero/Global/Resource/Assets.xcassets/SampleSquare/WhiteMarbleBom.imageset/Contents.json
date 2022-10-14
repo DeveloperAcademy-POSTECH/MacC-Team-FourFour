@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "WhiteMarble.png",
+      "filename" : "썸네일 봄봄매트 - 화이트마블.jpg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "WhiteMarble@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "WhiteMarble@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
