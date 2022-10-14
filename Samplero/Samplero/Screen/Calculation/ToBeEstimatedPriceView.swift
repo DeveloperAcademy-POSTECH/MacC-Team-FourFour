@@ -16,7 +16,7 @@ class ToBeEstimatedPriceView: UIView {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "예상 가격"
+        label.text = "셀프 시공 예상 가격"
         label.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize)
         label.textColor = .white
         label.textAlignment = .left
