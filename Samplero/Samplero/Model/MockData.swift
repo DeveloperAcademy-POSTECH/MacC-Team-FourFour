@@ -17,7 +17,7 @@ struct MockData {
                imageName: "WhiteMarble",
                matPrice: 12_000,
                samplePrice: 5_000,
-               material: "TPU",
+               material: "프리미엄 TPU 필름, PU폼",
                thickness: 4,
                size: CGSize(width: 120, height: 120),
                maker: "봄봄매트"),
