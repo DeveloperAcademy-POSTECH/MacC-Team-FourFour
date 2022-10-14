@@ -30,8 +30,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     // MARK: - Properties
     // View consists of roomImageView, sampleDetailView, bottomView
 
-    var sourceImage = UIImage()
-    var maskedImage = UIImage()
+    private var sourceImage: UIImage!
+    private var maskedImage: UIImage!
 
     var roomImageView: UIImageView = {
         let imageView = UIImageView()
@@ -177,7 +177,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     collectionView.selectItem(at: indexPath,
                                               animated: true,
                                               scrollPosition: .left)
-                        self?.configure(with: sample)
+                    self?.configure(with: sample)
                 }
 
                 cell.isSelected = (self?.lastSelectedIndexPath == indexPath)

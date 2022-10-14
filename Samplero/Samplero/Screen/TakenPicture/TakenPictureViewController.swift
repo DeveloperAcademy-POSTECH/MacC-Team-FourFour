@@ -17,8 +17,6 @@ import SnapKit
 class TakenPictureViewController: BaseViewController {
     
     // MARK: - Properties
-    private var outputPicture = UIImage()
-
     private var takenPictureIndex: Int!
     private var takenPicture: UIImage!
     
