@@ -115,7 +115,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = Size.cellSpacing
-        layout.sectionInset = .init(top: 24, left: 0, bottom: 24, right: 24)
+        layout.sectionInset = .init(top: 24, left: 0, bottom: 24, right: 0)
         return layout
     }()
     
