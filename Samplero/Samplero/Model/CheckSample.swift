@@ -10,11 +10,11 @@ import Foundation
 
 class CheckSample {
     let sample: Sample
+    var isChecked: Bool
 
-    var isChecked: Bool = false
-
-    init(sample: Sample) {
+    init(sample: Sample, isChecked: Bool = false) {
         self.sample = sample
+        self.isChecked = isChecked
     }
 }
 
