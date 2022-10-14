@@ -363,7 +363,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         
         cartButton.rx.tap
             .subscribe(onNext: {
-                let vc = ShopBasketViewController()
+                var vc = ShopBasketViewController()
+                vc.bindViewModel(ShopBasketViewModel())
                 self.navigationController?.pushViewController(vc, animated: true)
             })
             .disposed(by: viewModel.disposeBag)

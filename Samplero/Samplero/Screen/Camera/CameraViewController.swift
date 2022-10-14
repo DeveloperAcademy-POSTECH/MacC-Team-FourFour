@@ -150,6 +150,11 @@ class CameraViewController: BaseViewController {
         // 뒤로가기 swipe 없애기
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         bringPhotoButton.layer.cornerRadius = bringPhotoButton.bounds.height / 2
@@ -322,7 +327,8 @@ class CameraViewController: BaseViewController {
         }.disposed(by: disposeBag)
         
         cartButton.rx.tap.bind {
-            let vc = ShopBasketViewController()
+            var vc = ShopBasketViewController()
+            vc.bindViewModel(ShopBasketViewModel())
             self.navigationController?.pushViewController(vc, animated: true)
         }.disposed(by: disposeBag)
         
