@@ -263,7 +263,7 @@ class CameraViewController: BaseViewController {
             print("clicked cart")
         }.disposed(by: disposeBag)
         
-        cameraHelpView.rx.tapGesture
+        cameraHelpView.xMarkButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.cameraHelpView.isHidden = true
                 self?.topDrawer.isHidden = false

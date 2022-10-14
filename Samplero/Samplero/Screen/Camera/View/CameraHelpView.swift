@@ -8,6 +8,8 @@
 import UIKit
 
 import SnapKit
+import RxCocoa
+import RxSwift
 
 class CameraHelpView: UIView {
 
@@ -71,6 +73,16 @@ class CameraHelpView: UIView {
         return label
     }()
     
+    let xMarkButton: UIButton = {
+        let button: UIButton = UIButton()
+        button.setTitle("확인", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .white
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 23
+        return button
+    }()
+    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -125,6 +137,14 @@ class CameraHelpView: UIView {
             make.top.equalToSuperview().inset(UIScreen.main.bounds.height / 5.55 - 4)
             make.bottom.equalTo(getLibraryPhotoMarkLabel.snp.top).offset(-4)
             make.centerX.equalToSuperview()
+        }
+        
+        addSubview(xMarkButton)
+        xMarkButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(couchMarkGuideLabel.snp.bottom).offset(10)
+            make.height.equalTo(46)
+            make.width.equalTo(90)
         }
     }
     
