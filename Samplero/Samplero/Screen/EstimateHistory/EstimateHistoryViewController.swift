@@ -42,7 +42,7 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
         
-        viewModel.estimateHistoryObservable
+        viewModel.estimateHistorySubject
             .map { $0.count > 0 ? true : false }
             .subscribe(onNext: { [weak self] in
                 if $0 {

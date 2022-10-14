@@ -193,7 +193,7 @@ class CameraViewController: BaseViewController {
     }
     
     func bind() {
-        viewModel.estimateHistoryObservable
+        viewModel.estimateHistorySubject
             .subscribe(onNext: { [weak self] history in
                 self?.photoHistoryButton.setImage(UIImage(named: "sample_photo_\(history.last?.imageId ?? 0)"), for: .normal)
             })
