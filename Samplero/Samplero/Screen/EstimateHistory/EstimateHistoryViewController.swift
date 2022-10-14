@@ -17,6 +17,15 @@ class EstimateHistoryViewController: BaseViewController {
     
     let viewModel = EstimateHistoryViewModel()
     
+    private let helpingLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "견적이 없습니다.\n사진을 찍어보세요!"
+        label.numberOfLines = 2
+        label.textColor = .secondaryGray
+        label.textAlignment = .center
+        return label
+    }()
+    
     private let estimateHistoryCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -32,6 +41,19 @@ class EstimateHistoryViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
+        
+        viewModel.estimateHistoryObservable
+            .map { $0.count > 0 ? true : false }
+            .subscribe(onNext: { [weak self] in
+                if $0 {
+                    self?.estimateHistoryCollectionView.isHidden = false
+                    self?.helpingLabel.isHidden = true
+                } else {
+                    self?.estimateHistoryCollectionView.isHidden = true
+                    self?.helpingLabel.isHidden = false
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
     }
 
     override func viewDidLoad() {
@@ -45,6 +67,11 @@ class EstimateHistoryViewController: BaseViewController {
     override func render() {
         view.addSubview(estimateHistoryCollectionView)
         estimateHistoryCollectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        view.addSubview(helpingLabel)
+        helpingLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
