@@ -27,6 +27,7 @@ final class SampleCollectionViewCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
         imageView.image = UIImage(named: "CozyBaby")
         imageView.layer.borderWidth = Size.sampleImageBorderWidth
+        imageView.layer.borderColor = UIColor.white.cgColor
         imageView.layer.cornerRadius = Size.sampleImageCornerRadius
         return imageView
     }()
@@ -43,7 +44,7 @@ final class SampleCollectionViewCell: UICollectionViewCell {
                 checkedView.image = isSelected ? UIImage(systemName: "checkmark", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
                 : UIImage()
                 sampleImageView.layer.borderColor = isSelected ? UIColor.systemBlue.cgColor
-                : UIColor.clear.cgColor
+                : UIColor.white.cgColor
             }
         }
 
