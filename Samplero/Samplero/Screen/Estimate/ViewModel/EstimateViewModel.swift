@@ -21,13 +21,8 @@ final class EstimateViewModel: ViewModelType {
     let db = DBHelper.shared
 
     var disposeBag: DisposeBag = DisposeBag()
-    var db = DBHelper.shared
     
     let shopBasketSubject: BehaviorSubject<Int> = BehaviorSubject(value: 0)
-    
-    init() {
-        shopBasketSubject.onNext(db.getShopBasketCount())
-    }
 
     var samples: Samples = Samples()
 
@@ -36,7 +31,7 @@ final class EstimateViewModel: ViewModelType {
     init() {
         let basketItems = db.getShopBasketItem()
         shopBaskets = BehaviorSubject(value: basketItems)
-
+        shopBasketSubject.onNext(db.getShopBasketCount())
         basketItems.forEach { item in
             samples.addSample(sample: MockData.sampleList[item.sampleId])
         }
