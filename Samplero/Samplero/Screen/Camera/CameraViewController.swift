@@ -285,19 +285,19 @@ class CameraViewController: BaseViewController {
             self.output.capturePhoto(with: AVCapturePhotoSettings(),
                                 delegate: self)
             #else
-            takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
-            takenPictureViewController.modalPresentationStyle = .overFullScreen
-            takenPictureViewController.rx.retake
+            self.takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
+            self.takenPictureViewController.modalPresentationStyle = .overFullScreen
+            self.takenPictureViewController.rx.retake
                 .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
                 .map { [weak self] in
                     self?.session?.startRunning()
                 }
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: {
-                    takenPictureViewController.dismiss(animated: true)
+                    self.takenPictureViewController.dismiss(animated: true)
                 }).disposed(by: self.disposeBag)
             
-            self.present(takenPictureViewController, animated: true)
+            self.present(self.takenPictureViewController, animated: true)
             
             self.session?.stopRunning()
             #endif
@@ -404,7 +404,7 @@ class CameraViewController: BaseViewController {
     }
 
     private func visionRequestDidComplete(request: VNRequest, error: Error?) {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self] in
             if let observations = request.results as? [VNCoreMLFeatureValueObservation],
                let segmentationMap = observations.first?.featureValue.multiArrayValue {
                 guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
@@ -430,6 +430,8 @@ class CameraViewController: BaseViewController {
                 estimateVC.viewModel.imageIndex = self.takenPictureIndex
                 self.takenPictureViewController.dismiss(animated: true)
                 self.navigationController?.pushViewController(estimateVC, animated: true)
+
+                self.takenPictureViewController.stopLottieAnimation() // 로티 종료
             }
         }
     }
@@ -457,8 +459,10 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 
         takenPictureViewController.rx.nextButton
             .subscribe(onNext: {
+                takenPictureViewController.setupLottieView() // 로티 시작
                 self.takenPicture = takenPictureViewController.takenPicture
                 self.takenPictureViewController = takenPictureViewController
+
                 self.segmentFloor()
             }).disposed(by: disposeBag)
 
@@ -512,6 +516,7 @@ extension CameraViewController: UIImagePickerControllerDelegate, UINavigationCon
             .subscribe(onNext: {
                 self.takenPicture = takenPictureViewController.takenPicture
                 self.takenPictureViewController = takenPictureViewController
+                takenPictureViewController.setupLottieView()   // 로티시작
                 self.segmentFloor()
             }).disposed(by: disposeBag)
         
