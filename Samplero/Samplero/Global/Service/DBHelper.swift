@@ -234,6 +234,25 @@ final class DBHelper {
         print("SQLite:", "Update has been successfully done")
     }
     
+    func updateShopBasketItem(itemId id: Int, shopBasketItem item: ShopBasket) {
+        var statement: OpaquePointer?
+        let query = "UPDATE SHOP_BASKET SET IS_SELECTED = '\(item.isSelected ? 1 : 0)' WHERE IMAGE_ID == \(id)"
+        
+        if sqlite3_prepare(db, query, -1, &statement, nil) != SQLITE_OK {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("SQLite:", "Error preparing update: \(errorMessage)")
+            return
+        }
+        
+        if sqlite3_step(statement) != SQLITE_DONE {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("SQLite:", "Error preparing update: \(errorMessage)")
+            return
+        }
+        
+        print("SQLite:", "Update has been successfully done")
+    }
+    
     func deleteEstimateHistory(imageId id: Int) {
         var statement: OpaquePointer?
         let queryString = "DELETE FROM ESTIMATE_HISTORY WHERE IMAGE_ID == \(id)"
