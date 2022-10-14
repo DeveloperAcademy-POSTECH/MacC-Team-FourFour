@@ -11,7 +11,7 @@ class CustomGetSizeView: UIView {
     
     // MARK: - Properties
     
-    private let textField: UITextField = {
+    let textField: UITextField = {
         let textfield = UITextField()
         textfield.placeholder = "0"
         textfield.keyboardType = .numberPad

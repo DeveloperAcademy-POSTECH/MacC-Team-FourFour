@@ -72,11 +72,9 @@ class EstimatedPriceView: UIView {
     
     // MARK: - Init
     
-    init(estimatedPrice: String, width: Int, height: Int, estimatedQuantity: Int, pricePerBlock: String) {
+    init(estimatedPrice: Int, width: Int, height: Int, estimatedQuantity: Int, pricePerBlock: Int) {
         super.init(frame: .zero)
-        self.showPriceLabel.text = estimatedPrice
-        self.sizeAndQuantityLabel.text = "\(width)x\(height)(cm), \(estimatedQuantity)장"
-        self.pricePerBlockLabel.text = "장당 \(pricePerBlock)원"
+        changeEstimation(estimatedPrice: estimatedPrice, width: width, height: height, estimatedQuantity: estimatedQuantity, pricePerBlock: pricePerBlock)
         render()
     }
     
@@ -114,6 +112,19 @@ class EstimatedPriceView: UIView {
 
     @objc func tapButton(sender: UIButton) {
         delegate?.buttonDidTapped()
+    }
+    
+    func changeEstimation(estimatedPrice: Int, width: Int, height: Int, estimatedQuantity: Int, pricePerBlock: Int) {
+        self.showPriceLabel.text = numberFormatter(number: estimatedPrice)
+        self.sizeAndQuantityLabel.text = "\(width)x\(height)(cm), \(estimatedQuantity)장"
+        self.pricePerBlockLabel.text = "장당 \(numberFormatter(number: pricePerBlock))원"
+    }
+    
+    func numberFormatter(number: Int) -> String {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+        return numberFormatter.string(from: NSNumber(value: number))!
     }
 }
 
