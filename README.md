@@ -61,7 +61,6 @@
 | RxSwift           | `6.5.0` | `SPM` |
 | SnapKit           | `5.6.0` | `SPM` |
 | Lottie            | `3.5.0` | `SPM` |
-| PanModal          | `1.2.7` | `SPM` |
   
 <br/>
 
