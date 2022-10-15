@@ -19,10 +19,17 @@
 <img width="374" alt="image" src="https://user-images.githubusercontent.com/69894461/195983115-bbc3eb71-4f28-40b4-a2ae-4440598a4ad4.jpg">
   
 <img width="374" alt="image" src="https://user-images.githubusercontent.com/69894461/195983120-623d5048-11d1-443e-9d56-ea4e44b8e887.jpg">
+<br/>
+ 
 
 > _**시공매트 필수관문**_
-</div>
+ <br/>
+ <img width="50" alt="image" src= "https://user-images.githubusercontent.com/69894461/195985179-13e2cbe6-77e5-41e3-b8ff-fcf967506cff.png">
 
+**[샘플로](https://apps.apple.com/kr/app/%EC%83%98%ED%94%8C%EB%A1%9C/id6443837683)**
+> <br/> 실제 주문 및 배송 수령이 가능하신 분들은 앞서 저희가 모집한 체험단 뿐이며, <br> 명단에 정보가 없는 분들께는 죄송하지만 주문 불가 안내를 드릴 예정입니다.
+
+ </div>
 <br/>
 <br/>
   
@@ -32,8 +39,6 @@
 |:---:|:---:|:---:|
 |<img width="285" alt="image" src= https://user-images.githubusercontent.com/69894461/195980984-658696fb-c6c3-4f87-925b-893e1e918991.jpg> |<img width="285" alt="image" src= https://user-images.githubusercontent.com/69894461/195980987-667462f7-b504-4e86-a505-774af8a9cd44.jpg> |<img width="285" alt="image" src= https://user-images.githubusercontent.com/69894461/195980991-6cce36aa-50b5-4a44-ac47-cef24655abb6.jpg>|
 
-
-<br/>
 <br/>
 
 ### 🛠 Development Environment
@@ -59,7 +64,6 @@
 | PanModal          | `1.2.7` | `SPM` |
   
 <br/>
-
 
 ### :file_folder: Folder Structure
 <img width="696" alt="image" src="https://user-images.githubusercontent.com/69894461/195982363-6a72f1d5-50b5-4bd2-b100-ca07f2c33c07.png">
