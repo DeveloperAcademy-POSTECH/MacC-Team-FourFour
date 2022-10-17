@@ -21,9 +21,5 @@
 			</array>
 		</dict>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.</string>
 </dict>
 </plist>

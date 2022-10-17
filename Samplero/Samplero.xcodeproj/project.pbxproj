@@ -1064,9 +1064,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J85NQ6YL4V;
+				DEVELOPMENT_TEAM = Y7G824SH3W;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Samplero/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1079,7 +1081,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fourfour.Samplero;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fourfour.samplero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1097,9 +1099,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J85NQ6YL4V;
+				DEVELOPMENT_TEAM = Y7G824SH3W;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Samplero/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1112,7 +1116,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fourfour.Samplero;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fourfour.samplero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
