@@ -113,9 +113,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     let toBeEstimatedPriceView = ToBeEstimatedPriceView()
     let estimatedPriceView = EstimatedPriceView(estimatedPrice: -1, width: 1100, height: 1200, estimatedQuantity: 80, pricePerBlock: -1)
 
-    var currentSample: Sample = MockData.sampleList[0]
 
-    var lastSelectedImage = UIImage()
+    private var lastSelectedImage = UIImage()
 
     private let getAreaVC = GetAreaViewController()
 
@@ -145,42 +144,13 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         return label
     }()
 
-    private var shopBaskets = [ShopBasket]()
 
 
     // MARK: - Life Cycle
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.isNavigationBarHidden = false
-        
-        viewModel.shopBasketSubject
-            .map {_ in return self.viewModel.db.getShopBasketCount() }
-            .map { count in
-                if count >= 99 {
-                    return " 99+ "
-                } else {
-                    return " \(count) "
-                }
-            }
-            .bind(to: cartCountLabel.rx.text)
-            .disposed(by: viewModel.disposeBag)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if !self.viewModel.samples.isAdded(sample: currentSample) {
-            self.sampleAddButton.backgroundColor = .accent
-            self.sampleAddButton.isEnabled = true
-            self.sampleAddButton.setTitle("샘플 담기", for: .normal)
-            self.addedButtonLabelStackView.isHidden = true
-        } else {
-            self.sampleAddButton.backgroundColor = .addedButtonGray
-            self.sampleAddButton.isEnabled = false
-            self.sampleAddButton.setTitle("", for: .normal)
-            self.addedButtonLabelStackView.isHidden = false
-        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -260,8 +230,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     override func configUI() {
         super.configUI()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: cartButtonBackground)
-        
-        
         self.navigationItem.rightBarButtonItem?.tintColor = .black
 
         toBeEstimatedPriceView.backgroundColor = .black.withAlphaComponent(0.5)
@@ -271,12 +239,31 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
     }
 
     func bind() {
-        // Input
-        let input = EstimateViewModel.Input(collectionModelSelected: sampleCollectionView.rx.modelSelected(Sample.self))
+
+        let input = EstimateViewModel.Input(
+            viewWillAppear: rx.viewWillAppear,
+            viewWillDisappear: rx.viewWillDisappear,
+            collectionModelSelected: sampleCollectionView.rx.modelSelected(Sample.self),
+            addButtonSelected: sampleAddButton.rx.tap,
+            inputAreaSelected:  toBeEstimatedPriceView.textButton.rx.tap, inputAreaAgainSelected: estimatedPriceView.textButton.rx.tap,
+            cartButtonSelected: cartButton.rx.tap,
+            getAreaSaveButtonSelected: getAreaVC.saveButton.rx.tap.map { _ in (self.getAreaVC.areaWidth, self.getAreaVC.areaHeight) },
+            goShopBasketLabelSelected: goShopBasketLabel.rx.tapGesture)
 
         // Output
         let output = viewModel.transform(input: input)
 
+        output.viewWillAppear
+            .subscribe { [weak self] count in
+                self?.navigationController?.isNavigationBarHidden = false
+                self?.cartCountLabel.text = count
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        output.resultImage
+            .bind(to: roomImageView.rx.image)
+            .disposed(by: viewModel.disposeBag)
+        
         output.SampleList
             .bind(to: sampleCollectionView.rx.items) { [weak self] collectionView, itemIndex, sample -> UICollectionViewCell in
                 let indexPath = IndexPath(item: itemIndex, section: .zero)
@@ -288,6 +275,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     collectionView.selectItem(at: indexPath,
                                               animated: true,
                                               scrollPosition: .left)
+
                     self?.configure(with: sample)
                 }
 
@@ -298,26 +286,37 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             .disposed(by: viewModel.disposeBag)
 
         output.tappedSample
-            .subscribe(onNext: { sample in
-                self.currentSample = sample
+            .subscribe { currentSample in
                 self.toBeEstimatedPriceView.alpha = 1
                 self.estimatedPriceView.alpha = 0
-                self.configure(with: sample)
-                if !self.viewModel.samples.isAdded(sample: sample) {
-                    self.sampleAddButton.backgroundColor = .accent
-                    self.sampleAddButton.isEnabled = true
-                    self.sampleAddButton.setTitle("샘플 담기", for: .normal)
-                    self.addedButtonLabelStackView.isHidden = true
-                } else {
+                self.configure(with: currentSample)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        output.tappedSample
+            .withLatestFrom(viewModel.samplesRelay) { return (samples: $1, currentSample: $0)}
+            .map { tuple in
+                if tuple.samples.firstIndex(of: tuple.currentSample) != nil {
+                    return true
+                } else { return false }
+            }
+            .subscribe { isDuplicated in
+                print(isDuplicated)
+                if isDuplicated {
                     self.sampleAddButton.backgroundColor = .addedButtonGray
                     self.sampleAddButton.isEnabled = false
                     self.sampleAddButton.setTitle("", for: .normal)
                     self.addedButtonLabelStackView.isHidden = false
+                } else {
+                    self.sampleAddButton.backgroundColor = .accent
+                    self.sampleAddButton.isEnabled = true
+                    self.sampleAddButton.setTitle("샘플 담기", for: .normal)
+                    self.addedButtonLabelStackView.isHidden = true
                 }
-            })
+            }
             .disposed(by: viewModel.disposeBag)
 
-        toBeEstimatedPriceView.textButton.rx.tap
+        output.tappedInputArea
             .subscribe(onNext: {
                 self.getAreaVC.preferredSheetSizing = .medium
                 self.getAreaVC.getWidthView.textField.becomeFirstResponder()
@@ -325,7 +324,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             })
             .disposed(by: viewModel.disposeBag)
 
-        estimatedPriceView.textButton.rx.tap
+        output.tappedInputAreaAgain
             .subscribe(onNext: {
                 self.getAreaVC.preferredSheetSizing = .medium
                 self.getAreaVC.getWidthView.textField.becomeFirstResponder()
@@ -333,41 +332,32 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             })
             .disposed(by: viewModel.disposeBag)
 
-        getAreaVC.saveButton
-            .rx.tap.subscribe(onNext: {
-                let quantityAndPrice = self.calculatePrice(width: self.getAreaVC.areaWidth, height: self.getAreaVC.areaHeight)
-                self.estimatedPriceView.changeEstimation(estimatedPrice: Int(quantityAndPrice[1]), width: Int(self.getAreaVC.areaWidth), height: Int(self.getAreaVC.areaHeight), estimatedQuantity: Int(quantityAndPrice[0]), pricePerBlock: self.self.currentSample.matPrice)
+        output.tappedGetAreaSaveButton
+            .subscribe(onNext: { quantityAndPrice in
+                self.estimatedPriceView.changeEstimation(estimatedPrice: Int(quantityAndPrice[1]), width: Int(self.getAreaVC.areaWidth), height: Int(self.getAreaVC.areaHeight), estimatedQuantity: Int(quantityAndPrice[0]), pricePerBlock: Int(quantityAndPrice[2]))
                 self.toBeEstimatedPriceView.alpha = 0
                 self.estimatedPriceView.alpha = 1
-
             })
             .disposed(by: viewModel.disposeBag)
-        sampleAddButton.rx.tap
+
+        output.tappedAddButton
             .subscribe(onNext: {
                 self.sampleAddButton.backgroundColor = .addedButtonGray
                 self.sampleAddButton.isEnabled = false
                 self.sampleAddButton.setTitle("", for: .normal)
                 self.addedButtonLabelStackView.isHidden = false
-                self.viewModel.samples.addSample(sample: self.currentSample)
-                self.viewModel.db.insertItemToShopBasket(item: ShopBasket(id: 0, sampleId: self.currentSample.id))
-            }).disposed(by: viewModel.disposeBag)
-        
-        sampleAddButton.rx.tap
-            .subscribe(onNext: {
-                self.viewModel.shopBasketSubject.onNext(self.viewModel.db.getShopBasketCount())
             })
+            .disposed(by: viewModel.disposeBag)
 
-        goShopBasketLabel
-            .rx.tapGesture
-            .map { _ in }
+        output.tappedGoShopBasketLabel
             .subscribe(onNext: {
                 var shopBasketVC = ShopBasketViewController()
                 shopBasketVC.bindViewModel(ShopBasketViewModel())
                 self.navigationController?.pushViewController(shopBasketVC, animated: true)
             })
             .disposed(by: viewModel.disposeBag)
-        
-        cartButton.rx.tap
+
+        output.tappedCartButton
             .subscribe(onNext: {
                 var vc = ShopBasketViewController()
                 vc.bindViewModel(ShopBasketViewModel())
@@ -383,66 +373,10 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     func configure(with sample: Sample) {
         sampleDetailView.configure(with: sample)
-
         sourceImage = viewModel.getImage()
         maskedImage = viewModel.getMaskedImage()
-
-        roomImageView.image = maskInputImage(with: sample)
+    //  roomImageView.image = maskInputImage(with: sample)
     }
 
-    private func calculatePrice(width: CGFloat, height: CGFloat) -> [CGFloat] {
-        let sampleArea = currentSample.size.width * currentSample.size.height
-        let estimatedQuantity = width*height / sampleArea
-        let estimatedPrice = currentSample.matPrice == -1 ? -1 : CGFloat(currentSample.matPrice) * estimatedQuantity
-        // FIXME: - 배열 말고 다른 방식 사용하기
-        return [estimatedQuantity, estimatedPrice]
-    }
-
-
-
-    func maskInputImage(with sample: Sample) -> UIImage? {
-        let takenCIImage = CIImage(cgImage: self.sourceImage.cgImage!)
-        let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(sourceImage.imageOrientation))
-        let spreadMatName = sample.imageName.replacingOccurrences(of: "Thumbnail", with: "Spread")
-        let backgroundImage = UIImage.load(named: spreadMatName)
-        guard let backgroundCGImage = backgroundImage.cgImage else { return nil }
-
-        guard let resizedBackgroundImage = backgroundCGImage.resize(size: self.sourceImage.size) else { return nil }
-
-        let background = CIImage(cgImage: resizedBackgroundImage)
-        let mask = CIImage(cgImage: self.maskedImage.cgImage!)
-
-        let parameters = [
-            kCIInputImageKey: beginImage,
-            kCIInputBackgroundImageKey: background,
-            kCIInputMaskImageKey: mask
-        ]
-
-        guard let compositeImage = CIFilter(name: "CIBlendWithMask", parameters: parameters )?.outputImage else {
-            return nil
-        }
-        let ciContext = CIContext(options: nil)
-        guard let filteredImageRef = ciContext.createCGImage(compositeImage, from: compositeImage.extent) else { return nil }
-        self.lastSelectedImage = UIImage(cgImage: filteredImageRef)
-        return self.lastSelectedImage
-    }
-}
-
-
-
-// MARK: - configSample: Binder
-
-extension Reactive where Base: EstimateViewController {
-    var configSample: Binder<Sample> {
-        return Binder(self.base) { estimateVC, sample in
-            estimateVC.currentSample = sample
-            estimateVC.toBeEstimatedPriceView.alpha = 1
-            estimateVC.estimatedPriceView.alpha = 0
-            estimateVC.configure(with: sample)
-            if let matInsertedImage = self.base.maskInputImage(with: sample) {
-                self.base.roomImageView.image = matInsertedImage
-            }
-        }
-    }
 }
 

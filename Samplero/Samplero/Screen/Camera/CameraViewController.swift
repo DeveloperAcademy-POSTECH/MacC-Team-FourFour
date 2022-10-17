@@ -422,8 +422,7 @@ class CameraViewController: BaseViewController {
 
                 self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
 
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
+
 
                 if segmentationMask.size != self.takenPicture.size {
                     guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
@@ -435,11 +434,13 @@ class CameraViewController: BaseViewController {
 
                 self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
 
-
                 self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
 
-                estimateVC.viewModel.imageIndex = self.takenPictureIndex
+
                 self.takenPictureViewController.dismiss(animated: true)
+                var estimateVC = EstimateViewController()
+                estimateVC.bindViewModel(EstimateViewModel())
+                estimateVC.viewModel.imageIndex = self.takenPictureIndex
                 self.navigationController?.pushViewController(estimateVC, animated: true)
 
                 self.takenPictureViewController.stopLottieAnimation() // 로티 종료
