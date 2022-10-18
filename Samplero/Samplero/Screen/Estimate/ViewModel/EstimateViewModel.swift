@@ -17,14 +17,11 @@ final class EstimateViewModel: ViewModelType {
     private let matInsertedImageName: String = "mat-inserted-photo-"
 
     let fileManager = LocalFileManager.instance
-
     let db = DBHelper.shared
-
     var disposeBag: DisposeBag = DisposeBag()
 
     let samplesRelay = BehaviorRelay<[Sample]>(value: []) // 현재샘플이 이전에 담기를 했는지 안했는지 확인용도
     let currentSample: BehaviorRelay<Sample> = BehaviorRelay(value: MockData.sampleList[0])
-
     var lastSelectedImage = UIImage()
     
     struct Input {
@@ -35,7 +32,7 @@ final class EstimateViewModel: ViewModelType {
         let inputAreaSelected: ControlEvent<Void>
         let inputAreaAgainSelected: ControlEvent<Void>
         let cartButtonSelected: ControlEvent<Void>
-        let getAreaSaveButtonSelected: Observable<(Double,Double)>
+        let getAreaSaveButtonSelected: Observable<(Double, Double)>
         let goShopBasketLabelSelected: ControlEvent<UITapGestureRecognizer>
     }
 
@@ -160,10 +157,10 @@ extension EstimateViewModel {
         let estimatedQuantity = width*height / sampleArea
         let estimatedPrice = currentSample.value.matPrice == -1 ? -1 : CGFloat(currentSample.value.matPrice) * estimatedQuantity
         // FIXME: - 배열 말고 다른 방식 사용하기
-        return [estimatedQuantity, estimatedPrice,CGFloat(currentSample.value.matPrice)]
+        return [estimatedQuantity, estimatedPrice, CGFloat(currentSample.value.matPrice)]
     }
 
-    func maskInputImage(with sample: Sample,sourceImage: UIImage, maskedImage: UIImage) -> UIImage? {
+    func maskInputImage(with sample: Sample, sourceImage: UIImage, maskedImage: UIImage) -> UIImage? {
         let takenCIImage = CIImage(cgImage: sourceImage.cgImage!)
         let beginImage = takenCIImage.oriented(CGImagePropertyOrientation(sourceImage.imageOrientation))
         let spreadMatName = sample.imageName.replacingOccurrences(of: "Thumbnail", with: "Spread")

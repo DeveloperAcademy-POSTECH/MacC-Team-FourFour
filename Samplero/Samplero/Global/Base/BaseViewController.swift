@@ -14,7 +14,7 @@ class BaseViewController: UIViewController {
 
 
     // MARK: - Properties
-    private var lottieView: AnimationView?
+    private var lottieView: LottieAnimationView?
     private let backgroundView = UIView()
     private let lottieViewBackgroundView: UIView = {
         let view = UIView()

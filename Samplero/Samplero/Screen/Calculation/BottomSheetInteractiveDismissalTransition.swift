@@ -164,7 +164,7 @@ extension BottomSheetInteractiveDismissalTransition: UIViewControllerAnimatedTra
         let offset = presentedView.frame.height
         let offsetAnimator = createOffsetAnimator(animating: presentedView, to: offset)
 
-        offsetAnimator.addCompletion { position in
+        offsetAnimator.addCompletion { _ in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
 
@@ -202,7 +202,7 @@ extension BottomSheetInteractiveDismissalTransition: UIViewControllerInteractive
         let offset = presentedView.frame.height
         let offsetAnimator = createOffsetAnimator(animating: presentedView, to: offset)
 
-        offsetAnimator.addCompletion { position in
+        offsetAnimator.addCompletion { _ in
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
 
