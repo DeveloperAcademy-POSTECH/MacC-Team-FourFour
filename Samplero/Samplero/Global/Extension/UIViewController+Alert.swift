@@ -50,9 +50,9 @@ extension UIViewController {
     
     func makeActionSheet(title: String? = nil,
                          message: String? = nil,
-                         actionTitles:[String?],
-                         actionStyle:[UIAlertAction.Style],
-                         actions:[((UIAlertAction) -> Void)?]) {
+                         actionTitles: [String?],
+                         actionStyle: [UIAlertAction.Style],
+                         actions: [((UIAlertAction) -> Void)?]) {
         let alert = UIAlertController(title: title,
                                       message: message,
                                       preferredStyle: .actionSheet)

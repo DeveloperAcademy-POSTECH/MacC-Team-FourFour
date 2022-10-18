@@ -106,7 +106,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     private let buttonSecondLabel: UILabel = {
         let label = UILabel()
         label.text = "주문하기"
-        label.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize,weight: .bold)
+        label.font = UIFont.systemFont(ofSize: UIFont.preferredFont(forTextStyle: .callout).pointSize, weight: .bold)
         label.textColor = .white
         return label
     }()

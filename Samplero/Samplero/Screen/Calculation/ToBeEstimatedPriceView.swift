@@ -23,7 +23,7 @@ class ToBeEstimatedPriceView: UIView {
         return label
     }()
     
-    let textButton: PaddedButton = {
+    lazy var  textButton: PaddedButton = {
         let button = PaddedButton(topInset: 7, bottomInset: 7, leftInset: 17, rightInset: 17)
         button.addTarget(self, action: #selector(tapButton(sender:)), for: .touchUpInside)
         button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)

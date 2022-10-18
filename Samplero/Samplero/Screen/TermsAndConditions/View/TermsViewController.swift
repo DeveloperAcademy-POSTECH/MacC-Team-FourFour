@@ -82,7 +82,7 @@ class TermsViewController: BaseViewController {
         return label
     }()
     
-    private let linkToKakaoButton: UIButton = {
+    private lazy var linkToKakaoButton: UIButton = {
         let button = UIButton()
         button.setTitle("카카오톡 채팅 연결", for: .normal)
         button.backgroundColor = .secondarySystemBackground
