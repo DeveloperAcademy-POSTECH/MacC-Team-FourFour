@@ -109,7 +109,7 @@ final class EstimateViewModel: ViewModelType {
 
         let notInitialResultImage = input.collectionModelSelected
             .map { sample in
-                self.maskInputImage(with: sample, sourceImage: self.getImage(), maskedImage: self.getMaskedImage())
+                return self.maskInputImage(with: sample, sourceImage: self.getImage(), maskedImage: self.getMaskedImage())
             }
 
         let initialResultImage = input.viewWillAppear
@@ -117,7 +117,8 @@ final class EstimateViewModel: ViewModelType {
             .map { sample in
                 self.maskInputImage(with: sample, sourceImage: self.getImage(), maskedImage: self.getMaskedImage())
             }
-            .concat(notInitialResultImage)
+
+        let resultImage = Observable.of(initialResultImage,notInitialResultImage).merge()
 
 
         input.viewWillDisappear
@@ -128,7 +129,7 @@ final class EstimateViewModel: ViewModelType {
             return Output(
                         viewWillAppear: willAppear,
                           SampleList: sampleList,
-                            resultImage: initialResultImage,
+                            resultImage: resultImage,
                           tappedSample: selectedCollection,
                           tappedAddButton: selectedAddButton,
                           tappedInputArea: selectedInputArea,
