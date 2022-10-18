@@ -58,6 +58,7 @@
 		35E4440528F9D6BE00320DD6 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 35E4440428F9D6BE00320DD6 /* Lottie */; };
 		35E4440A28F9E30100320DD6 /* dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 35E4440928F9E30100320DD6 /* dots.json */; };
 		35E4440C28F9E6DA00320DD6 /* dot.json in Resources */ = {isa = PBXBuildFile; fileRef = 35E4440B28F9E6DA00320DD6 /* dot.json */; };
+		B515CD2E28FCE30200AB77A7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B515CD3028FCE30200AB77A7 /* InfoPlist.strings */; };
 		B51AF42328F6E9190076F21B /* FloorSegmentation.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */; };
 		B51AF43728F6EDA40076F21B /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42628F6EDA40076F21B /* Math.swift */; };
 		B51AF43B28F6EDA40076F21B /* CGImagePropertyOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */; };
@@ -149,6 +150,10 @@
 		35E4440128F8E9C600320DD6 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		35E4440928F9E30100320DD6 /* dots.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dots.json; sourceTree = "<group>"; };
 		35E4440B28F9E6DA00320DD6 /* dot.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dot.json; sourceTree = "<group>"; };
+		B515CD2F28FCE30200AB77A7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B515CD3128FCE5C700AB77A7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
+		B515CD3228FCE5C700AB77A7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B515CD3328FCE5C700AB77A7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = FloorSegmentation.mlmodel; sourceTree = "<group>"; };
 		B51AF42628F6EDA40076F21B /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImagePropertyOrientation.swift; sourceTree = "<group>"; };
@@ -564,6 +569,7 @@
 		CEF76BC628EE77C0003D1F49 = {
 			isa = PBXGroup;
 			children = (
+				B515CD3028FCE30200AB77A7 /* InfoPlist.strings */,
 				CEF76BD128EE77C0003D1F49 /* Samplero */,
 				CEF76BE828EE77C2003D1F49 /* SampleroTests */,
 				CEF76BF228EE77C2003D1F49 /* SampleroUITests */,
@@ -748,6 +754,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = CEF76BC628EE77C0003D1F49;
 			packageReferences = (
@@ -775,6 +782,7 @@
 				CE13B6C728F1600B00216EB2 /* .swiftlint.yml in Resources */,
 				CEF76BDF28EE77C1003D1F49 /* LaunchScreen.storyboard in Resources */,
 				CEF76BDC28EE77C1003D1F49 /* Assets.xcassets in Resources */,
+				B515CD2E28FCE30200AB77A7 /* InfoPlist.strings in Resources */,
 				35E4440A28F9E30100320DD6 /* dots.json in Resources */,
 				CEF76BDA28EE77C0003D1F49 /* Main.storyboard in Resources */,
 				35E4440C28F9E6DA00320DD6 /* dot.json in Resources */,
@@ -922,10 +930,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		B515CD3028FCE30200AB77A7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B515CD2F28FCE30200AB77A7 /* en */,
+				B515CD3328FCE5C700AB77A7 /* ko */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		CEF76BD828EE77C0003D1F49 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				CEF76BD928EE77C0003D1F49 /* Base */,
+				B515CD3128FCE5C700AB77A7 /* ko */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -934,6 +952,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				CEF76BDE28EE77C1003D1F49 /* Base */,
+				B515CD3228FCE5C700AB77A7 /* ko */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -945,6 +964,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -992,7 +1012,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1006,6 +1026,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -1047,7 +1068,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
