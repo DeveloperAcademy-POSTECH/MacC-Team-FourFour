@@ -38,7 +38,7 @@ final class EstimateViewModel: ViewModelType {
 
     struct Output {
         let viewWillAppear: Observable<String>
-        let SampleList: Observable<[Sample]>
+        let sampleList: Observable<[Sample]>
         let resultImage: Observable<UIImage?>
         let tappedSample: Observable<Sample>
         let tappedAddButton: Observable<Void>
@@ -57,7 +57,7 @@ final class EstimateViewModel: ViewModelType {
 
         let selectedCollection = input.collectionModelSelected
             .map { sample in
-            self.currentSample.accept(sample) }
+                self.currentSample.accept(sample) }
             .withLatestFrom(self.currentSample)
 
         let selectedAddButton = input.addButtonSelected
@@ -98,14 +98,14 @@ final class EstimateViewModel: ViewModelType {
                 shopBaskets.onNext(self.db.getShopBasketItem())
                 shopBasketCount.onNext(self.db.getShopBasketCount())
             }
-                .withLatestFrom(shopBasketCount)
-                .map { count in
-                    if count >= 99 {
-                        return " 99+ "
-                    } else {
-                        return " \(count) "
-                    }
+            .withLatestFrom(shopBasketCount)
+            .map { count in
+                if count >= 99 {
+                    return " 99+ "
+                } else {
+                    return " \(count) "
                 }
+            }
 
         let notInitialResultImage = input.collectionModelSelected
             .map { sample in
@@ -118,7 +118,7 @@ final class EstimateViewModel: ViewModelType {
                 self.maskInputImage(with: sample, sourceImage: self.getImage(), maskedImage: self.getMaskedImage())
             }
 
-        let resultImage = Observable.of(initialResultImage,notInitialResultImage).merge()
+        let resultImage = Observable.of(initialResultImage, notInitialResultImage).merge()
 
 
         input.viewWillDisappear
@@ -126,30 +126,30 @@ final class EstimateViewModel: ViewModelType {
                 self.fileManager.saveImage(image: self.lastSelectedImage, imageName: self.matInsertedImageName + String(describing: self.imageIndex), folderName: self.savingFolderName)
             }.disposed(by: disposeBag)
 
-            return Output(
-                        viewWillAppear: willAppear,
-                          SampleList: sampleList,
-                            resultImage: resultImage,
-                          tappedSample: selectedCollection,
-                          tappedAddButton: selectedAddButton,
-                          tappedInputArea: selectedInputArea,
-                        tappedInputAreaAgain: selectedInputAreaAgain,
-                          tappedCartButton: selectedCartButton,
-                        tappedGetAreaSaveButton: selectedGetAreaSaveButton,
-                          tappedGoShopBasketLabel: selectedGoShopBasketLabel)
-        }
+        return Output(
+            viewWillAppear: willAppear,
+            sampleList: sampleList,
+            resultImage: resultImage,
+            tappedSample: selectedCollection,
+            tappedAddButton: selectedAddButton,
+            tappedInputArea: selectedInputArea,
+            tappedInputAreaAgain: selectedInputAreaAgain,
+            tappedCartButton: selectedCartButton,
+            tappedGetAreaSaveButton: selectedGetAreaSaveButton,
+            tappedGoShopBasketLabel: selectedGoShopBasketLabel)
     }
+}
 
 
 
 extension EstimateViewModel {
+    // MARK: - Filter Image
     func getImage() -> UIImage {
         return self.fileManager.getImage(imageName: self.matInsertedImageName + "\(imageIndex)", folderName: savingFolderName) ?? UIImage()
 
     }
 
     func getMaskedImage() -> UIImage {
-
         return self.fileManager.getImage(imageName: self.floorSegmentedImageName + "\(imageIndex)", folderName: savingFolderName) ?? UIImage()
     }
 

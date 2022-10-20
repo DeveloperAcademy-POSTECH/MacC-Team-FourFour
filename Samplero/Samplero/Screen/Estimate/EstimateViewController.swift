@@ -240,7 +240,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             viewWillDisappear: rx.viewWillDisappear,
             collectionModelSelected: sampleCollectionView.rx.modelSelected(Sample.self),
             addButtonSelected: sampleAddButton.rx.tap,
-            inputAreaSelected:  toBeEstimatedPriceView.textButton.rx.tap, inputAreaAgainSelected: estimatedPriceView.textButton.rx.tap,
+            inputAreaSelected: toBeEstimatedPriceView.textButton.rx.tap, inputAreaAgainSelected: estimatedPriceView.textButton.rx.tap,
             cartButtonSelected: cartButton.rx.tap,
             getAreaSaveButtonSelected: getAreaVC.saveButton.rx.tap.map { _ in (self.getAreaVC.areaWidth, self.getAreaVC.areaHeight) },
             goShopBasketLabelSelected: goShopBasketLabel.rx.tapGesture)
@@ -259,7 +259,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             .bind(to: roomImageView.rx.image)
             .disposed(by: viewModel.disposeBag)
         
-        output.SampleList
+        output.sampleList
             .bind(to: sampleCollectionView.rx.items) { [weak self] collectionView, itemIndex, sample -> UICollectionViewCell in
                 let indexPath = IndexPath(item: itemIndex, section: .zero)
                 let cell = collectionView.dequeueReusableCell(withType: SampleCollectionViewCell.self, for: indexPath)
@@ -370,7 +370,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         sampleDetailView.configure(with: sample)
         sourceImage = viewModel.getImage()
         maskedImage = viewModel.getMaskedImage()
-    //  roomImageView.image = maskInputImage(with: sample)
     }
 
 }
