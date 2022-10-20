@@ -254,13 +254,13 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
                     checkSample.isChecked.toggle()
                 }
                 .map { _ in checkSample }
-                .bind(to: self.viewModel.selectedSubject)
+                .bind(to: self.viewModel.selectedSample)
                 .disposed(by: cell.disposeBag!)
 
             // each cell's deleteButton Binding
             cell.getDeleteButton().rx.tap
                 .map { _ in checkSample }
-                .bind(to: self.viewModel.removedSubject)
+                .bind(to: self.viewModel.removedSample)
                 .disposed(by: cell.disposeBag!)
             return cell
             
@@ -375,7 +375,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .map { checkedFlag in
                 (checkedFlag, self.viewModel.wishedSampleRelay.value) }
             .subscribe(onNext: { checkedFlag, wishedAllSample in
-                self.viewModel.selectedAllSubject.onNext(wishedAllSample)
+                self.viewModel.selectedAllSample.onNext(wishedAllSample)
                 switch checkedFlag {
                 case true:
                     self.changeAllChoiceButtonUI(checked: true)

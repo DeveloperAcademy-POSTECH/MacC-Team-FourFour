@@ -23,18 +23,20 @@ class ShopBasketViewModel {
 
     let db = DBHelper.shared
     
-    var shopBasketCopy = BehaviorSubject(value: "")
+    var shopBasketCopy: BehaviorSubject<String> = BehaviorSubject(value: "")
 
     var disposeBag: DisposeBag = DisposeBag()
-//    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: MockData.sampleList.map {CheckSample(sample: $0)})
+
+    // 장바구니 목록 샘플
     let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: [])
-    let removedSubject = PublishSubject<CheckSample>()
-    // current selected checkSample collection
+    // 제거할 샘플
+    let removedSample = PublishSubject<CheckSample>()
+    // 현재 선택된 샘플들 목록
     var selectionState = PublishSubject<Set<CheckSample>>()
-    // selected checkSample
-    var selectedSubject = PublishSubject<CheckSample>()
+    // 선택된 샘플
+    var selectedSample = PublishSubject<CheckSample>()
     // FIXME: - 필요성 검토
-    var selectedAllSubject = PublishSubject<[CheckSample]>()
+    var selectedAllSample = PublishSubject<[CheckSample]>()
 
     // MARK: - Init
 
@@ -50,8 +52,8 @@ class ShopBasketViewModel {
 
         // binding to selectionState
         Observable.of(
-            selectedSubject.map { SelectionEvent.sample($0) },
-            selectedAllSubject.withLatestFrom(wishedSampleRelay.map { SelectionEvent.all($0) })
+            selectedSample.map { SelectionEvent.sample($0) },
+            selectedAllSample.withLatestFrom(wishedSampleRelay.map { SelectionEvent.all($0) })
                  ).merge()
             .scan(Set()) { (lastSampleSet: Set<CheckSample>, event: SelectionEvent) in
                 var lastSampleSet = lastSampleSet
@@ -75,27 +77,30 @@ class ShopBasketViewModel {
             .bind(to: selectionState)
             .disposed(by: disposeBag)
 
-        // removedSubejct binding to selectedSubject
-        removedSubject.map { removedCheckSample in
+        // removedSample binding to selectedSample
+        removedSample.map { removedCheckSample in
             return self.wishedSampleRelay.value.filter { checkSample -> Bool in
                 checkSample.sample.id == removedCheckSample.sample.id && checkSample.isChecked == true
             }
         }
         .filter { !$0.isEmpty }
         .map { $0[0] }
-        .bind(to: selectedSubject)
+        .bind(to: selectedSample)
         .disposed(by: disposeBag)
 
-        // removedSubejct binding to wishedSampleRelay
-        removedSubject.map { removedCheckSample in
-            return self.wishedSampleRelay.value.filter { checkSample -> Bool in
+        // removedSample binding to wishedSampleRelay
+        removedSample.map { removedCheckSample in
+            let resultWishedSample =  self.wishedSampleRelay.value.filter { checkSample -> Bool in
                 checkSample.sample.id != removedCheckSample.sample.id
             }
+            self.selectedAllSample.onNext(resultWishedSample)
+            return resultWishedSample
         }
         .bind(to: wishedSampleRelay)
         .disposed(by: disposeBag)
         
-        removedSubject.map { $0.sample.id }
+        
+        removedSample.map { $0.sample.id }
         .subscribe(onNext: { id in
             self.db.deleteItemFromShopBasket(itemId: id)
         })
@@ -104,4 +109,5 @@ class ShopBasketViewModel {
         
     }
 }
+
 

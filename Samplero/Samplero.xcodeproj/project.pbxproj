@@ -1085,7 +1085,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Y7G824SH3W;
+				DEVELOPMENT_TEAM = J85NQ6YL4V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Samplero/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.";
@@ -1120,7 +1120,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Y7G824SH3W;
+				DEVELOPMENT_TEAM = J85NQ6YL4V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Samplero/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 통한 인테리어를 확인하기 위해 카메라에 대한 접근 권한을 허용해주세요.";
