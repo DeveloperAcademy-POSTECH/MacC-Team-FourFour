@@ -153,11 +153,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        viewModel.fileManager.saveImage(image: self.lastSelectedImage, imageName: self.matInsertedImageName + String(describing: viewModel.imageIndex), folderName: self.savingFolderName)
-    }
-
     override func viewDidLayoutSubviews() {
         toBeEstimatedPriceView.textButton.layer.cornerRadius = toBeEstimatedPriceView.textButton.bounds.height / 2
         estimatedPriceView.textButton.layer.cornerRadius = estimatedPriceView.textButton.bounds.height / 2
