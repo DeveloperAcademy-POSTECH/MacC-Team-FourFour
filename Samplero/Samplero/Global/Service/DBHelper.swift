@@ -248,17 +248,17 @@ final class DBHelper {
         var statement: OpaquePointer?
         var shopBasketCount: Int = 0
         let query: String = "SELECT COUNT(*) FROM SHOP_BASKET;"
-        
+
         if sqlite3_prepare(self.db, query, -1, &statement, nil) != SQLITE_OK {
             let errorMessage = String(cString: sqlite3_errmsg(db)!)
             print("SQLite:", "error while prepare: \(errorMessage)")
             return shopBasketCount
         }
-        
+
         while sqlite3_step(statement) == SQLITE_ROW {
             shopBasketCount = Int(sqlite3_column_int(statement, 0))
         }
-        
+
         sqlite3_finalize(statement)
         
         return shopBasketCount

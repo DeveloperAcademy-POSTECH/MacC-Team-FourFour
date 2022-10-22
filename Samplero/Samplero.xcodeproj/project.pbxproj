@@ -58,6 +58,7 @@
 		35E4440528F9D6BE00320DD6 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 35E4440428F9D6BE00320DD6 /* Lottie */; };
 		35E4440A28F9E30100320DD6 /* dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 35E4440928F9E30100320DD6 /* dots.json */; };
 		35E4440C28F9E6DA00320DD6 /* dot.json in Resources */ = {isa = PBXBuildFile; fileRef = 35E4440B28F9E6DA00320DD6 /* dot.json */; };
+		35E4440E28FC3F1300320DD6 /* RxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E4440D28FC3F1300320DD6 /* RxViewController.swift */; };
 		B51AF42328F6E9190076F21B /* FloorSegmentation.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */; };
 		B51AF43728F6EDA40076F21B /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42628F6EDA40076F21B /* Math.swift */; };
 		B51AF43B28F6EDA40076F21B /* CGImagePropertyOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */; };
@@ -150,6 +151,7 @@
 		35E4440128F8E9C600320DD6 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		35E4440928F9E30100320DD6 /* dots.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dots.json; sourceTree = "<group>"; };
 		35E4440B28F9E6DA00320DD6 /* dot.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dot.json; sourceTree = "<group>"; };
+		35E4440D28FC3F1300320DD6 /* RxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxViewController.swift; sourceTree = "<group>"; };
 		B51AF42228F6E9190076F21B /* FloorSegmentation.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = FloorSegmentation.mlmodel; sourceTree = "<group>"; };
 		B51AF42628F6EDA40076F21B /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGImagePropertyOrientation.swift; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 		21ED8C7528EFC6800074C9A3 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				35E4440D28FC3F1300320DD6 /* RxViewController.swift */,
 				B51AF42628F6EDA40076F21B /* Math.swift */,
 				B51AF42A28F6EDA40076F21B /* CGImagePropertyOrientation.swift */,
 				B51AF43228F6EDA40076F21B /* CGImage+RawBytes.swift */,
@@ -854,6 +857,7 @@
 				210CC67F28F26FD5008191A9 /* BottomSheetTransitioningDelegate.swift in Sources */,
 				2195EA0C28F2E7C800299B39 /* UIViewController+Extension.swift in Sources */,
 				B51AF44C28F858130076F21B /* CGImage+Resize.swift in Sources */,
+				35E4440E28FC3F1300320DD6 /* RxViewController.swift in Sources */,
 				21C81DA328F45447000E89DA /* AreaTestViewController.swift in Sources */,
 				210CC67B28F26F8B008191A9 /* BottomSheetInteractiveDismissalTransition.swift in Sources */,
 				355CB86128F295A0001A5731 /* MockData.swift in Sources */,

@@ -124,7 +124,7 @@ final class BottomSheetPresentationController: UIPresentationController {
             ),
             backdropView.bottomAnchor.constraint(
                 equalTo: containerView.bottomAnchor
-            ),
+            )
         ])
 
         containerView.addSubview(presentedView)
@@ -173,7 +173,7 @@ final class BottomSheetPresentationController: UIPresentationController {
             return
         }
 
-        transitionCoordinator.animate { context in
+        transitionCoordinator.animate { _ in
             self.backdropView.alpha = 0.3
         }
     }
@@ -191,7 +191,7 @@ final class BottomSheetPresentationController: UIPresentationController {
             return
         }
 
-        transitionCoordinator.animate { context in
+        transitionCoordinator.animate { _ in
             self.backdropView.alpha = 0
         }
     }
@@ -206,7 +206,7 @@ final class BottomSheetPresentationController: UIPresentationController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         panGestureRecognizer.isEnabled = false // This will cancel any ongoing pan gesture
-        coordinator.animate(alongsideTransition: nil) { context in
+        coordinator.animate(alongsideTransition: nil) { _ in
             self.panGestureRecognizer.isEnabled = true
         }
     }
