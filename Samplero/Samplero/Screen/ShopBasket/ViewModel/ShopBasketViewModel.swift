@@ -26,24 +26,21 @@ class ShopBasketViewModel {
     var shopBasketCopy = BehaviorSubject(value: "")
 
     var disposeBag: DisposeBag = DisposeBag()
-//    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: MockData.sampleList.map {CheckSample(sample: $0)})
-    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: [])
+    //    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: MockData.sampleList.map {CheckSample(sample: $0)})
     let removedSubject = PublishSubject<CheckSample>()
     // current selected checkSample collection
-    var selectionState = PublishSubject<Set<CheckSample>>()
     // selected checkSample
     var selectedSubject = PublishSubject<CheckSample>()
     // FIXME: - 필요성 검토
-    var selectedAllSubject = PublishSubject<[CheckSample]>()
-
+    var selectedAllSubject = PublishSubject<Void>()
+    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: [])
+    var selectionState = BehaviorRelay<Set<CheckSample>>(value: Set())
+    // for allChoiceButton
+    var checkedCount = 0
     // MARK: - Init
 
 
     init() {
-        // withLatestFrom - selectedAllSubject가 이벤트 방출할 때 wishedSampleRelay의 가장 최근에 방출한 이벤트와 결합해서 방출가능. but 클로저사용안하면 wishedSampleRelay의 가장 최근 이벤트만 방출.
-
-        // scan의 초기값(Last보관소)은 첫번째 인자이고 두번째 인자인 핸들러를 통해 이전에 방출한 값과 위에서 방출한 이벤트값을 이용해 새로운 이벤트를 방출하고 Last보관소에 다시 저장한다.
-
         wishedSampleRelay.accept(self.db.getShopBasketItem().map { shopBasket in
             return shopBasket.toCheckSample()
         })
@@ -52,7 +49,7 @@ class ShopBasketViewModel {
         Observable.of(
             selectedSubject.map { SelectionEvent.sample($0) },
             selectedAllSubject.withLatestFrom(wishedSampleRelay.map { SelectionEvent.all($0) })
-                 ).merge()
+        ).merge()
             .scan(Set()) { (lastSampleSet: Set<CheckSample>, event: SelectionEvent) in
                 var lastSampleSet = lastSampleSet
                 switch event {
@@ -96,12 +93,81 @@ class ShopBasketViewModel {
         .disposed(by: disposeBag)
         
         removedSubject.map { $0.sample.id }
-        .subscribe(onNext: { id in
-            self.db.deleteItemFromShopBasket(itemId: id)
-        })
-        .disposed(by: disposeBag)
+            .subscribe(onNext: { id in
+                self.db.deleteItemFromShopBasket(itemId: id)
+            })
+            .disposed(by: disposeBag)
         
         
     }
+
+
+    struct Input {
+       // let viewWillDisappear: Observable<Bool>
+        let allChoiceButtonSelected: ControlEvent<Void>
+        let allDeleteButtonSelected: ControlEvent<Void>
+        let orderButtonSelected: ControlEvent<Void>
+    }
+    struct Output {
+        let wishedSample: Observable<[CheckSample]>
+        let selectionState: Observable<Set<CheckSample>>
+        let tappedAllChoiceButton: Observable<Bool>
+        let tappedOrderButton: Observable<String>
+    }
+
+    func transform(input: Input) -> Output {
+
+
+
+        // TODO: - 이전 PR 머지후 수정예정
+//        input.viewWillDisappear
+//            .subscribe { _ in
+//                let items = wishedSampleRelay.value
+//
+//                items.forEach { item in
+//                    self.db.updateShopBasketItemSelectedState(itemId: item.sample.id, shopBasketItem: item.isChecked)
+//                }
+//            }
+//            .disposed(by: disposeBag)
+
+
+        let tappedAllChoiceButton =  input.allChoiceButtonSelected.map { _ in
+            !(self.checkedCount == self.wishedSampleRelay.value.count)
+        }
+            .map { checkedFlag in
+                self.selectedAllSubject.onNext(())
+                _ = self.wishedSampleRelay.value.map { $0.isChecked = checkedFlag }
+                return checkedFlag
+            }
+
+
+        let tappedAllDeleteButton =  input.allDeleteButtonSelected.asDriver()
+        tappedAllDeleteButton
+            .map({ [] })
+            .drive(self.wishedSampleRelay)
+            .disposed(by: disposeBag)
+        tappedAllDeleteButton
+            .map({ [] })
+            .drive(self.selectionState)
+            .disposed(by: disposeBag)
+        tappedAllDeleteButton
+            .asObservable()
+            .subscribe { _ in
+                self.db.deleteAllItemFromShopBasket()
+            }
+            .disposed(by: disposeBag)
+
+
+        let tappedOrderButton = input.orderButtonSelected.withLatestFrom(self.shopBasketCopy.asObservable())
+
+        
+
+        return Output(wishedSample: wishedSampleRelay.asObservable(),
+                      selectionState: selectionState.asObservable(),
+                      tappedAllChoiceButton: tappedAllChoiceButton,
+                      tappedOrderButton: tappedOrderButton)
+    }
+
 }
+
 

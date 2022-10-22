@@ -238,46 +238,28 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     
     func bind() {
         setDelegation()
-        // Reactive collectionView ( more than one section )
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, CheckSample>> {(_, collectionView, indexPath, checkSample) -> UICollectionViewCell in
-            
-            // cell configuration
-            let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
-            
-            cell.configure(with: checkSample)
-            cell.disposeBag = DisposeBag()
+        setDatasource()
 
-            // each cell's checkButton Binding
-            cell.getCheckButton().rx.tap
-                .map {
-                    cell.isChecked.toggle()
-                    checkSample.isChecked.toggle()
-                }
-                .map { _ in checkSample }
-                .bind(to: self.viewModel.selectedSubject)
-                .disposed(by: cell.disposeBag!)
+        let input = ShopBasketViewModel.Input(
+            allChoiceButtonSelected: allChoiceButton.rx.tap,
+            allDeleteButtonSelected: allDeleteButton.rx.tap,
+            orderButtonSelected: orderButton.rx.tap)
 
-            // each cell's deleteButton Binding
-            cell.getDeleteButton().rx.tap
-                .map { _ in checkSample }
-                .bind(to: self.viewModel.removedSubject)
-                .disposed(by: cell.disposeBag!)
-            return cell
-            
-        } configureSupplementaryView: { (_, collectionView, _, indexPath) -> UICollectionReusableView in
-            
-            // CollectionView Footer Configuration
-            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
-            return footerView
-        }
+        let output = viewModel.transform(input: input)
 
-        
-        // wishedSampleRelay binding to shopBasketCollectionView's items
-        viewModel.wishedSampleRelay
-            .asDriver()
-            .map {
-                return [SectionModel(model: "", items: $0)]}
-            .drive(shopBasketCollectionView.rx.items(dataSource: dataSource))
+        output.tappedAllChoiceButton
+            .subscribe(onNext: { checkedFlag  in
+                self.changeAllChoiceButtonUI(checked: checkedFlag)
+                self.switchAllCheckBoxInCell(checked: checkedFlag)
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        output.tappedOrderButton
+            .subscribe { copyStr in
+                let vc = TermsViewController()
+                vc.setShopBasketString(str: copyStr)
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
             .disposed(by: viewModel.disposeBag)
 
         // wishedSampleRelay binding to shopBasketCollectionView's visibleStatus
@@ -301,26 +283,26 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .drive(upperDivider.rx.isHidden)
             .disposed(by: viewModel.disposeBag)
 
-        // allDeleteButton binding to wishedSampleRelay
-        allDeleteButton.rx.tap
-            .asDriver()
-            .map { [] }
-            .drive(viewModel.wishedSampleRelay)
-            .disposed(by: viewModel.disposeBag)
-
-        // allDeleteButton binding to selectionState
-        allDeleteButton.rx.tap
-            .asDriver()
-            .map { [] }
-            .drive(viewModel.selectionState)
-            .disposed(by: viewModel.disposeBag)
-        
-        // allDeleteButton tap action
-        allDeleteButton.rx.tap
-            .subscribe(onNext: {
-                self.viewModel.db.deleteAllItemFromShopBasket()
-            })
-            .disposed(by: viewModel.disposeBag)
+//        // allDeleteButton binding to wishedSampleRelay
+//        allDeleteButton.rx.tap
+//            .asDriver()
+//            .map { [] }
+//            .drive(viewModel.wishedSampleRelay)
+//            .disposed(by: viewModel.disposeBag)
+//
+//        // allDeleteButton binding to selectionState
+//        allDeleteButton.rx.tap
+//            .asDriver()
+//            .map { [] }
+//            .drive(viewModel.selectionState)
+//            .disposed(by: viewModel.disposeBag)
+//
+//        // allDeleteButton tap action
+//        allDeleteButton.rx.tap
+//            .subscribe(onNext: {
+//                self.viewModel.db.deleteAllItemFromShopBasket()
+//            })
+//            .disposed(by: viewModel.disposeBag)
         
         // selectionState binding to buttonFirstLabel
         viewModel.selectionState
@@ -363,32 +345,32 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .disposed(by: viewModel.disposeBag)
 
 
-        // allChoiceButton binding
-        allChoiceButton.rx.tap
-            .map {
-                let wishedSampleCount = self.viewModel.wishedSampleRelay.value.count
+//        // allChoiceButton binding
+//        allChoiceButton.rx.tap
+//            .map {
+//                let wishedSampleCount = self.viewModel.wishedSampleRelay.value.count
+//
+//                if self.checkedCount == wishedSampleCount {
+//                    return false
+//                } else { return true }
+//            }
+//            .map { checkedFlag in
+//                (checkedFlag, self.viewModel.wishedSampleRelay.value) }
+//            .subscribe(onNext: { checkedFlag, wishedAllSample in
+//                self.viewModel.selectedAllSubject.onNext(wishedAllSample)
+//                switch checkedFlag {
+//                case true:
+//                    self.changeAllChoiceButtonUI(checked: true)
+//                    _ = wishedAllSample.map({$0.isChecked = true})
+//                    self.switchAllCheckBoxInCell(checked: true)
+//                case false:
+//                    self.changeAllChoiceButtonUI(checked: false)
+//                    _ = wishedAllSample.map({$0.isChecked = false})
+//                    self.switchAllCheckBoxInCell(checked: false)
+//                }
+//            })
+//            .disposed(by: viewModel.disposeBag)
 
-                if self.checkedCount == wishedSampleCount {
-                    return false
-                } else { return true }
-            }
-            .map { checkedFlag in
-                (checkedFlag, self.viewModel.wishedSampleRelay.value) }
-            .subscribe(onNext: { checkedFlag, wishedAllSample in
-                self.viewModel.selectedAllSubject.onNext(wishedAllSample)
-                switch checkedFlag {
-                case true:
-                    self.changeAllChoiceButtonUI(checked: true)
-                    _ = wishedAllSample.map({$0.isChecked = true})
-                    self.switchAllCheckBoxInCell(checked: true)
-                case false:
-                    self.changeAllChoiceButtonUI(checked: false)
-                    _ = wishedAllSample.map({$0.isChecked = false})
-                    self.switchAllCheckBoxInCell(checked: false)
-                }
-            })
-            .disposed(by: viewModel.disposeBag)
-        
         viewModel.selectionState
             .map({ samples in
                 var copyString: String = ""
@@ -403,15 +385,15 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .bind(to: viewModel.shopBasketCopy)
             .disposed(by: viewModel.disposeBag)
         
-        orderButton.rx.tap
-            .withLatestFrom(viewModel.shopBasketCopy.asObservable())
-            .subscribe(onNext: {
-                let vc = TermsViewController()
-                vc.setShopBasketString(str: $0)
-                self.navigationController?.pushViewController(vc, animated: true)
-            })
-            .disposed(by: viewModel.disposeBag)
-        
+//        orderButton.rx.tap
+//            .withLatestFrom(viewModel.shopBasketCopy.asObservable())
+//            .subscribe(onNext: {
+//                let vc = TermsViewController()
+//                vc.setShopBasketString(str: $0)
+//                self.navigationController?.pushViewController(vc, animated: true)
+//            })
+//            .disposed(by: viewModel.disposeBag)
+//        
     }
     
     // MARK: - Func
@@ -419,6 +401,50 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     
     private func setDelegation() {
         shopBasketCollectionView.rx.setDelegate(self).disposed(by: viewModel.disposeBag)
+    }
+
+    private func setDatasource() {
+        // Reactive collectionView ( more than one section )
+        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, CheckSample>> {(_, collectionView, indexPath, checkSample) -> UICollectionViewCell in
+
+            // cell configuration
+            let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
+
+            cell.configure(with: checkSample)
+            cell.disposeBag = DisposeBag()
+
+            // each cell's checkButton Binding
+            cell.getCheckButton().rx.tap
+                .map {
+                    cell.isChecked.toggle()
+                    checkSample.isChecked.toggle()
+                }
+                .map { _ in checkSample }
+                .bind(to: self.viewModel.selectedSubject)
+                .disposed(by: cell.disposeBag!)
+
+            // each cell's deleteButton Binding
+            cell.getDeleteButton().rx.tap
+                .map { _ in checkSample }
+                .bind(to: self.viewModel.removedSubject)
+                .disposed(by: cell.disposeBag!)
+            return cell
+
+        } configureSupplementaryView: { (_, collectionView, _, indexPath) -> UICollectionReusableView in
+
+            // CollectionView Footer Configuration
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
+            return footerView
+        }
+        
+        // wishedSampleRelay binding to shopBasketCollectionView's items
+        viewModel.wishedSampleRelay
+            .asDriver()
+            .map {
+                return [SectionModel(model: "", items: $0)]}
+            .drive(shopBasketCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
+
     }
 
     private func showNavBar() {
