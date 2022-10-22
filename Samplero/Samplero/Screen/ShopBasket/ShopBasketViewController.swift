@@ -55,9 +55,9 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         let button = UIButton()
         button.setTitle("  전체 선택", for: .normal)  // 띄어쓰기 논의해봐야 할듯
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        button.setTitleColor(.systemGray2, for: .normal)
+        button.setTitleColor(.secondaryGray, for: .normal)
         button.setImage(UIImage(systemName: "square"), for: .normal)
-        button.imageView?.tintColor = .systemGray4
+        button.imageView?.tintColor = .boxBackground
         return button
     }()
     
@@ -65,7 +65,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         let button = UIButton()
         button.setTitle("전체 삭제", for: .normal)  // 띄어쓰기 논의해봐야 할듯
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        button.setTitleColor(.systemGray2, for: .normal)
+        button.setTitleColor(.secondaryGray, for: .normal)
         return button
     }()
     
@@ -138,8 +138,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     
     var viewModel: ShopBasketViewModel!
 
-    // for allChoiceButton
-    var checkedCount = 0
+    private var dataSource: RxCollectionViewSectionedReloadDataSource<SectionModel<String, CheckSample>>!
 
 
     // MARK: - Life Cycle
@@ -147,20 +146,8 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        viewModel.wishedSampleRelay
-            .subscribe(onNext: { items in
-                for item in items {
-                    self.viewModel.db.updateShopBasketItemSelectedState(itemId: item.sample.id, shopBasketItem: item.isChecked)
-                }
-            })
-            .disposed(by: viewModel.disposeBag)
-    }
-    
+        
     override func viewDidLayoutSubviews() {
         shopBasketFlowLayout.footerReferenceSize = CGSizeMake(shopBasketCollectionView.bounds.width, Size.footerViewHeight)
     }
@@ -241,12 +228,62 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         setDatasource()
 
         let input = ShopBasketViewModel.Input(
+            viewWillDisappear: rx.viewWillDisappear,
             allChoiceButtonSelected: allChoiceButton.rx.tap,
             allDeleteButtonSelected: allDeleteButton.rx.tap,
             orderButtonSelected: orderButton.rx.tap)
 
         let output = viewModel.transform(input: input)
 
+
+        // wishedSample binding
+        output.wishedSample
+            .asDriver(onErrorJustReturn: [])
+            .map {
+                return [SectionModel(model: "", items: $0)]}
+            .drive(shopBasketCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: viewModel.disposeBag)
+
+        output.wishedSampleIsEmpty
+            .map { !$0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(shopBasketCollectionView.rx.visibleStatus)
+            .disposed(by: viewModel.disposeBag)
+        output.wishedSampleIsEmpty
+            .asDriver(onErrorJustReturn: true)
+            .drive(allButtonsBackgroundView.rx.isHidden)
+            .disposed(by: viewModel.disposeBag)
+        output.wishedSampleIsEmpty
+            .asDriver(onErrorJustReturn: true)
+            .drive(upperDivider.rx.isHidden)
+            .disposed(by: viewModel.disposeBag)
+
+
+        // selectionState binding
+        output.selectionStateCount
+            .drive(buttonFirstLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
+
+        output.selectionStateIsEmpty
+            .drive(orderButton.rx.buttonEnabledStatus)
+            .disposed(by: viewModel.disposeBag)
+
+        output.allChoiceButtonStatus
+            .subscribe { boolValue in
+                self.allChoiceButton.setImage(UIImage(systemName: boolValue ? "checkmark.square.fill" : "square"), for: .normal)
+                self.allChoiceButton.imageView?.tintColor = boolValue ? .accent : .boxBackground
+            }
+            .disposed(by: viewModel.disposeBag)
+
+        output.selectionTotalPrice
+            .subscribe { totalPrice in
+                let footerView = self.shopBasketCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: .zero, section: .zero)) as? AmountFooterView
+                footerView?.configure(with: totalPrice)
+            }
+            .disposed(by: viewModel.disposeBag)
+
+
+        // tappedAllChoiceButton binding
         output.tappedAllChoiceButton
             .subscribe(onNext: { checkedFlag  in
                 self.changeAllChoiceButtonUI(checked: checkedFlag)
@@ -254,6 +291,8 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             })
             .disposed(by: viewModel.disposeBag)
 
+
+        // tappedOrderButton binding
         output.tappedOrderButton
             .subscribe { copyStr in
                 let vc = TermsViewController()
@@ -262,138 +301,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             }
             .disposed(by: viewModel.disposeBag)
 
-        // wishedSampleRelay binding to shopBasketCollectionView's visibleStatus
-        viewModel.wishedSampleRelay
-            .asDriver()
-            .map { !$0.isEmpty}
-            .drive(shopBasketCollectionView.rx.visibleStatus)
-            .disposed(by: viewModel.disposeBag)
 
-        // wishedSampleRelay binding to allButtonsBackgroundView's isHidden
-        viewModel.wishedSampleRelay
-            .map { $0.isEmpty }
-            .asDriver(onErrorJustReturn: true)
-            .drive(allButtonsBackgroundView.rx.isHidden)
-            .disposed(by: viewModel.disposeBag)
-
-        // wishedSampleRelay binding to upperDivider's isHidden
-        viewModel.wishedSampleRelay
-            .map { $0.isEmpty }
-            .asDriver(onErrorJustReturn: true)
-            .drive(upperDivider.rx.isHidden)
-            .disposed(by: viewModel.disposeBag)
-
-//        // allDeleteButton binding to wishedSampleRelay
-//        allDeleteButton.rx.tap
-//            .asDriver()
-//            .map { [] }
-//            .drive(viewModel.wishedSampleRelay)
-//            .disposed(by: viewModel.disposeBag)
-//
-//        // allDeleteButton binding to selectionState
-//        allDeleteButton.rx.tap
-//            .asDriver()
-//            .map { [] }
-//            .drive(viewModel.selectionState)
-//            .disposed(by: viewModel.disposeBag)
-//
-//        // allDeleteButton tap action
-//        allDeleteButton.rx.tap
-//            .subscribe(onNext: {
-//                self.viewModel.db.deleteAllItemFromShopBasket()
-//            })
-//            .disposed(by: viewModel.disposeBag)
-        
-        // selectionState binding to buttonFirstLabel
-        viewModel.selectionState
-            .map { "\($0.count)개의 샘플"}
-            .asDriver(onErrorJustReturn: "0개의 샘플")
-            .drive(buttonFirstLabel.rx.text)
-            .disposed(by: viewModel.disposeBag)
-
-        // selectionState binding to orderButton
-        viewModel.selectionState
-            .map { !$0.isEmpty }
-            .asDriver(onErrorJustReturn: false)
-            .drive(orderButton.rx.buttonEnabledStatus)
-            .disposed(by: viewModel.disposeBag)
-
-        // selectionState binding to allChoiceButton
-        viewModel.selectionState
-            .map { $0.count }
-            .subscribe(onNext: { currentCount in
-                self.checkedCount = currentCount
-                if currentCount == self.viewModel.wishedSampleRelay.value.count {
-                    self.allChoiceButton.setImage(UIImage(systemName: "checkmark.square.fill"), for: .normal)
-                    self.allChoiceButton.imageView?.tintColor = .accent
-
-                } else {
-                    self.allChoiceButton.setImage(UIImage(systemName: "square"), for: .normal)
-                    self.allChoiceButton.imageView?.tintColor = .boxBackground
-                }
-            })
-            .disposed(by: viewModel.disposeBag)
-
-        // selectionState binding to AmountFooterView
-        viewModel.selectionState
-            .subscribe(onNext: { checkSamples in
-                let totalPrice = checkSamples.map { $0.sample.samplePrice }.reduce(0, +)
-
-                let footerView = self.shopBasketCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: .zero, section: .zero)) as? AmountFooterView
-                footerView?.configure(with: totalPrice)
-            })
-            .disposed(by: viewModel.disposeBag)
-
-
-//        // allChoiceButton binding
-//        allChoiceButton.rx.tap
-//            .map {
-//                let wishedSampleCount = self.viewModel.wishedSampleRelay.value.count
-//
-//                if self.checkedCount == wishedSampleCount {
-//                    return false
-//                } else { return true }
-//            }
-//            .map { checkedFlag in
-//                (checkedFlag, self.viewModel.wishedSampleRelay.value) }
-//            .subscribe(onNext: { checkedFlag, wishedAllSample in
-//                self.viewModel.selectedAllSubject.onNext(wishedAllSample)
-//                switch checkedFlag {
-//                case true:
-//                    self.changeAllChoiceButtonUI(checked: true)
-//                    _ = wishedAllSample.map({$0.isChecked = true})
-//                    self.switchAllCheckBoxInCell(checked: true)
-//                case false:
-//                    self.changeAllChoiceButtonUI(checked: false)
-//                    _ = wishedAllSample.map({$0.isChecked = false})
-//                    self.switchAllCheckBoxInCell(checked: false)
-//                }
-//            })
-//            .disposed(by: viewModel.disposeBag)
-
-        viewModel.selectionState
-            .map({ samples in
-                var copyString: String = ""
-                var number: Int = 0
-                for sample in samples {
-                    number += 1
-                    copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n"
-                }
-                
-                return copyString
-            })
-            .bind(to: viewModel.shopBasketCopy)
-            .disposed(by: viewModel.disposeBag)
-        
-//        orderButton.rx.tap
-//            .withLatestFrom(viewModel.shopBasketCopy.asObservable())
-//            .subscribe(onNext: {
-//                let vc = TermsViewController()
-//                vc.setShopBasketString(str: $0)
-//                self.navigationController?.pushViewController(vc, animated: true)
-//            })
-//            .disposed(by: viewModel.disposeBag)
-//        
     }
     
     // MARK: - Func
@@ -405,7 +313,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
 
     private func setDatasource() {
         // Reactive collectionView ( more than one section )
-        let dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, CheckSample>> {(_, collectionView, indexPath, checkSample) -> UICollectionViewCell in
+         dataSource = RxCollectionViewSectionedReloadDataSource<SectionModel<String, CheckSample>> {(_, collectionView, indexPath, checkSample) -> UICollectionViewCell in
 
             // cell configuration
             let cell = collectionView.dequeueReusableCell(withType: ShopBasketCollectionViewCell.self, for: indexPath)
@@ -415,10 +323,9 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
 
             // each cell's checkButton Binding
             cell.getCheckButton().rx.tap
-                .map {
-                    cell.isChecked.toggle()
-                    checkSample.isChecked.toggle()
-                }
+                 .map {
+                     cell.isChecked.toggle()
+                     checkSample.isChecked.toggle() }
                 .map { _ in checkSample }
                 .bind(to: self.viewModel.selectedSubject)
                 .disposed(by: cell.disposeBag!)
@@ -431,19 +338,10 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             return cell
 
         } configureSupplementaryView: { (_, collectionView, _, indexPath) -> UICollectionReusableView in
-
             // CollectionView Footer Configuration
             let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className, for: indexPath)
             return footerView
         }
-        
-        // wishedSampleRelay binding to shopBasketCollectionView's items
-        viewModel.wishedSampleRelay
-            .asDriver()
-            .map {
-                return [SectionModel(model: "", items: $0)]}
-            .drive(shopBasketCollectionView.rx.items(dataSource: dataSource))
-            .disposed(by: viewModel.disposeBag)
 
     }
 
@@ -474,6 +372,7 @@ extension ShopBasketViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+
 // MARK: - UICollectionView visibleStatus + Rx
 
 
@@ -493,17 +392,16 @@ extension Reactive where Base: UICollectionView {
 
 // MARK: - UIButton visibleStatus + Rx
 
-
 extension Reactive where Base: UIButton {
     var buttonEnabledStatus: Binder<Bool> {
         return Binder(self.base) { button, boolValue in
             switch boolValue {
             case true :
+                button.isEnabled = false
+                button.backgroundColor = .boxBackground
+            case false :
                 button.isEnabled = true
                 button.backgroundColor = .accent
-            case false :
-                button.isHidden = false
-                button.backgroundColor = .boxBackground
             }
         }
     }

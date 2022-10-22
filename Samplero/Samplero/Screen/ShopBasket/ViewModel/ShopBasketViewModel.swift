@@ -22,28 +22,52 @@ class ShopBasketViewModel {
     // MARK: - Properties
 
     let db = DBHelper.shared
-    
-    var shopBasketCopy = BehaviorSubject(value: "")
 
     var disposeBag: DisposeBag = DisposeBag()
-    //    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: MockData.sampleList.map {CheckSample(sample: $0)})
     let removedSubject = PublishSubject<CheckSample>()
-    // current selected checkSample collection
     // selected checkSample
     var selectedSubject = PublishSubject<CheckSample>()
-    // FIXME: - 필요성 검토
-    var selectedAllSubject = PublishSubject<Void>()
-    let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: [])
-    var selectionState = BehaviorRelay<Set<CheckSample>>(value: Set())
     // for allChoiceButton
     var checkedCount = 0
-    // MARK: - Init
 
 
-    init() {
+    // MARK: - Input
+
+    struct Input {
+        let viewWillDisappear: ControlEvent<Bool>
+        let allChoiceButtonSelected: ControlEvent<Void>
+        let allDeleteButtonSelected: ControlEvent<Void>
+        let orderButtonSelected: ControlEvent<Void>
+    }
+    // MARK: - Output
+
+    struct Output {
+        let wishedSample: Observable<[CheckSample]>
+        let wishedSampleIsEmpty: Observable<Bool>
+        let selectionState: Observable<Set<CheckSample>>
+        let selectionStateCount: Driver<String>
+        let selectionStateIsEmpty: Driver<Bool>
+        let selectionTotalPrice: Observable<Int>
+        let allChoiceButtonStatus: Observable<Bool>
+        let tappedAllChoiceButton: Observable<Bool>
+        let tappedOrderButton: Observable<String>
+    }
+
+
+    // MARK: - Transfrom
+
+
+    func transform(input: Input) -> Output {
+        let wishedSampleRelay = BehaviorRelay<[CheckSample]>(value: [])
+        // current selected checkSample collection
+        let selectionState = BehaviorRelay<Set<CheckSample>>(value: Set())
+        let shopBasketCopy = BehaviorSubject(value: "")
+        let selectedAllSubject = PublishSubject<Void>()
+
+
         wishedSampleRelay.accept(self.db.getShopBasketItem().map { shopBasket in
-            return shopBasket.toCheckSample()
-        })
+            return shopBasket.toCheckSample() })
+
 
         // binding to selectionState
         Observable.of(
@@ -66,106 +90,116 @@ class ShopBasketViewModel {
                         lastSampleSet = Set(all)
                     }
                 }
-                return lastSampleSet
-            }
+                return lastSampleSet }
             .startWith(Set())
             .bind(to: selectionState)
             .disposed(by: disposeBag)
 
-        // removedSubejct binding to selectedSubject
+
+        // removedSubject binding
         removedSubject.map { removedCheckSample in
-            return self.wishedSampleRelay.value.filter { checkSample -> Bool in
-                checkSample.sample.id == removedCheckSample.sample.id && checkSample.isChecked == true
-            }
+            return wishedSampleRelay.value.filter { checkSample -> Bool in
+                checkSample.sample.id == removedCheckSample.sample.id && checkSample.isChecked == true }
         }
         .filter { !$0.isEmpty }
         .map { $0[0] }
         .bind(to: selectedSubject)
         .disposed(by: disposeBag)
 
-        // removedSubejct binding to wishedSampleRelay
         removedSubject.map { removedCheckSample in
-            return self.wishedSampleRelay.value.filter { checkSample -> Bool in
+            return wishedSampleRelay.value.filter { checkSample -> Bool in
                 checkSample.sample.id != removedCheckSample.sample.id
             }
         }
         .bind(to: wishedSampleRelay)
         .disposed(by: disposeBag)
-        
+
         removedSubject.map { $0.sample.id }
             .subscribe(onNext: { id in
                 self.db.deleteItemFromShopBasket(itemId: id)
             })
             .disposed(by: disposeBag)
-        
-        
-    }
 
 
-    struct Input {
-       // let viewWillDisappear: Observable<Bool>
-        let allChoiceButtonSelected: ControlEvent<Void>
-        let allDeleteButtonSelected: ControlEvent<Void>
-        let orderButtonSelected: ControlEvent<Void>
-    }
-    struct Output {
-        let wishedSample: Observable<[CheckSample]>
-        let selectionState: Observable<Set<CheckSample>>
-        let tappedAllChoiceButton: Observable<Bool>
-        let tappedOrderButton: Observable<String>
-    }
+        // viewWillDisappear
+        input.viewWillDisappear
+            .subscribe { _ in
+                let items = wishedSampleRelay.value
 
-    func transform(input: Input) -> Output {
-
-
-
-        // TODO: - 이전 PR 머지후 수정예정
-//        input.viewWillDisappear
-//            .subscribe { _ in
-//                let items = wishedSampleRelay.value
-//
-//                items.forEach { item in
-//                    self.db.updateShopBasketItemSelectedState(itemId: item.sample.id, shopBasketItem: item.isChecked)
-//                }
-//            }
-//            .disposed(by: disposeBag)
-
-
-        let tappedAllChoiceButton =  input.allChoiceButtonSelected.map { _ in
-            !(self.checkedCount == self.wishedSampleRelay.value.count)
-        }
-            .map { checkedFlag in
-                self.selectedAllSubject.onNext(())
-                _ = self.wishedSampleRelay.value.map { $0.isChecked = checkedFlag }
-                return checkedFlag
+                items.forEach { item in
+                    self.db.updateShopBasketItemSelectedState(itemId: item.sample.id, shopBasketItem: item.isChecked)
+                }
             }
+            .disposed(by: disposeBag)
 
 
+        // tappedAllDeleteButton
         let tappedAllDeleteButton =  input.allDeleteButtonSelected.asDriver()
         tappedAllDeleteButton
             .map({ [] })
-            .drive(self.wishedSampleRelay)
+            .drive(wishedSampleRelay)
             .disposed(by: disposeBag)
         tappedAllDeleteButton
             .map({ [] })
-            .drive(self.selectionState)
+            .drive(selectionState)
             .disposed(by: disposeBag)
         tappedAllDeleteButton
             .asObservable()
             .subscribe { _ in
-                self.db.deleteAllItemFromShopBasket()
-            }
+                self.db.deleteAllItemFromShopBasket() }
             .disposed(by: disposeBag)
 
 
-        let tappedOrderButton = input.orderButtonSelected.withLatestFrom(self.shopBasketCopy.asObservable())
+        // wishedSample
+        let wishedSampleIsEmpty = wishedSampleRelay.map { $0.isEmpty }
 
-        
+        // selectionState
+        let selectionStateCount = selectionState.map { "\($0.count)개의 샘플"}.asDriver(onErrorJustReturn: "0개의 샘플")
+
+        let selectionStateIsEmpty = selectionState.map { $0.isEmpty }.asDriver(onErrorJustReturn: true)
+
+        let selectionTotalPrice = selectionState.map { checkSamples in
+            checkSamples.map { $0.sample.samplePrice }.reduce(0, +) }
+
+        let allChoiceButtonStatus = selectionState.map {
+            self.checkedCount = $0.count
+            return self.checkedCount == wishedSampleRelay.value.count }
+
+        selectionState
+            .map({ samples in
+                var copyString: String = ""
+                var number: Int = 0
+                for sample in samples {
+                    number += 1
+                    copyString += "\(number). \(sample.sample.maker) \(sample.sample.matName)\n" }
+                return copyString })
+            .bind(to: shopBasketCopy)
+            .disposed(by: disposeBag)
+
+
+        // tappedAllChoiceButton
+        let tappedAllChoiceButton =  input.allChoiceButtonSelected.map { _ in
+            !(self.checkedCount == wishedSampleRelay.value.count) }
+            .map({ checkedFlag in
+                _ = wishedSampleRelay.value.map { $0.isChecked = checkedFlag }
+                selectedAllSubject.onNext(())
+                return checkedFlag })
+
+
+        // tappedOrderButton
+        let tappedOrderButton = input.orderButtonSelected.withLatestFrom(shopBasketCopy.asObservable())
+
 
         return Output(wishedSample: wishedSampleRelay.asObservable(),
+                      wishedSampleIsEmpty: wishedSampleIsEmpty,
                       selectionState: selectionState.asObservable(),
+                      selectionStateCount: selectionStateCount,
+                      selectionStateIsEmpty: selectionStateIsEmpty,
+                      selectionTotalPrice: selectionTotalPrice,
+                      allChoiceButtonStatus: allChoiceButtonStatus,
                       tappedAllChoiceButton: tappedAllChoiceButton,
                       tappedOrderButton: tappedOrderButton)
+
     }
 
 }
