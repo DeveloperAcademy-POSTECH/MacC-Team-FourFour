@@ -327,13 +327,13 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
                      cell.isChecked.toggle()
                      checkSample.isChecked.toggle() }
                 .map { _ in checkSample }
-                .bind(to: self.viewModel.selectedSubject)
+                .bind(to: self.viewModel.selectedSample)
                 .disposed(by: cell.disposeBag!)
 
             // each cell's deleteButton Binding
             cell.getDeleteButton().rx.tap
                 .map { _ in checkSample }
-                .bind(to: self.viewModel.removedSubject)
+                .bind(to: self.viewModel.removedSample)
                 .disposed(by: cell.disposeBag!)
             return cell
 
