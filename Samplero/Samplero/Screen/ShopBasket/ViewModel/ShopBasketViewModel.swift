@@ -28,8 +28,6 @@ class ShopBasketViewModel {
     let removedSample = PublishSubject<CheckSample>()
     // 선택된 샘플
     var selectedSample = PublishSubject<CheckSample>()
-    // for allChoiceButton
-    var checkedCount = 0
 
 
     // MARK: - Input
@@ -167,7 +165,6 @@ class ShopBasketViewModel {
             checkSamples.map { $0.sample.samplePrice }.reduce(0, +) }
 
         let allChoiceButtonStatus = Observable.combineLatest(selectionState, wishedSampleRelay, resultSelector: { selectionSample, wishedSample in
-                    self.checkedCount = selectionSample.count
                     return (selectionSample.count == wishedSample.count)
         })
 
@@ -185,7 +182,7 @@ class ShopBasketViewModel {
 
         // tappedAllChoiceButton
         let tappedAllChoiceButton =  input.allChoiceButtonSelected.map { _ in
-            !(self.checkedCount == wishedSampleRelay.value.count) }
+            !(selectionState.value.count == wishedSampleRelay.value.count) }
             .map({ checkedFlag in
                 _ = wishedSampleRelay.value.map { $0.isChecked = checkedFlag }
                 selectedAllSample.onNext(())
