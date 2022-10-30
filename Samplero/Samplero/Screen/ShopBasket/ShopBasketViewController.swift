@@ -244,23 +244,23 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .drive(shopBasketCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: viewModel.disposeBag)
 
-        output.wishedSampleIsEmpty
+        output.IsWishedSampleEmpty
             .map { !$0 }
             .asDriver(onErrorJustReturn: false)
             .drive(shopBasketCollectionView.rx.visibleStatus)
             .disposed(by: viewModel.disposeBag)
-        output.wishedSampleIsEmpty
+        output.IsWishedSampleEmpty
             .asDriver(onErrorJustReturn: true)
             .drive(allButtonsBackgroundView.rx.isHidden)
             .disposed(by: viewModel.disposeBag)
-        output.wishedSampleIsEmpty
+        output.IsWishedSampleEmpty
             .asDriver(onErrorJustReturn: true)
             .drive(upperDivider.rx.isHidden)
             .disposed(by: viewModel.disposeBag)
 
 
         // selectionState binding
-        output.selectionStateCount
+        output.selectedCountText
             .drive(buttonFirstLabel.rx.text)
             .disposed(by: viewModel.disposeBag)
 
@@ -268,7 +268,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .drive(orderButton.rx.buttonEnabledStatus)
             .disposed(by: viewModel.disposeBag)
 
-        output.allChoiceButtonStatus
+        output.IsAllChoiceButtonSelected
             .subscribe { boolValue in
                 self.allChoiceButton.setImage(UIImage(systemName: boolValue ? "checkmark.square.fill" : "square"), for: .normal)
                 self.allChoiceButton.imageView?.tintColor = boolValue ? .accent : .boxBackground
@@ -322,7 +322,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             cell.disposeBag = DisposeBag()
 
             // each cell's checkButton Binding
-            cell.getCheckButton().rx.tap
+            cell.checkBox.rx.tap
                  .map {
                      cell.isChecked.toggle()
                      checkSample.isChecked.toggle() }
@@ -331,7 +331,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
                 .disposed(by: cell.disposeBag!)
 
             // each cell's deleteButton Binding
-            cell.getDeleteButton().rx.tap
+            cell.deleteButton.rx.tap
                 .map { _ in checkSample }
                 .bind(to: self.viewModel.removedSubject)
                 .disposed(by: cell.disposeBag!)
@@ -345,7 +345,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
 
     }
 
-    private func showNavBar() {
+    private func showNavigationBar() {
         navigationController?.navigationBar.isHidden = false
     }
 
