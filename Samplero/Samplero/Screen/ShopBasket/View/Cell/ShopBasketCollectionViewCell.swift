@@ -25,7 +25,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
     // Cell consists of checkBox,sampleImageView, verticalStackView
 
 
-    private let checkBox: UIButton = {
+    let checkBox: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "square"), for: .normal)
         button.imageView?.tintColor = .systemGray3
@@ -33,7 +33,6 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
                                               left: .zero,
                                               bottom: Size.checkBoxFrameSize / 2,
                                               right: Size.checkBoxFrameSize / 2)
-       // button.backgroundColor = .systemPink  // TODO: - 삭제 예정
         return button
     }()
 
@@ -71,7 +70,7 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
 
-    private let deleteButton: UIButton = {
+    let deleteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.imageView?.tintColor = .systemGray3
@@ -181,14 +180,6 @@ final class ShopBasketCollectionViewCell: BaseCollectionViewCell {
         samplePriceLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
         }
-    }
-
-    func getCheckButton() -> UIButton {
-        return checkBox
-    }
-
-    func getDeleteButton() -> UIButton {
-        return deleteButton
     }
 
     func configure(with checkSample: CheckSample) {

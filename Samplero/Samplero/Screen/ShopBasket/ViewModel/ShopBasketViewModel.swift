@@ -42,12 +42,12 @@ class ShopBasketViewModel {
 
     struct Output {
         let wishedSample: Observable<[CheckSample]>
-        let wishedSampleIsEmpty: Observable<Bool>
+        let IsWishedSampleEmpty: Observable<Bool>
         let selectionState: Observable<Set<CheckSample>>
-        let selectionStateCount: Driver<String>
+        let selectedCountText: Driver<String>
         let selectionStateIsEmpty: Driver<Bool>
         let selectionTotalPrice: Observable<Int>
-        let allChoiceButtonStatus: Observable<Bool>
+        let IsAllChoiceButtonSelected: Observable<Bool>
         let tappedAllChoiceButton: Observable<Bool>
         let tappedOrderButton: Observable<String>
     }
@@ -153,20 +153,20 @@ class ShopBasketViewModel {
 
 
         // wishedSample
-        let wishedSampleIsEmpty = wishedSampleRelay.map { $0.isEmpty }
+        let IsWishedSampleEmpty = wishedSampleRelay.map { $0.isEmpty }
 
 
         // selectionState
-        let selectionStateCount = selectionState.map { "\($0.count)개의 샘플"}.asDriver(onErrorJustReturn: "0개의 샘플")
+        let selectedCountText = selectionState.map { "\($0.count)개의 샘플"}.asDriver(onErrorJustReturn: "0개의 샘플")
 
         let selectionStateIsEmpty = selectionState.map { $0.isEmpty }.asDriver(onErrorJustReturn: true)
 
         let selectionTotalPrice = selectionState.map { checkSamples in
             checkSamples.map { $0.sample.samplePrice }.reduce(0, +) }
 
-        let allChoiceButtonStatus = Observable.combineLatest(selectionState, wishedSampleRelay, resultSelector: { selectionSample, wishedSample in
-                    return (selectionSample.count == wishedSample.count)
-        })
+        let IsAllChoiceButtonSelected = selectionState.map {
+            self.checkedCount = $0.count
+            return self.checkedCount == wishedSampleRelay.value.count }
 
         selectionState
             .map({ samples in
@@ -194,12 +194,12 @@ class ShopBasketViewModel {
 
 
         return Output(wishedSample: wishedSampleRelay.asObservable(),
-                      wishedSampleIsEmpty: wishedSampleIsEmpty,
+                      IsWishedSampleEmpty: IsWishedSampleEmpty,
                       selectionState: selectionState.asObservable(),
-                      selectionStateCount: selectionStateCount,
+                      selectedCountText: selectedCountText,
                       selectionStateIsEmpty: selectionStateIsEmpty,
                       selectionTotalPrice: selectionTotalPrice,
-                      allChoiceButtonStatus: allChoiceButtonStatus,
+                      IsAllChoiceButtonSelected: IsAllChoiceButtonSelected,
                       tappedAllChoiceButton: tappedAllChoiceButton,
                       tappedOrderButton: tappedOrderButton)
 
