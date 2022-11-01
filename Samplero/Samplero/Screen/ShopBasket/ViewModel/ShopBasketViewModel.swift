@@ -164,9 +164,8 @@ class ShopBasketViewModel {
         let selectionTotalPrice = selectionState.map { checkSamples in
             checkSamples.map { $0.sample.samplePrice }.reduce(0, +) }
 
-        let IsAllChoiceButtonSelected = selectionState.map {
-            self.checkedCount = $0.count
-            return self.checkedCount == wishedSampleRelay.value.count }
+        let IsAllChoiceButtonSelected = selectionState.map { _ in
+            return selectionState.value.count == wishedSampleRelay.value.count }
 
         selectionState
             .map({ samples in
