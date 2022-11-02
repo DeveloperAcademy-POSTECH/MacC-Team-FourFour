@@ -295,8 +295,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     return true
                 } else { return false }
             }
-            .subscribe { isDuplicated in
-                print(isDuplicated)
+            .subscribe(onNext: { isDuplicated in
                 if isDuplicated {
                     self.sampleAddButton.backgroundColor = .addedButtonGray
                     self.sampleAddButton.isEnabled = false
@@ -307,7 +306,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     self.sampleAddButton.isEnabled = true
                     self.sampleAddButton.setTitle("샘플 담기", for: .normal)
                     self.addedButtonLabelStackView.isHidden = true
-                }
+                })
             }
             .disposed(by: viewModel.disposeBag)
 
