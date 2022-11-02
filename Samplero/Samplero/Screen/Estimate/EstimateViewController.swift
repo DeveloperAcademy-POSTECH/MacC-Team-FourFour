@@ -249,10 +249,10 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         let output = viewModel.transform(input: input)
 
         output.viewWillAppear
-            .subscribe { [weak self] count in
+            .subscribe(onNext: { [weak self] count in
                 self?.navigationController?.isNavigationBarHidden = false
                 self?.cartCountLabel.text = count
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.resultImage
@@ -281,11 +281,11 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             .disposed(by: viewModel.disposeBag)
 
         output.tappedSample
-            .subscribe { currentSample in
+            .subscribe(onNext: { currentSample in
                 self.toBeEstimatedPriceView.alpha = 1
                 self.estimatedPriceView.alpha = 0
                 self.configure(with: currentSample)
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.tappedSample
