@@ -10,7 +10,7 @@ import CoreGraphics
 /*https://rockyshikoku.medium.com/resize-cgimage-baf23a0f58ab*/
 
 extension CGImage {
-    func resize(size:CGSize) -> CGImage? {
+    func resize(size: CGSize) -> CGImage? {
         let width: Int = Int(size.width)
         let height: Int = Int(size.height)
 

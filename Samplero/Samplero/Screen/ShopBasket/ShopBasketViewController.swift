@@ -269,10 +269,10 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .disposed(by: viewModel.disposeBag)
 
         output.IsAllChoiceButtonSelected
-            .subscribe { boolValue in
+            .subscribe(onNext: { boolValue in
                 self.allChoiceButton.setImage(UIImage(systemName: boolValue ? "checkmark.square.fill" : "square"), for: .normal)
                 self.allChoiceButton.imageView?.tintColor = boolValue ? .accent : .boxBackground
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.selectionTotalPrice
