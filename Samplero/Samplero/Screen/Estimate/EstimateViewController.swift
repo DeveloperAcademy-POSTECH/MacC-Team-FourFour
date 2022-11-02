@@ -306,8 +306,8 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     self.sampleAddButton.isEnabled = true
                     self.sampleAddButton.setTitle("샘플 담기", for: .normal)
                     self.addedButtonLabelStackView.isHidden = true
-                })
-            }
+                }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.tappedInputArea
