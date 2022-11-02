@@ -6,12 +6,12 @@ on: [pull_request]
 jobs:
   # test build success
   build:
-    # Now macos-12
-    runs-on: macos-latest
+    # macos-latest still macos-12
+    runs-on: macos-12
     steps:
     - uses: actions/checkout@v2
     - name: Build Test
-      run: xcodebuild -project Samplero/Samplero.xcodeproj -scheme Samplero -destination 'platform=iOS Simulator,OS=15.2,name=iPhone 13 Pro' -quiet clean build
+      run: xcodebuild -project Samplero/Samplero.xcodeproj -scheme Samplero -destination 'platform=iOS Simulator,OS=latest,name=iPhone 13 Pro' -quiet clean build
 
   # check build warnings
   SwiftLint:
