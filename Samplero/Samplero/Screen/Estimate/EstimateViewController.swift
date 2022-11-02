@@ -290,7 +290,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
         output.tappedSample
             .withLatestFrom(viewModel.samplesRelay) { return (samples: $1, currentSample: $0)}
-            .map { tuple in
+            .map { tuple -> Bool in
                 if tuple.samples.firstIndex(of: tuple.currentSample) != nil {
                     return true
                 } else { return false }
