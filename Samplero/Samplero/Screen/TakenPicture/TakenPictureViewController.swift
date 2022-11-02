@@ -6,9 +6,7 @@
 //
 
 import AVFoundation
-import CoreML
 import UIKit
-import Vision
 
 import RxCocoa
 import RxSwift
@@ -70,12 +68,10 @@ class TakenPictureViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addTargets()
         navigationItem.title = "카메라"
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        // TODO: - DB에 floor inserted 저장
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
     }
@@ -123,19 +119,6 @@ class TakenPictureViewController: BaseViewController {
         takenPictureImageView.image = takenPicture
     }
     
-    private func addTargets() {
-        retakeButton.rx.tap.bind {
-            print("clicked retake picture button")
-        }.disposed(by: disposeBag)
-        
-        nextButton.rx.tap.bind {
-            // TODO: go next
-            print("next button tapped")
-//             TODO: activation
-        }.disposed(by: disposeBag)
-    }
-
-
     func getRetakeButton() -> UIButton {
         return retakeButton
     }
