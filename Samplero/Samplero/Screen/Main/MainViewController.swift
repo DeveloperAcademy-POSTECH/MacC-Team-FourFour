@@ -11,9 +11,7 @@ class MainViewController: UIViewController {
 
     @IBAction func estimateButton(_ sender: Any) {
 
-        var cameraVC = CameraViewController()
-//        var estimateVC = EstimateViewController()
-//        estimateVC.bindViewModel(EstimateViewModel())
+        let cameraVC = CameraViewController()
 
         self.navigationController?.pushViewController(cameraVC, animated: true)
     }

@@ -811,6 +811,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		CE13B6C528F15F0200216EB2 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -843,8 +844,6 @@
 				CE1052E128F279DB00503ECF /* CameraViewController.swift in Sources */,
 				CEFFE78728F3D0E5007A7842 /* EstimateHistory.swift in Sources */,
 				CEFFE77A28F3C5E6007A7842 /* EstimateHistoryViewController.swift in Sources */,
-				355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */,
-				355CB86828F29F57001A5731 /* SampleCollectionViewCell.swift in Sources */,
 				CE567AD528F9099B00AEF5E0 /* ShopBasket.swift in Sources */,
 				2188F2F928F7B434005BC322 /* PaddedLabel.swift in Sources */,
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,

@@ -213,7 +213,7 @@ final class DBHelper {
         while sqlite3_step(statement) == SQLITE_ROW {
             let id: Int = Int(sqlite3_column_int(statement, 0))
             let sampleId: Int = Int(sqlite3_column_int(statement, 1))
-            var isSelected: Bool = sqlite3_column_int(statement, 2) == 1 ? true : false
+            let isSelected: Bool = sqlite3_column_int(statement, 2) == 1 ? true : false
             print("\(id) \(sampleId) \(isSelected)")
             
             shopBasket.append(ShopBasket(id: id, sampleId: sampleId, isSelected: isSelected))
