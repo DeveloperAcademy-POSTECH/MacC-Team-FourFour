@@ -6,9 +6,7 @@
 //
 
 import AVFoundation
-import CoreML
 import UIKit
-import Vision
 
 import RxCocoa
 import RxSwift
@@ -49,7 +47,7 @@ class TakenPictureViewController: BaseViewController {
     }()
     
     // Retake Button
-    private let retakeButton: UIButton = {
+    let retakeButton: UIButton = {
         let button: UIButton = UIButton()
         button.setTitle("다시찍기", for: .normal)
         button.titleLabel?.textColor = .white
@@ -58,7 +56,7 @@ class TakenPictureViewController: BaseViewController {
     }()
     
     // Next Button
-    private let nextButton: UIButton = {
+    let nextButton: UIButton = {
         let button: UIButton = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.textColor = .white
@@ -70,12 +68,10 @@ class TakenPictureViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addTargets()
         navigationItem.title = "카메라"
     }
     
     override func viewDidDisappear(_ animated: Bool) {
-        // TODO: - DB에 floor inserted 저장
         super.viewDidDisappear(animated)
         disposeBag = DisposeBag()
     }
@@ -121,26 +117,5 @@ class TakenPictureViewController: BaseViewController {
     func configPictureImage(image: UIImage) {
         self.takenPicture = image
         takenPictureImageView.image = takenPicture
-    }
-    
-    private func addTargets() {
-        retakeButton.rx.tap.bind {
-            print("clicked retake picture button")
-        }.disposed(by: disposeBag)
-        
-        nextButton.rx.tap.bind {
-            // TODO: go next
-            print("next button tapped")
-//             TODO: activation
-        }.disposed(by: disposeBag)
-    }
-
-
-    func getRetakeButton() -> UIButton {
-        return retakeButton
-    }
-
-    func getNextButton() -> UIButton {
-        return nextButton
     }
 }

@@ -5,17 +5,16 @@
 //  Created by JiwKang on 2022/10/09.
 //
 
-import Foundation
 import AVFoundation
-import CoreML
+import Foundation
 import UIKit
-import Vision
 
-import SnapKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import SnapKit
 
-class CameraViewController: BaseViewController {
+class CameraViewController: BaseViewController, ViewModelBindableType {
+
     // MARK: - Properties
 
     private let savingFolderName: String = "estimate-photo"
@@ -31,8 +30,6 @@ class CameraViewController: BaseViewController {
    
     // Capture Session
     var session: AVCaptureSession?
-    // Photo Output
-    let output = AVCapturePhotoOutput()
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
     
@@ -40,8 +37,9 @@ class CameraViewController: BaseViewController {
     
     private let db = DBHelper.shared
     // Rx
-    let viewModel = CameraViewModel()
     var disposeBag = DisposeBag()
+
+    var viewModel: CameraViewModel!
 
     // Shutter Button
     private let shutterButton: UIButton = {
@@ -160,8 +158,7 @@ class CameraViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         checkCameraPermissions()
-        addTargets()
-        bind()
+//        bind()
         // 뒤로가기 swipe 없애기
     }
     
@@ -269,30 +266,11 @@ class CameraViewController: BaseViewController {
     }
     
     func bind() {
-        viewModel.estimateHistoryObservable
-            .subscribe(onNext: { [weak self] history in
-                let savingFolderName: String = "estimate-photo"
-                let floorSegmentedImageName: String = "mat-inserted-photo"
-                let imageName = floorSegmentedImageName + "-\(history.last?.imageId ?? 0)"
-                let image = self?.fileManager.getImage(imageName: imageName, folderName: savingFolderName)
-                
-                if image == nil {
-                    self?.photoHistoryButton.backgroundColor = .white
-                } else {
-                    self?.photoHistoryButton.setImage(image, for: .normal)
-                }
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    // MARK: - Func
-    
-    func addTargets() {
         shutterButton.rx.tap.bind {
             print("clicked take photo button")
-            
+
             #if !targetEnvironment(simulator)
-            self.output.capturePhoto(with: AVCapturePhotoSettings(),
+            self.viewModel.photoOutput.capturePhoto(with: AVCapturePhotoSettings(),
                                 delegate: self)
             #else
             self.takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
@@ -306,9 +284,9 @@ class CameraViewController: BaseViewController {
                 .subscribe(onNext: {
                     self.takenPictureViewController.dismiss(animated: true)
                 }).disposed(by: self.disposeBag)
-            
+
             self.present(self.takenPictureViewController, animated: true)
-            
+
             self.session?.stopRunning()
             #endif
         }.disposed(by: disposeBag)
@@ -320,23 +298,23 @@ class CameraViewController: BaseViewController {
             imagePickerController.allowsEditing = false
             self.present(imagePickerController, animated: true)
         }.disposed(by: disposeBag)
-        
+
         photoHistoryButton.rx.tap.bind { [weak self] in
             print("clicked history")
-            
+
             var estimateHistoryViewController = EstimateHistoryViewController()
             estimateHistoryViewController.bindViewModel(EstimateHistoryViewModel())
-            
+
             self?.navigationController?.pushViewController(estimateHistoryViewController, animated: true)
 
         }.disposed(by: disposeBag)
-        
+
         cartButton.rx.tap.bind {
             var vc = ShopBasketViewController()
             vc.bindViewModel(ShopBasketViewModel())
             self.navigationController?.pushViewController(vc, animated: true)
         }.disposed(by: disposeBag)
-        
+
         cameraHelpView.xMarkButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
                 self?.cameraHelpView.isHidden = true
@@ -346,107 +324,26 @@ class CameraViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
 
-    }
+        viewModel.estimateHistoryObservable
+            .subscribe(onNext: { [weak self] history in
+                let savingFolderName: String = "estimate-photo"
+                let floorSegmentedImageName: String = "mat-inserted-photo"
+                let imageName = floorSegmentedImageName + "-\(history.last?.imageId ?? 0)"
+                let image = self?.fileManager.getImage(imageName: imageName, folderName: savingFolderName)
 
-    private func checkCameraPermissions() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .notDetermined:
-            // Request
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                guard granted else {
-                    return
+                if image == nil {
+                    self?.photoHistoryButton.backgroundColor = .white
+                } else {
+                    self?.photoHistoryButton.setImage(image, for: .normal)
                 }
-                DispatchQueue.main.async {
-                    self.setUpCamera()
-                }
-            }
-        case .restricted:
-            break
-        case .denied:
-            break
-        case .authorized:
-            setUpCamera()
-        @unknown default:
-            break
-        }
+            })
+            .disposed(by: disposeBag)
     }
     
-    private func setUpCamera() {
-        let session = AVCaptureSession()
-        if let device = AVCaptureDevice.default(for: .video) {
-            do {
-                let input = try AVCaptureDeviceInput(device: device)
-                if session.canAddInput(input) {
-                    session.addInput(input)
-                }
-                
-                if session.canAddOutput(output) {
-                    session.addOutput(output)
-                }
-                
-                previewLayer.videoGravity = .resizeAspectFill
-                previewLayer.session = session
-                
-                DispatchQueue.global().async {
-                    session.startRunning()
-                }
-                self.session = session
-            } catch {
-                print(error)
-            }
-        }
-    }
+    // MARK: - Func
+    
 
 
-    private func segmentFloor() {
-        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
-        else { return }
-        let request = VNCoreMLRequest(model: model, completionHandler: self.visionRequestDidComplete)
-        request.imageCropAndScaleOption = .scaleFill
-        DispatchQueue.global().async {
-            guard let takenImageData = self.takenPicture.jpegData(compressionQuality: 1.0) else { return }
-            let handler = VNImageRequestHandler(data: takenImageData, options: [:])
-            do {
-                try handler.perform([request])
-            } catch {
-                print(error)
-            }
-        }
-    }
-
-    private func visionRequestDidComplete(request: VNRequest, error: Error?) {
-        DispatchQueue.main.async { [self] in
-            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
-               let segmentationMap = observations.first?.featureValue.multiArrayValue {
-                guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
-
-                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
-
-
-
-                if segmentationMask.size != self.takenPicture.size {
-                    guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
-                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-                } else {
-                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-                }
-
-
-                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-
-                self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
-
-
-                self.takenPictureViewController.dismiss(animated: true)
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
-                estimateVC.viewModel.imageIndex = self.takenPictureIndex
-                self.navigationController?.pushViewController(estimateVC, animated: true)
-
-                self.takenPictureViewController.stopLottieAnimation() // 로티 종료
-            }
-        }
-    }
 }
 
 // MARK: - Extension
@@ -489,18 +386,18 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 
 extension Reactive where Base: TakenPictureViewController {
     var retake: ControlEvent<Void> {
-        let source = self.base.getRetakeButton().rx.tap
+        let source = self.base.retakeButton.rx.tap
         return ControlEvent(events: source)
     }
 
     var nextButton: ControlEvent<Void> {
-        let source = self.base.getNextButton().rx.tap
+        let source = self.base.nextButton.rx.tap
         return ControlEvent(events: source)
     }
 }
 
 extension Reactive where Base: UIView {
-    public var tapGesture : ControlEvent<UITapGestureRecognizer> {
+    public var tapGesture: ControlEvent<UITapGestureRecognizer> {
         self.base.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer()
         self.base.addGestureRecognizer(gesture)
