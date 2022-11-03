@@ -249,10 +249,10 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
         let output = viewModel.transform(input: input)
 
         output.viewWillAppear
-            .subscribe { [weak self] count in
+            .subscribe(onNext: { [weak self] count in
                 self?.navigationController?.isNavigationBarHidden = false
                 self?.cartCountLabel.text = count
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.resultImage
@@ -281,22 +281,21 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
             .disposed(by: viewModel.disposeBag)
 
         output.tappedSample
-            .subscribe { currentSample in
+            .subscribe(onNext: { currentSample in
                 self.toBeEstimatedPriceView.alpha = 1
                 self.estimatedPriceView.alpha = 0
                 self.configure(with: currentSample)
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.tappedSample
             .withLatestFrom(viewModel.samplesRelay) { return (samples: $1, currentSample: $0)}
-            .map { tuple in
+            .map { tuple -> Bool in
                 if tuple.samples.firstIndex(of: tuple.currentSample) != nil {
                     return true
                 } else { return false }
             }
-            .subscribe { isDuplicated in
-                print(isDuplicated)
+            .subscribe(onNext: { isDuplicated in
                 if isDuplicated {
                     self.sampleAddButton.backgroundColor = .addedButtonGray
                     self.sampleAddButton.isEnabled = false
@@ -308,7 +307,7 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                     self.sampleAddButton.setTitle("샘플 담기", for: .normal)
                     self.addedButtonLabelStackView.isHidden = true
                 }
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.tappedInputArea

@@ -182,7 +182,7 @@ class ShopBasketViewModel {
         // tappedAllChoiceButton
         let tappedAllChoiceButton =  input.allChoiceButtonSelected.map { _ in
             !(selectionState.value.count == wishedSampleRelay.value.count) }
-            .map({ checkedFlag in
+            .map({ checkedFlag -> Bool in
                 _ = wishedSampleRelay.value.map { $0.isChecked = checkedFlag }
                 selectedAllSample.onNext(())
                 return checkedFlag })

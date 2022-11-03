@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 struct Samples {
     var samples: [Sample] = []

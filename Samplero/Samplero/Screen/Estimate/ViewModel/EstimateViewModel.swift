@@ -99,7 +99,7 @@ final class EstimateViewModel: ViewModelType {
                 shopBasketCount.onNext(self.db.getShopBasketCount())
             }
             .withLatestFrom(shopBasketCount)
-            .map { count in
+            .map { count -> String in
                 if count >= 99 {
                     return " 99+ "
                 } else {

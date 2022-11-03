@@ -149,7 +149,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     }
         
     override func viewDidLayoutSubviews() {
-        shopBasketFlowLayout.footerReferenceSize = CGSizeMake(shopBasketCollectionView.bounds.width, Size.footerViewHeight)
+        shopBasketFlowLayout.footerReferenceSize = CGSize(width: shopBasketCollectionView.bounds.width, height: Size.footerViewHeight)
     }
     
     override func render() {
@@ -269,17 +269,17 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
             .disposed(by: viewModel.disposeBag)
 
         output.IsAllChoiceButtonSelected
-            .subscribe { boolValue in
+            .subscribe(onNext: { boolValue in
                 self.allChoiceButton.setImage(UIImage(systemName: boolValue ? "checkmark.square.fill" : "square"), for: .normal)
                 self.allChoiceButton.imageView?.tintColor = boolValue ? .accent : .boxBackground
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
         output.selectionTotalPrice
-            .subscribe { totalPrice in
+            .subscribe(onNext: { totalPrice in
                 let footerView = self.shopBasketCollectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(item: .zero, section: .zero)) as? AmountFooterView
                 footerView?.configure(with: totalPrice)
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
 
@@ -294,11 +294,11 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
 
         // tappedOrderButton binding
         output.tappedOrderButton
-            .subscribe { copyStr in
+            .subscribe(onNext: { copyStr in
                 let vc = TermsViewController()
                 vc.setShopBasketString(str: copyStr)
                 self.navigationController?.pushViewController(vc, animated: true)
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
 
