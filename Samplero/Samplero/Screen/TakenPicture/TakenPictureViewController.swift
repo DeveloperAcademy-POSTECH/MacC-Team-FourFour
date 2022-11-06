@@ -49,7 +49,7 @@ class TakenPictureViewController: BaseViewController {
     }()
     
     // Retake Button
-    private let retakeButton: UIButton = {
+    let retakeButton: UIButton = {
         let button: UIButton = UIButton()
         button.setTitle("다시찍기", for: .normal)
         button.titleLabel?.textColor = .white
@@ -58,14 +58,14 @@ class TakenPictureViewController: BaseViewController {
     }()
     
     // Next Button
-    private let nextButton: UIButton = {
+     let nextButton: UIButton = {
         let button: UIButton = UIButton()
         button.setTitle("다음", for: .normal)
         button.titleLabel?.textColor = .white
         button.titleLabel?.font = .boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize)
         return button
     }()
-    
+
     // MARK: - Life Cycle
 
     override func viewDidLoad() {
@@ -133,14 +133,5 @@ class TakenPictureViewController: BaseViewController {
             print("next button tapped")
 //             TODO: activation
         }.disposed(by: disposeBag)
-    }
-
-
-    func getRetakeButton() -> UIButton {
-        return retakeButton
-    }
-
-    func getNextButton() -> UIButton {
-        return nextButton
     }
 }

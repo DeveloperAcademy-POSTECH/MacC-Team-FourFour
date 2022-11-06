@@ -75,6 +75,7 @@ class BaseViewController: UIViewController {
     func stopLottieAnimation() {
         lottieView?.stop()
         lottieView?.removeFromSuperview()
+        lottieViewBackgroundView.removeFromSuperview()
         backgroundView.removeFromSuperview()
     }
     
