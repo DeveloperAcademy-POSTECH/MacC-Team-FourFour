@@ -279,7 +279,7 @@ class CameraViewController: BaseViewController {
         let input = CameraViewModel.Input(
             viewWillAppear: rx.viewWillAppear,
             tappedNextButton: takenPictureViewController.nextButton.rx.tap
-                .map { _ in self.takenPictureViewController.setupLottieView() },
+                .do(onNext: { _ in self.takenPictureViewController.setupLottieView() }),
             photoOutput: session.rx.photoCaptureOutput(photoOutput: photoOutput,
                                                        photoCaptureDelegate: photoCaptureDelegate),
             didFinishPicking: imagePickerController.rx.didFinishPickingMediaWithInfo)
