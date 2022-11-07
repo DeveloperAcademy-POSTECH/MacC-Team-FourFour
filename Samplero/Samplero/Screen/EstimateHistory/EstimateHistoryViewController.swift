@@ -39,22 +39,6 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     
     // MARK: - Life Cycle
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        viewModel.estimateHistorySubject
-            .map { $0.count > 0 ? true : false }
-            .subscribe(onNext: { [weak self] in
-                if $0 {
-                    self?.estimateHistoryCollectionView.isHidden = false
-                    self?.helpingLabel.isHidden = true
-                } else {
-                    self?.estimateHistoryCollectionView.isHidden = true
-                    self?.helpingLabel.isHidden = false
-                }
-            })
-            .disposed(by: viewModel.disposeBag)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -82,15 +66,30 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
     // MARK: - Func
     
     func bind() {
-        viewModel.estimateHistorySubject
+        let input = EstimateHistoryViewModel.Input(viewWillAppear: rx.viewWillAppear, itemSelected: estimateHistoryCollectionView.rx.itemSelected)
+        let output = viewModel.transform(input: input)
+
+        output.isEmptyCell
+            .subscribe(onNext: { [weak self] in
+                if $0 {
+                    self?.estimateHistoryCollectionView.isHidden = false
+                    self?.helpingLabel.isHidden = true
+                } else {
+                    self?.estimateHistoryCollectionView.isHidden = true
+                    self?.helpingLabel.isHidden = false
+                }
+            })
+            .disposed(by: viewModel.disposeBag)
+
+        output.estimateHistorySubject
             .bind(to: estimateHistoryCollectionView.rx.items) { collectionView, row, history -> UICollectionViewCell in
                 let cell = collectionView.dequeueReusableCell(withType: EstimateHistoryCollectionViewCell.self, for: IndexPath.init(row: row, section: 0))
                 cell.configure(history: history)
                 return cell
             }
             .disposed(by: viewModel.disposeBag)
-        
-        estimateHistoryCollectionView.rx.itemSelected
+
+        output.tappedItem
             .subscribe(onNext: { index in
                 var estimateVC = EstimateViewController()
                 estimateVC.bindViewModel(EstimateViewModel())
