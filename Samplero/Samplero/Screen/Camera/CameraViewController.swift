@@ -5,7 +5,6 @@
 //  Created by JiwKang on 2022/10/09.
 //
 
-import Foundation
 import AVFoundation
 import CoreML
 import UIKit
@@ -15,33 +14,47 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class CameraViewController: BaseViewController {
+private enum Name {
+    static let savingFolderName: String = "estimate-photo"
+    static let floorSegmentedImageName: String = "floor-segmented-photo-"
+    static let matInsertedImageName: String = "mat-inserted-photo-"
+}
+
+class CameraViewController: BaseViewController, ViewModelBindableType {
+
+
     // MARK: - Properties
 
-    private let savingFolderName: String = "estimate-photo"
-    private let floorSegmentedImageName: String = "floor-segmented-photo-"
-    private let matInsertedImageName: String = "mat-inserted-photo-"
-    
+    var takenPictureViewController: TakenPictureViewController = {
+        let viewController = TakenPictureViewController()
+        viewController.modalPresentationStyle = .overFullScreen
+        return viewController
+    }()
 
-    private var takenPicture = UIImage()
-    private var takenPictureIndex: Int!
-    var takenPictureViewController = TakenPictureViewController()
+    private let imagePickerController: UIImagePickerController = {
+        let viewController = UIImagePickerController()
+        viewController.sourceType = .photoLibrary
+        viewController.allowsEditing = false
+        return viewController
+    }()
 
     let isClosedHelpView: Bool = UserDefaults.standard.bool(forKey: "isClosedHelpView")
-   
+
     // Capture Session
-    var session: AVCaptureSession?
+    var session: AVCaptureSession = AVCaptureSession()
     // Photo Output
-    let output = AVCapturePhotoOutput()
+    let photoOutput = AVCapturePhotoOutput()
+
+    let photoCaptureDelegate = RxAVCapturePhotoCaptureDelegate()
+
     // Video Preview
     let previewLayer = AVCaptureVideoPreviewLayer()
     
-    let fileManager = LocalFileManager.instance
     
     private let db = DBHelper.shared
     // Rx
-    let viewModel = CameraViewModel()
-    var disposeBag = DisposeBag()
+//    let viewModel = CameraViewModel()
+    var viewModel: CameraViewModel!
 
     // Shutter Button
     private let shutterButton: UIButton = {
@@ -133,33 +146,9 @@ class CameraViewController: BaseViewController {
     }()
     
     // MARK: - Life Cycle
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        DispatchQueue.global().async { [weak self] in
-            self?.session?.startRunning()
-        }
-        navigationController?.isNavigationBarHidden = true
-        
-        viewModel.shopBasketSubject
-            .map { _ in }
-            .map {
-                return self.viewModel.db.getShopBasketCount()
-            }
-            .map { count in
-                if count >= 99 {
-                    return " 99+ "
-                } else {
-                    return " \(count) "
-                }
-            }
-            .bind(to: cartCountLabel.rx.text)
-            .disposed(by: viewModel.disposeBag)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkCameraPermissions()
         addTargets()
         bind()
         // 뒤로가기 swipe 없애기
@@ -229,8 +218,7 @@ class CameraViewController: BaseViewController {
             make.centerY.equalTo(shutterButton)
             make.size.equalTo(UIScreen.main.bounds.width / 8.125)
         }
-        
-        
+
         view.addSubview(cartButton)
         cartButton.snp.makeConstraints { make in
             make.center.equalTo(cartButtonBackground)
@@ -244,18 +232,18 @@ class CameraViewController: BaseViewController {
     }
     
     override func configUI() {
-        #if targetEnvironment(simulator)
+#if targetEnvironment(simulator)
         let image = UIImage(named: "sample_photo")
         
-        session?.stopRunning()
+        session.stopRunning()
         
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFill
         imageView.frame = view.bounds
         imageView.layer.zPosition = -1
         view.addSubview(imageView)
-        #endif
-        
+#endif
+
         view.backgroundColor = .black
         navigationItem.backButtonTitle = "카메라"
         
@@ -267,75 +255,132 @@ class CameraViewController: BaseViewController {
             cameraHelpView.isHidden = false
         }
     }
-    
+
+
+    // MARK: - Bind
+
+
     func bind() {
-        viewModel.estimateHistoryObservable
-            .subscribe(onNext: { [weak self] history in
-                let savingFolderName: String = "estimate-photo"
-                let floorSegmentedImageName: String = "mat-inserted-photo"
-                let imageName = floorSegmentedImageName + "-\(history.last?.imageId ?? 0)"
-                let image = self?.fileManager.getImage(imageName: imageName, folderName: savingFolderName)
-                
-                if image == nil {
+
+        viewModel.requestCameraPermission()
+            .filter { status in
+                status == .notDetermined || status == .authorized }
+            .subscribe { status in
+                if status == .notDetermined {
+                    AVCaptureDevice.requestAccess(for: .video) { grated in
+                        guard grated else { return }
+                        self.setUpCamera()
+                    }
+                } else { self.setUpCamera() }
+            }
+            .disposed(by: viewModel.disposeBag)
+
+
+        let input = CameraViewModel.Input(
+            viewWillAppear: rx.viewWillAppear,
+            tappedNextButton: takenPictureViewController.nextButton.rx.tap
+                .do(onNext: { _ in self.takenPictureViewController.setupLottieView() }),
+            photoOutput: session.rx.photoCaptureOutput(photoOutput: photoOutput,
+                                                       photoCaptureDelegate: photoCaptureDelegate),
+            didFinishPicking: imagePickerController.rx.didFinishPickingMediaWithInfo)
+
+        let output = viewModel.transform(input: input)
+
+        output.viewWillAppear
+            .subscribe { _ in
+                self.session.rx.startRunning()
+                self.navigationController?.isNavigationBarHidden = true }
+            .disposed(by: viewModel.disposeBag)
+
+        output.shopBasketCountString
+            .bind(to: cartCountLabel.rx.text)
+            .disposed(by: viewModel.disposeBag)
+
+        output.lastHistoryImage
+            .subscribe(onNext: { [weak self] lastHistoryImage in
+                if lastHistoryImage == nil {
                     self?.photoHistoryButton.backgroundColor = .white
                 } else {
-                    self?.photoHistoryButton.setImage(image, for: .normal)
-                }
-            })
-            .disposed(by: disposeBag)
+                    self?.photoHistoryButton.setImage(lastHistoryImage, for: .normal)
+                } })
+            .disposed(by: viewModel.disposeBag)
+
+        output.capturedImage
+            .skip(1)
+            .subscribe { image in
+                self.takenPictureViewController.configPictureImage(image: image)
+                self.imagePickerController.dismiss(animated: true)
+                self.present(self.takenPictureViewController, animated: true)
+                self.session.rx.stopRunning() }
+            .disposed(by: viewModel.disposeBag)
+
+        output.resultTakenPictureIndex
+            .observe(on: MainScheduler.instance)
+            .subscribe { takenPictureIndex in
+                self.takenPictureViewController.dismiss(animated: true)
+                var estimateVC = EstimateViewController()
+                estimateVC.bindViewModel(EstimateViewModel())
+                estimateVC.viewModel.imageIndex = takenPictureIndex
+                self.navigationController?.pushViewController(estimateVC, animated: true)
+                self.takenPictureViewController.stopLottieAnimation() // 로티 종료
+            }
+            .disposed(by: viewModel.disposeBag)
     }
-    
+
+
     // MARK: - Func
-    
-    func addTargets() {
+
+
+    private func addTargets() {
+
+        takenPictureViewController.retakeButton.rx.tap
+            .subscribe(onNext: {
+                self.session.rx.startRunning()
+                self.takenPictureViewController.dismiss(animated: true)
+            }).disposed(by: viewModel.disposeBag)
+
+        imagePickerController.rx.didCancel
+            .subscribe { _ in
+                self.imagePickerController.dismiss(animated: true)
+            }
+            .disposed(by: viewModel.disposeBag)
+
         shutterButton.rx.tap.bind {
             print("clicked take photo button")
-            
+
             #if !targetEnvironment(simulator)
-            self.output.capturePhoto(with: AVCapturePhotoSettings(),
-                                delegate: self)
+            self.photoOutput.capturePhoto(with: AVCapturePhotoSettings(),
+                                          delegate: self.photoCaptureDelegate)
             #else
             self.takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
-            self.takenPictureViewController.modalPresentationStyle = .overFullScreen
-            self.takenPictureViewController.rx.retake
-                .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-                .map { [weak self] in
-                    self?.session?.startRunning()
-                }
+            self.takenPictureViewController.retakeButton.rx.tap
+                .map { [weak self] in self?.session.rx.startRunning() }
                 .observe(on: MainScheduler.instance)
                 .subscribe(onNext: {
                     self.takenPictureViewController.dismiss(animated: true)
-                }).disposed(by: self.disposeBag)
+                }).disposed(by: self.viewModel.disposeBag)
             
             self.present(self.takenPictureViewController, animated: true)
-            
-            self.session?.stopRunning()
+            self.session.stopRunning()
             #endif
-        }.disposed(by: disposeBag)
+        }.disposed(by: viewModel.disposeBag)
 
         bringPhotoButton.rx.tap.bind {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.sourceType = .photoLibrary
-            imagePickerController.delegate = self
-            imagePickerController.allowsEditing = false
-            self.present(imagePickerController, animated: true)
-        }.disposed(by: disposeBag)
+            self.present(self.imagePickerController, animated: true)
+        }.disposed(by: viewModel.disposeBag)
         
         photoHistoryButton.rx.tap.bind { [weak self] in
             print("clicked history")
-            
             var estimateHistoryViewController = EstimateHistoryViewController()
             estimateHistoryViewController.bindViewModel(EstimateHistoryViewModel())
-            
             self?.navigationController?.pushViewController(estimateHistoryViewController, animated: true)
-
-        }.disposed(by: disposeBag)
+        }.disposed(by: viewModel.disposeBag)
         
         cartButton.rx.tap.bind {
             var vc = ShopBasketViewController()
             vc.bindViewModel(ShopBasketViewModel())
             self.navigationController?.pushViewController(vc, animated: true)
-        }.disposed(by: disposeBag)
+        }.disposed(by: viewModel.disposeBag)
         
         cameraHelpView.xMarkButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
@@ -344,35 +389,10 @@ class CameraViewController: BaseViewController {
 
                 UserDefaults.standard.set(true, forKey: "isClosedHelpView")
             })
-            .disposed(by: disposeBag)
-
-    }
-
-    private func checkCameraPermissions() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .notDetermined:
-            // Request
-            AVCaptureDevice.requestAccess(for: .video) { granted in
-                guard granted else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    self.setUpCamera()
-                }
-            }
-        case .restricted:
-            break
-        case .denied:
-            break
-        case .authorized:
-            setUpCamera()
-        @unknown default:
-            break
-        }
+            .disposed(by: viewModel.disposeBag)
     }
     
     private func setUpCamera() {
-        let session = AVCaptureSession()
         if let device = AVCaptureDevice.default(for: .video) {
             do {
                 let input = try AVCaptureDeviceInput(device: device)
@@ -380,165 +400,26 @@ class CameraViewController: BaseViewController {
                     session.addInput(input)
                 }
                 
-                if session.canAddOutput(output) {
-                    session.addOutput(output)
+                if session.canAddOutput(photoOutput) {
+                    session.addOutput(photoOutput)
                 }
-                
                 previewLayer.videoGravity = .resizeAspectFill
                 previewLayer.session = session
                 
-                DispatchQueue.global().async {
-                    session.startRunning()
-                }
-                self.session = session
-            } catch {
-                print(error)
-            }
-        }
-    }
-
-
-    private func segmentFloor() {
-        guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model)
-        else { return }
-        let request = VNCoreMLRequest(model: model, completionHandler: self.visionRequestDidComplete)
-        request.imageCropAndScaleOption = .scaleFill
-        DispatchQueue.global().async {
-            guard let takenImageData = self.takenPicture.jpegData(compressionQuality: 1.0) else { return }
-            let handler = VNImageRequestHandler(data: takenImageData, options: [:])
-            do {
-                try handler.perform([request])
-            } catch {
-                print(error)
-            }
-        }
-    }
-
-    private func visionRequestDidComplete(request: VNRequest, error: Error?) {
-        DispatchQueue.main.async { [self] in
-            if let observations = request.results as? [VNCoreMLFeatureValueObservation],
-               let segmentationMap = observations.first?.featureValue.multiArrayValue {
-                guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
-
-                self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
-
-
-
-                if segmentationMask.size != self.takenPicture.size {
-                    guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
-                    self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-                } else {
-                    self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-                }
-
-
-                self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-
-                self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
-
-
-                self.takenPictureViewController.dismiss(animated: true)
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
-                estimateVC.viewModel.imageIndex = self.takenPictureIndex
-                self.navigationController?.pushViewController(estimateVC, animated: true)
-
-                self.takenPictureViewController.stopLottieAnimation() // 로티 종료
-            }
+                session.rx.startRunning()
+            } catch { print(error) }
         }
     }
 }
+
 
 // MARK: - Extension
 
-extension CameraViewController: AVCapturePhotoCaptureDelegate {
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        guard let data = photo.fileDataRepresentation() else {
-            return
-        }
-
-        let takenPictureViewController = TakenPictureViewController()
-        takenPictureViewController.configPictureImage(image: UIImage(data: data) ?? UIImage())
-        takenPictureViewController.rx.retake
-            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-            .map { [weak self] in
-                self?.session?.startRunning()
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                takenPictureViewController.dismiss(animated: true)
-            }).disposed(by: disposeBag)
-
-        takenPictureViewController.rx.nextButton
-            .subscribe(onNext: {
-                takenPictureViewController.setupLottieView() // 로티 시작
-                self.takenPicture = takenPictureViewController.takenPicture
-                self.takenPictureViewController = takenPictureViewController
-
-                self.segmentFloor()
-            }).disposed(by: disposeBag)
-
-        takenPictureViewController.modalPresentationStyle = .overFullScreen
-
-        self.present(takenPictureViewController, animated: true)
-
-        session?.stopRunning()
-    }
-
-}
-
-extension Reactive where Base: TakenPictureViewController {
-    var retake: ControlEvent<Void> {
-        let source = self.base.getRetakeButton().rx.tap
-        return ControlEvent(events: source)
-    }
-
-    var nextButton: ControlEvent<Void> {
-        let source = self.base.getNextButton().rx.tap
-        return ControlEvent(events: source)
-    }
-}
-
 extension Reactive where Base: UIView {
-    public var tapGesture : ControlEvent<UITapGestureRecognizer> {
+    public var tapGesture: ControlEvent<UITapGestureRecognizer> {
         self.base.isUserInteractionEnabled = true
         let gesture = UITapGestureRecognizer()
         self.base.addGestureRecognizer(gesture)
         return gesture.rx.event
-    }
-}
-
-extension CameraViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage ?? UIImage()
-
-        let takenPictureViewController = TakenPictureViewController()
-        takenPictureViewController.configPictureImage(image: selectedImage)
-        takenPictureViewController.rx.retake
-            .observe(on: ConcurrentDispatchQueueScheduler(qos: .background))
-            .map { [weak self] in
-                self?.session?.startRunning()
-            }
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: {
-                takenPictureViewController.dismiss(animated: true)
-            }).disposed(by: disposeBag)
-
-        takenPictureViewController.rx.nextButton
-            .subscribe(onNext: {
-                self.takenPicture = takenPictureViewController.takenPicture
-                self.takenPictureViewController = takenPictureViewController
-                takenPictureViewController.setupLottieView()   // 로티시작
-                self.segmentFloor()
-            }).disposed(by: disposeBag)
-        
-        picker.dismiss(animated: true, completion: nil)
-        takenPictureViewController.modalPresentationStyle = .overFullScreen
-        self.present(takenPictureViewController, animated: true)
-
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
     }
 }
