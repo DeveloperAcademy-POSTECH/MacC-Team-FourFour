@@ -20,7 +20,7 @@ private enum Name {
     static let matInsertedImageName: String = "mat-inserted-photo-"
 }
 
-class CameraViewController: BaseViewController {
+class CameraViewController: BaseViewController, ViewModelBindableType {
 
 
     // MARK: - Properties
@@ -53,8 +53,8 @@ class CameraViewController: BaseViewController {
     
     private let db = DBHelper.shared
     // Rx
-    let viewModel = CameraViewModel()
-
+//    let viewModel = CameraViewModel()
+    var viewModel: CameraViewModel!
 
     // Shutter Button
     private let shutterButton: UIButton = {
@@ -149,6 +149,7 @@ class CameraViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addTargets()
         bind()
         // 뒤로가기 swipe 없애기
     }
@@ -260,7 +261,6 @@ class CameraViewController: BaseViewController {
 
 
     func bind() {
-        addTargets()
 
         viewModel.requestCameraPermission()
             .filter { status in
