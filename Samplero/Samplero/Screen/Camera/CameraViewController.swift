@@ -418,31 +418,30 @@ class CameraViewController: BaseViewController {
         DispatchQueue.main.async { [self] in
             if let observations = request.results as? [VNCoreMLFeatureValueObservation],
                let segmentationMap = observations.first?.featureValue.multiArrayValue {
+
+                // fill background above matt
+                for y in 0...215 {
+                    for x in 0...511 {
+                        segmentationMap[y * 512 + x] = 1
+                    }
+                }
+
                 guard let segmentationMask = segmentationMap.image(min: 0, max: 1) else { return }
 
                 self.takenPictureIndex = self.db.getEstimateHistoryCount() + 1
-
-
-
                 if segmentationMask.size != self.takenPicture.size {
                     guard let resizedMask = segmentationMask.resizedImage(for: self.takenPicture.size) else { return }
                     self.fileManager.saveImage(image: resizedMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
                 } else {
                     self.fileManager.saveImage(image: segmentationMask, imageName: self.floorSegmentedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
                 }
-
-
                 self.fileManager.saveImage(image: self.takenPicture, imageName: self.matInsertedImageName + String(describing: self.takenPictureIndex!), folderName: self.savingFolderName)
-
                 self.db.insertEstimateHistory(history: EstimateHistory(imageId: self.takenPictureIndex, width: nil, height: nil, selectedSampleId: nil))
-
-
                 self.takenPictureViewController.dismiss(animated: true)
                 var estimateVC = EstimateViewController()
                 estimateVC.bindViewModel(EstimateViewModel())
                 estimateVC.viewModel.imageIndex = self.takenPictureIndex
                 self.navigationController?.pushViewController(estimateVC, animated: true)
-
                 self.takenPictureViewController.stopLottieAnimation() // 로티 종료
             }
         }
