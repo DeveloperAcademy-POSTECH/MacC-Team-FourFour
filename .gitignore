@@ -119,6 +119,6 @@ iOSInjectionProject/
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
-swiftpm/
+# swiftpm/
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,xcode,macos,cocoapods
