@@ -5,7 +5,6 @@
 //  Created by JiwKang on 2022/10/09.
 //
 
-import Foundation
 import AVFoundation
 import CoreML
 import UIKit
@@ -22,6 +21,8 @@ private enum Name {
 }
 
 class CameraViewController: BaseViewController {
+
+
     // MARK: - Properties
 
     var takenPictureViewController: TakenPictureViewController = {
@@ -233,7 +234,7 @@ class CameraViewController: BaseViewController {
 #if targetEnvironment(simulator)
         let image = UIImage(named: "sample_photo")
         
-        session?.stopRunning()
+        session.stopRunning()
         
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFill
@@ -360,7 +361,7 @@ class CameraViewController: BaseViewController {
                 }).disposed(by: self.viewModel.disposeBag)
             
             self.present(self.takenPictureViewController, animated: true)
-            self.session?.stopRunning()
+            self.session.stopRunning()
             #endif
         }.disposed(by: viewModel.disposeBag)
 
