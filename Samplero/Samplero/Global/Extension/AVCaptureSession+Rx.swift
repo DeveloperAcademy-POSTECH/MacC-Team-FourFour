@@ -26,19 +26,11 @@ extension Reactive where Base: AVCaptureSession {
     @available(iOS 11.0, *)
     func photoCaptureOutput(photoOutput: AVCapturePhotoOutput,
                                    photoCaptureDelegate: RxAVCapturePhotoCaptureDelegate) -> Observable<PhotoCaptureOutput> {
-//            let photoOutput = AVCapturePhotoOutput()
-//            let photoCaptureDelegate = RxAVCapturePhotoCaptureDelegate()
+
             let photoCaptureOutput: Observable<PhotoCaptureOutput> = Observable
                 .create { observer in
                     photoCaptureDelegate.observer = observer
 
-//                    self.configure { session in
-//                        if session.canAddOutput(photoOutput) {
-//                            session.addOutput(photoOutput)
-//                        } else {
-//                            observer.onError(RxAVFoundationError.cannotAddOutput("Photo"))
-//                        }
-//                    }
                     return Disposables.create {
                         self.configure { session in
                             session.removeOutput(photoOutput)
@@ -46,7 +38,6 @@ extension Reactive where Base: AVCaptureSession {
                     }
                 }
                 .subscribe(on: MainScheduler.asyncInstance)
-            //            .observeOn(Scheduler.dataOutput)
             return photoCaptureOutput
         }
 
