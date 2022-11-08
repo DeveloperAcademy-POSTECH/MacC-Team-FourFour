@@ -3,7 +3,7 @@
 //  Samplero
 //
 //  Created by JiwKang on 2022/10/14.
-//
+//  Modified by DaeSeong Kin on 2022/11/08
 
 import AVFoundation
 import UIKit
