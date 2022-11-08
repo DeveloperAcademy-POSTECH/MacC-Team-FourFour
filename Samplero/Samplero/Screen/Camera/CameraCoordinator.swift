@@ -21,17 +21,16 @@ class CameraCoordinator: BaseCoordinator {
         cameraVC.bindViewModel(CameraViewModel(coordinator: self))
         navigationController?.pushViewController(cameraVC, animated: true)
     }
-
-     func showEstimateHistory() {
+    
+    func showEstimateHistory() {
         var estimateHistoryVC = EstimateHistoryViewController()
         estimateHistoryVC.bindViewModel(EstimateHistoryViewModel())
-         navigationController?.pushViewController(estimateHistoryVC, animated: true)
+        navigationController?.pushViewController(estimateHistoryVC, animated: true)
     }
 
     func showTakenPicture(image: UIImage) {
         if let imagePickerVC = navigationController?.presentedViewController {
-            imagePickerVC.dismiss(animated: true)
-        }
+            imagePickerVC.dismiss(animated: true) }
 
         guard let cameraVC = navigationController?.viewControllers.last as? CameraViewController else { return }
         cameraVC.takenPictureViewController.configPictureImage(image: image)
@@ -39,10 +38,10 @@ class CameraCoordinator: BaseCoordinator {
         cameraVC.session.rx.stopRunning()
     }
 
-     func showShopBasket() {
+    func showShopBasket() {
         var shopBasketVC = ShopBasketViewController()
-         shopBasketVC.bindViewModel(ShopBasketViewModel())
-         navigationController?.pushViewController(shopBasketVC, animated: true)
+        shopBasketVC.bindViewModel(ShopBasketViewModel())
+        navigationController?.pushViewController(shopBasketVC, animated: true)
     }
 
     func showImagePicker(imagePickerVC: UIImagePickerController) {
@@ -50,7 +49,7 @@ class CameraCoordinator: BaseCoordinator {
     }
 
     func showEstimate(takenPictureIndex: Int) {
-        hidePresentView() // TakenPictureViewController 해제
+        hidePresentedView() // TakenPictureViewController 해제
         var estimateVC = EstimateViewController()
         estimateVC.bindViewModel(EstimateViewModel())
         estimateVC.viewModel.imageIndex = takenPictureIndex
@@ -61,7 +60,7 @@ class CameraCoordinator: BaseCoordinator {
         takenPictureVC.stopLottieAnimation()
     }
 
-    func hidePresentView() {
+    func hidePresentedView() {
         navigationController?.presentedViewController?.dismiss(animated: true)
     }
 }

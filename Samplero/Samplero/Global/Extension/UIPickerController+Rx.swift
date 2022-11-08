@@ -18,14 +18,12 @@ extension Reactive where Base: UIImagePickerController {
     public var didFinishPickingMediaWithInfo: Observable<UIImage> {
         return RxImagePickerProxy.proxy(for: base)
             .didFinishPickingMediaWithInfoSubject
-            .asObservable()
-    }
+            .asObservable() }
 
     public var didCancel: Observable<Void> {
         return RxImagePickerProxy.proxy(for: base)
             .didCancelSubject
-            .asObservable()
-    }
+            .asObservable() }
 
 }
 
@@ -86,8 +84,8 @@ class RxImagePickerProxy: DelegateProxy<UIImagePickerController, ImagePickerDele
 
 
     deinit {
-        self.didFinishPickingMediaWithInfoSubject.onCompleted()
-        self.didCancelSubject.onCompleted()
+        didFinishPickingMediaWithInfoSubject.onCompleted()
+        didCancelSubject.onCompleted()
     }
 
 }

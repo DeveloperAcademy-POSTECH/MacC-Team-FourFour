@@ -20,7 +20,7 @@ private enum Name {
     static let matInsertedImageName: String = "mat-inserted-photo-"
 }
 
-class CameraViewController: BaseViewController, ViewModelBindableType {
+final class CameraViewController: BaseViewController, ViewModelBindableType {
 
 
     // MARK: - Properties
@@ -53,7 +53,7 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
     
     private let db = DBHelper.shared
     // Rx
-//    let viewModel = CameraViewModel()
+    //    let viewModel = CameraViewModel()
     var viewModel: CameraViewModel!
 
     // Shutter Button
@@ -272,7 +272,7 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
             }
             .disposed(by: viewModel.disposeBag)
 
-
+        // Input
         let input = CameraViewModel.Input(
             viewWillAppear: rx.viewWillAppear,
             tappedPhotoHistoryButton: photoHistoryButton.rx.tap,
@@ -286,8 +286,8 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
             tappedRetakeButton: takenPictureViewController.retakeButton.rx.tap
                 .do(onNext: { _ in self.session.rx.startRunning() }),
             photoOutput: session.rx.photoCaptureOutput(
-            photoOutput: photoOutput,
-            photoCaptureDelegate: photoCaptureDelegate),
+                photoOutput: photoOutput,
+                photoCaptureDelegate: photoCaptureDelegate),
             didFinishPicking: imagePickerController.rx.didFinishPickingMediaWithInfo)
 
         let output = viewModel.transform(input: input)
@@ -318,10 +318,10 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
 
     private func addTargets() {
         shutterButton.rx.tap.bind {
-            #if !targetEnvironment(simulator)
+#if !targetEnvironment(simulator)
             self.photoOutput.capturePhoto(with: AVCapturePhotoSettings(),
                                           delegate: self.photoCaptureDelegate)
-            #else
+#else
             self.takenPictureViewController.configPictureImage(image: UIImage(named: "sample_photo_0") ?? UIImage())
             self.takenPictureViewController.retakeButton.rx.tap
                 .map { [weak self] in self?.session.rx.startRunning() }
@@ -332,10 +332,10 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
             
             self.present(self.takenPictureViewController, animated: true)
             self.session.stopRunning()
-            #endif
+#endif
         }.disposed(by: viewModel.disposeBag)
     }
-    
+
     private func setUpCamera() {
         if let device = AVCaptureDevice.default(for: .video) {
             do {

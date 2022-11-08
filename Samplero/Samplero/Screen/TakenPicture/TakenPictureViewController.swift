@@ -3,7 +3,7 @@
 //  Samplero
 //
 //  Created by JiwKang on 2022/10/10.
-//
+//  Modified by DaeSeong Kim on 2022/11/08
 
 import AVFoundation
 import CoreML
@@ -21,11 +21,6 @@ class TakenPictureViewController: BaseViewController {
     
     // Image FileManager
     private let fileManager = LocalFileManager.instance
-    
-    // DB
-    
-    // Rx
-    private var disposeBag = DisposeBag()
 
     // Picture view
     private let takenPictureImageView: UIImageView = {
@@ -70,14 +65,12 @@ class TakenPictureViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addTargets()
         navigationItem.title = "카메라"
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         // TODO: - DB에 floor inserted 저장
         super.viewDidDisappear(animated)
-        disposeBag = DisposeBag()
     }
     
     override func render() {
@@ -122,16 +115,5 @@ class TakenPictureViewController: BaseViewController {
         self.takenPicture = image
         takenPictureImageView.image = takenPicture
     }
-    
-    private func addTargets() {
-        retakeButton.rx.tap.bind {
-            print("clicked retake picture button")
-        }.disposed(by: disposeBag)
-        
-        nextButton.rx.tap.bind {
-            // TODO: go next
-            print("next button tapped")
-//             TODO: activation
-        }.disposed(by: disposeBag)
-    }
+
 }

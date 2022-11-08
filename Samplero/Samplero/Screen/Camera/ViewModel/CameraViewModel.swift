@@ -3,14 +3,14 @@
 //  Samplero
 //
 //  Created by JiwKang on 2022/10/14.
-//  Modified by DaeSeong Kin on 2022/11/08
+//  Modified by DaeSeong Kim on 2022/11/08
 
 import AVFoundation
 import UIKit
 import Vision
 
-import RxSwift
 import RxCocoa
+import RxSwift
 
 private enum Name {
     static let savingFolderName: String = "estimate-photo"
@@ -30,12 +30,19 @@ class CameraViewModel: ViewModelType {
 
     private let coordinator: CameraCoordinator
 
+
+    // MARK: - Init
+
+
     required init(coordinator: CameraCoordinator) {
         self.coordinator = coordinator
     }
 
+
+    // MARK: - Input
+
+
     struct Input {
-        //        let viewDidLoad: ControlEvent<Void>
         let viewWillAppear: ControlEvent<Bool>
         let tappedPhotoHistoryButton: ControlEvent<Void>
         let tappedPickerDidCancel: Observable<Void>
@@ -48,22 +55,30 @@ class CameraViewModel: ViewModelType {
         let didFinishPicking: Observable<UIImage>
     }
 
+
+    // MARK: - Output
+
+
     struct Output {
         let viewWillAppear: ControlEvent<Bool>
         let lastHistoryImage: Observable<UIImage?>
-        //        let cameraPermissionStatus: Observable<AVAuthorizationStatus>
         let capturedImage: Observable<UIImage>
         let shopBasketCountString: Observable<String>
     }
 
+
+    // MARK: - Transform
+
+
     func transform(input: Input) -> Output {
 
-        let vnRequest: BehaviorRelay<VNRequest> = BehaviorRelay(value: VNRequest())
+        let requestResult: BehaviorRelay<VNRequest> = BehaviorRelay(value: VNRequest())
         let capturedImage: BehaviorRelay<UIImage> = BehaviorRelay(value: UIImage())
         let shopBasketCount: BehaviorSubject<Int> = BehaviorSubject(value: 0)
 
         takenPictureIndex = db.getEstimateHistoryCount() + 1
 
+        // shopBasketItemsCount Observable<String>
         let shopBasketCountString = input.viewWillAppear
             .withLatestFrom(shopBasketCount)
             .map { _ in return self.db.getShopBasketCount() }
@@ -71,57 +86,56 @@ class CameraViewModel: ViewModelType {
                 if count >= 99 { return " 99+ "
                 } else { return " \(count) " } }
 
+        // lastHistoryImage Observable<UIImage?>
         let lastHistoryImage = Observable.of(db.getEstimateHistories())
             .map { histories in
                 return Name.matInsertedImageName
-                + "\(histories.last?.imageId ?? 0)"
-            }
+                + "\(histories.last?.imageId ?? 0)" }
             .map { imageName in
                 return self.fileManager.getImage(imageName: imageName,
-                                                 folderName: Name.savingFolderName)
-            }
+                                                 folderName: Name.savingFolderName) }
 
-        //        let cameraPermissionStatus = input.viewDidLoad
-        //            .flatMap { _ in
-        //                return self.requestCameraPermission()
-        //            }
-
-
+        // TakenImage or PickedImage binding to capturedImage
         Observable.of(input.didFinishPicking,
                       input.photoOutput
                           .map { $0.photo }
                           .compactMap { $0.fileDataRepresentation() }
-                          .compactMap { UIImage(data: $0)}
-        )
+                          .compactMap { UIImage(data: $0)} )
         .merge()
         .bind(to: capturedImage)
         .disposed(by: disposeBag)
 
+        // tappedPhotoHistoryButton flow Logic
         input.tappedPhotoHistoryButton
             .subscribe { _ in
                 self.coordinator.showEstimateHistory()
             }.disposed(by: disposeBag)
 
+        // tappedPickerDidCancel flow Logic
         input.tappedPickerDidCancel
             .subscribe { _ in
-                self.coordinator.hidePresentView()
+                self.coordinator.hidePresentedView()
             }.disposed(by: disposeBag)
 
+        // tappedBringPhotoButton flow Logic
         input.tappedBringPhotoButton
             .subscribe { imagePickerVC in
                 self.coordinator.showImagePicker(imagePickerVC: imagePickerVC)
             }.disposed(by: disposeBag)
 
+        // tappedCartButton flow Logic
         input.tappedCartButton
             .subscribe { _ in
                 self.coordinator.showShopBasket()
             }.disposed(by: disposeBag)
 
+        // helpView XmarkButton Subscription
         input.tappedXMarkButton
             .subscribe { _ in
                 UserDefaults.standard.set(true, forKey: "isClosedHelpView")
             }.disposed(by: disposeBag)
 
+        // TakenPictureView's NextButton Subscription for Using ML
         input.tappedNextButton.withLatestFrom(capturedImage)
             .asObservable()
             .observe(on: SerialDispatchQueueScheduler.init(qos: .userInitiated))
@@ -132,7 +146,7 @@ class CameraViewModel: ViewModelType {
                 guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model) else { return }
 
                 let request = VNCoreMLRequest(model: model) { request, _ in
-                    vnRequest.accept(request)
+                    requestResult.accept(request)
                 }
 
                 request.imageCropAndScaleOption = .scaleFill
@@ -141,19 +155,18 @@ class CameraViewModel: ViewModelType {
                         .perform([request])
                 } catch {
                     print("error")
-                }
-            })
+                } })
             .disposed(by: disposeBag)
 
+        // tappedRetakeButton flow Logic
         input.tappedRetakeButton
             .subscribe(onNext: { _ in
-                self.coordinator.hidePresentView()
-            })
+                self.coordinator.hidePresentedView() })
             .disposed(by: disposeBag)
 
-
-        vnRequest
-            .skip(1)
+        // requestResult processing and flow Logic
+        requestResult
+            .skip(1)  // 초기값으로 인한 ML코드 수행 막기위해.
             .subscribe(on: MainScheduler.asyncInstance)
             .compactMap { $0.results as? [VNCoreMLFeatureValueObservation] }
             .compactMap { $0.first?.featureValue.multiArrayValue }
@@ -179,7 +192,7 @@ class CameraViewModel: ViewModelType {
                 self.coordinator.showEstimate(takenPictureIndex: takenPictureIndex)
             }).disposed(by: disposeBag)
 
-
+        // capturedImage flow Logic
         capturedImage
             .skip(1)    // 초기값인 빈 이미지를 막기 위해서 사용
             .subscribe { image in
@@ -190,12 +203,15 @@ class CameraViewModel: ViewModelType {
 
         return Output(viewWillAppear: input.viewWillAppear,
                       lastHistoryImage: lastHistoryImage,
-                      //                      cameraPermissionStatus: cameraPermissionStatus,
                       capturedImage: capturedImage.asObservable(),
                       shopBasketCountString: shopBasketCountString)
     }
 
 }
+
+
+// MARK: - Extension
+
 
 extension CameraViewModel {
     
