@@ -53,13 +53,12 @@ class CameraViewModel: ViewModelType {
         let lastHistoryImage: Observable<UIImage?>
         //        let cameraPermissionStatus: Observable<AVAuthorizationStatus>
         let capturedImage: Observable<UIImage>
-        let resultTakenPictureIndex: Observable<Int>
         let shopBasketCountString: Observable<String>
     }
 
     func transform(input: Input) -> Output {
 
-        let vnRequest: BehaviorSubject<VNRequest> = BehaviorSubject(value: VNRequest())
+        let vnRequest: BehaviorRelay<VNRequest> = BehaviorRelay(value: VNRequest())
         let capturedImage: BehaviorRelay<UIImage> = BehaviorRelay(value: UIImage())
         let shopBasketCount: BehaviorSubject<Int> = BehaviorSubject(value: 0)
 
@@ -87,17 +86,16 @@ class CameraViewModel: ViewModelType {
         //                return self.requestCameraPermission()
         //            }
 
-        input.didFinishPicking
-            .bind(to: capturedImage)
-            .disposed(by: disposeBag)
 
-        input.photoOutput
-            .map { $0.photo }
-            .compactMap { $0.fileDataRepresentation() }
-            .compactMap {
-                UIImage(data: $0)}
-            .bind(to: capturedImage)
-            .disposed(by: disposeBag)
+        Observable.of(input.didFinishPicking,
+                      input.photoOutput
+                          .map { $0.photo }
+                          .compactMap { $0.fileDataRepresentation() }
+                          .compactMap { UIImage(data: $0)}
+        )
+        .merge()
+        .bind(to: capturedImage)
+        .disposed(by: disposeBag)
 
         input.tappedPhotoHistoryButton
             .subscribe { _ in
@@ -134,7 +132,7 @@ class CameraViewModel: ViewModelType {
                 guard let model = try? VNCoreMLModel(for: FloorSegmentation.init(configuration: .init()).model) else { return }
 
                 let request = VNCoreMLRequest(model: model) { request, _ in
-                    vnRequest.onNext(request)
+                    vnRequest.accept(request)
                 }
 
                 request.imageCropAndScaleOption = .scaleFill
@@ -148,14 +146,14 @@ class CameraViewModel: ViewModelType {
             .disposed(by: disposeBag)
 
         input.tappedRetakeButton
-            .subscribe { _ in
+            .subscribe(onNext: { _ in
                 self.coordinator.hidePresentView()
-            }
+            })
             .disposed(by: disposeBag)
 
 
-        let resultTakenPictureIndex =
         vnRequest
+            .skip(1)
             .subscribe(on: MainScheduler.asyncInstance)
             .compactMap { $0.results as? [VNCoreMLFeatureValueObservation] }
             .compactMap { $0.first?.featureValue.multiArrayValue }
@@ -176,15 +174,24 @@ class CameraViewModel: ViewModelType {
             .compactMap { _ in
                 return self.takenPictureIndex
             }
+            .observe(on: MainScheduler.asyncInstance)
+            .subscribe(onNext: { takenPictureIndex in
+                self.coordinator.showEstimate(takenPictureIndex: takenPictureIndex)
+            }).disposed(by: disposeBag)
+
+
+        capturedImage
+            .skip(1)    // 초기값인 빈 이미지를 막기 위해서 사용
+            .subscribe { image in
+                self.coordinator.showTakenPicture(image: image)
+            }.disposed(by: disposeBag)
 
         shopBasketCount.onNext(db.getShopBasketCount())
-
 
         return Output(viewWillAppear: input.viewWillAppear,
                       lastHistoryImage: lastHistoryImage,
                       //                      cameraPermissionStatus: cameraPermissionStatus,
                       capturedImage: capturedImage.asObservable(),
-                      resultTakenPictureIndex: resultTakenPictureIndex,
                       shopBasketCountString: shopBasketCountString)
     }
 

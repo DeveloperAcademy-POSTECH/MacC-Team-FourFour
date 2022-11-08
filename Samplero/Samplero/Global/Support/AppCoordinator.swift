@@ -10,23 +10,26 @@ import UIKit
 import RxSwift
 
 
-class AppCoordinator: BaseCoordinator<Void> {
+class AppCoordinator: BaseCoordinator {
 
     private let window: UIWindow
 
-    private let navigationController: UINavigationController
+    weak var navigationController: UINavigationController?
 
-    init(window: UIWindow, navigationController: UINavigationController) {
+    init(window: UIWindow) {
         self.window = window
-        self.window.rootViewController = navigationController
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.tintColor = UIColor.black
         self.navigationController = navigationController
+        self.window.rootViewController = navigationController
+
     }
 
 
-    override func start() -> Observable<Void> {
+    override func start() {
         let cameraCoordinator = CameraCoordinator(navigationController: navigationController)
 
-        return coordinate(to: cameraCoordinator)
+        cameraCoordinator.start()
 
     }
 

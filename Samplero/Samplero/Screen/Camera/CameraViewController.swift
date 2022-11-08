@@ -273,8 +273,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
             .disposed(by: viewModel.disposeBag)
 
 
-
-
         let input = CameraViewModel.Input(
             viewWillAppear: rx.viewWillAppear,
             tappedPhotoHistoryButton: photoHistoryButton.rx.tap,
@@ -312,26 +310,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
                     self?.photoHistoryButton.setImage(lastHistoryImage, for: .normal)
                 } })
             .disposed(by: viewModel.disposeBag)
-
-        output.capturedImage
-            .skip(1)
-            .subscribe { image in
-                self.takenPictureViewController.configPictureImage(image: image)
-                self.imagePickerController.dismiss(animated: true)
-                self.present(self.takenPictureViewController, animated: true)
-                self.session.rx.stopRunning() }
-            .disposed(by: viewModel.disposeBag)
-
-        output.resultTakenPictureIndex
-            .observe(on: MainScheduler.instance)
-            .subscribe { takenPictureIndex in
-                self.takenPictureViewController.dismiss(animated: true)
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
-                estimateVC.viewModel.imageIndex = takenPictureIndex
-                self.navigationController?.pushViewController(estimateVC, animated: true)
-                self.takenPictureViewController.stopLottieAnimation() // 로티 종료
-            }.disposed(by: viewModel.disposeBag)
     }
 
 
@@ -340,8 +318,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
 
     private func addTargets() {
         shutterButton.rx.tap.bind {
-            print("clicked take photo button")
-
             #if !targetEnvironment(simulator)
             self.photoOutput.capturePhoto(with: AVCapturePhotoSettings(),
                                           delegate: self.photoCaptureDelegate)
@@ -390,3 +366,4 @@ extension Reactive where Base: UIView {
         return gesture.rx.event
     }
 }
+

@@ -9,32 +9,28 @@ import UIKit
 
 import RxSwift
 
-class BaseCoordinator<ResultType> {
+class BaseCoordinator {
 
-    typealias CoordinationResult = ResultType
+// TODO: - 필요성을 못 느껴서 주석처리함.
+    
+//    private let identifier = UUID()
+//
+//    private var childCoordinators = [UUID: Any]()
+//
+//    private func store(coordinator: BaseCoordinator) {
+//        childCoordinators[coordinator.identifier] = coordinator
+//    }
+//
+//    private func free(coordinator: BaseCoordinator) {
+//        childCoordinators[coordinator.identifier] = nil
+//    }
+//
+//    func coordinate(to coordinator: BaseCoordinator) {
+//        store(coordinator: coordinator)
+//        return coordinator.start()
+//    }
 
-    let disposeBag = DisposeBag()
-
-    private let identifier = UUID()
-
-    private var childCoordinators = [UUID: Any]()
-
-
-    private func store<T>(coordinator: BaseCoordinator<T>) {
-        childCoordinators[coordinator.identifier] = coordinator
-    }
-
-    private func free<T>(coordinator: BaseCoordinator<T>) {
-        childCoordinators[coordinator.identifier] = nil
-    }
-
-    func coordinate<T>(to coordinator: BaseCoordinator<T>) -> Observable<T> {
-        store(coordinator: coordinator)
-        return coordinator.start()
-//            .do(onNext: { [weak self] _ in self?.free(coordinator: coordinator) })
-    }
-
-    func start() -> Observable<ResultType> {
+    func start() {
         fatalError("Start method should be implemented.")
     }
 }

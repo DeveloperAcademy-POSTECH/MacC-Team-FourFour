@@ -18,12 +18,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        let navigationController = UINavigationController()
-        navigationController.navigationBar.tintColor = UIColor.black
 
-        let appCoordinator = AppCoordinator(window: window!, navigationController: navigationController)
+        let appCoordinator = AppCoordinator(window: window!)
         appCoordinator.start()
-            .subscribe()
             
         window?.makeKeyAndVisible() 
 
