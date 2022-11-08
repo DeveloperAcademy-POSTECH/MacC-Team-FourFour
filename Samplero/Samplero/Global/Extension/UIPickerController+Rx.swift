@@ -75,12 +75,10 @@ class RxImagePickerProxy: DelegateProxy<UIImagePickerController, ImagePickerDele
 
         let selectedImage = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerOriginalImage")] as? UIImage ?? UIImage()
         didFinishPickingMediaWithInfoSubject.onNext(selectedImage)
-        didCancelSubject.onCompleted()
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         didCancelSubject.onNext(())
-        didFinishPickingMediaWithInfoSubject.onCompleted()
     }
 
 
