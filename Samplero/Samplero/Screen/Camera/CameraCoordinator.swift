@@ -36,6 +36,7 @@ class CameraCoordinator: BaseCoordinator<Void> {
 
      func showShopBasket() {
         var shopBasketVC = ShopBasketViewController()
+         shopBasketVC.bindViewModel(ShopBasketViewModel())
          navigationController?.pushViewController(shopBasketVC, animated: true)
     }
 
