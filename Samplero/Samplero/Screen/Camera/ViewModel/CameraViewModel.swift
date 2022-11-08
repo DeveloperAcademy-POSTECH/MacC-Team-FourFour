@@ -30,7 +30,6 @@ class CameraViewModel: ViewModelType {
 
 
     struct Input {
-        //        let viewDidLoad: ControlEvent<Void>
         let viewWillAppear: ControlEvent<Bool>
         let tappedNextButton: Observable<Void>
         let photoOutput: Observable<PhotoCaptureOutput>
@@ -40,7 +39,6 @@ class CameraViewModel: ViewModelType {
     struct Output {
         let viewWillAppear: ControlEvent<Bool>
         let lastHistoryImage: Observable<UIImage?>
-        //        let cameraPermissionStatus: Observable<AVAuthorizationStatus>
         let capturedImage: Observable<UIImage>
         let resultTakenPictureIndex: Observable<Int>
         let shopBasketCountString: Observable<String>
@@ -70,11 +68,6 @@ class CameraViewModel: ViewModelType {
                 return self.fileManager.getImage(imageName: imageName,
                                                  folderName: Name.savingFolderName)
             }
-
-        //        let cameraPermissionStatus = input.viewDidLoad
-        //            .flatMap { _ in
-        //                return self.requestCameraPermission()
-        //            }
 
         input.didFinishPicking
             .bind(to: capturedImage)
@@ -139,7 +132,6 @@ class CameraViewModel: ViewModelType {
 
         return Output(viewWillAppear: input.viewWillAppear,
                       lastHistoryImage: lastHistoryImage,
-                      //                      cameraPermissionStatus: cameraPermissionStatus,
                       capturedImage: capturedImage.asObservable(),
                       resultTakenPictureIndex: resultTakenPictureIndex,
                       shopBasketCountString: shopBasketCountString)

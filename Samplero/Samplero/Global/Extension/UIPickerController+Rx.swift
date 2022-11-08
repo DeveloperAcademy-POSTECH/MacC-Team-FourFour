@@ -88,8 +88,8 @@ class RxImagePickerProxy: DelegateProxy<UIImagePickerController, ImagePickerDele
 
 
     deinit {
-        self.didFinishPickingMediaWithInfoSubject.onCompleted()
-        self.didCancelSubject.onCompleted()
+        didFinishPickingMediaWithInfoSubject.onCompleted()
+        didCancelSubject.onCompleted()
     }
 
 }

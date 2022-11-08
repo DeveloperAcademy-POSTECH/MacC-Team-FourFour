@@ -265,14 +265,14 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
         viewModel.requestCameraPermission()
             .filter { status in
                 status == .notDetermined || status == .authorized }
-            .subscribe { status in
+            .subscribe(onNext: { status in
                 if status == .notDetermined {
                     AVCaptureDevice.requestAccess(for: .video) { grated in
                         guard grated else { return }
                         self.setUpCamera()
                     }
                 } else { self.setUpCamera() }
-            }
+            })
             .disposed(by: viewModel.disposeBag)
 
 
