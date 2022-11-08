@@ -6,8 +6,8 @@ on: [pull_request]
 jobs:
   # test build success
   build:
-    # macos-latest still macos-12
-    runs-on: macos-12
+    # macos-latest is macos-11, macos-12 available but swift pm cache doesn't work
+    runs-on: macos-latest
     steps:
     # https://github.com/actions/cache/blob/main/examples.md#swift---swift-package-manager
     - name: Checkout
