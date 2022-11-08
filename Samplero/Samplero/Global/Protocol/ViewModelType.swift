@@ -14,6 +14,7 @@ protocol ViewModelType {
 
     var disposeBag: DisposeBag { get set }
 
+ //   init(coordinator : BaseCoordinator<Void>)
     func transform(input: Input) -> Output
 
 }

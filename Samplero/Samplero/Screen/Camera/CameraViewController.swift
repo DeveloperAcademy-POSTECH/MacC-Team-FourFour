@@ -150,7 +150,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTargets()
-        bind()
         // 뒤로가기 swipe 없애기
     }
     
@@ -243,7 +242,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
         imageView.layer.zPosition = -1
         view.addSubview(imageView)
 #endif
-
         view.backgroundColor = .black
         navigationItem.backButtonTitle = "카메라"
         
@@ -261,7 +259,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
 
 
     func bind() {
-
         viewModel.requestCameraPermission()
             .filter { status in
                 status == .notDetermined || status == .authorized }
@@ -276,12 +273,23 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
             .disposed(by: viewModel.disposeBag)
 
 
+
+
         let input = CameraViewModel.Input(
             viewWillAppear: rx.viewWillAppear,
+            tappedPhotoHistoryButton: photoHistoryButton.rx.tap,
+            tappedPickerDidCancel: imagePickerController.rx.didCancel,
+            tappedBringPhotoButton: bringPhotoButton.rx.tap.map { self.imagePickerController },
+            tappedCartButton: cartButton.rx.tap,
+            tappedXMarkButton: cameraHelpView.xMarkButton.rx.tap.do(onNext: { _ in self.cameraHelpView.isHidden = true
+                self.topDrawer.isHidden = false }),
             tappedNextButton: takenPictureViewController.nextButton.rx.tap
                 .do(onNext: { _ in self.takenPictureViewController.setupLottieView() }),
-            photoOutput: session.rx.photoCaptureOutput(photoOutput: photoOutput,
-                                                       photoCaptureDelegate: photoCaptureDelegate),
+            tappedRetakeButton: takenPictureViewController.retakeButton.rx.tap
+                .do(onNext: { _ in self.session.rx.startRunning() }),
+            photoOutput: session.rx.photoCaptureOutput(
+            photoOutput: photoOutput,
+            photoCaptureDelegate: photoCaptureDelegate),
             didFinishPicking: imagePickerController.rx.didFinishPickingMediaWithInfo)
 
         let output = viewModel.transform(input: input)
@@ -323,8 +331,7 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
                 estimateVC.viewModel.imageIndex = takenPictureIndex
                 self.navigationController?.pushViewController(estimateVC, animated: true)
                 self.takenPictureViewController.stopLottieAnimation() // 로티 종료
-            }
-            .disposed(by: viewModel.disposeBag)
+            }.disposed(by: viewModel.disposeBag)
     }
 
 
@@ -332,19 +339,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
 
 
     private func addTargets() {
-
-        takenPictureViewController.retakeButton.rx.tap
-            .subscribe(onNext: {
-                self.session.rx.startRunning()
-                self.takenPictureViewController.dismiss(animated: true)
-            }).disposed(by: viewModel.disposeBag)
-
-        imagePickerController.rx.didCancel
-            .subscribe { _ in
-                self.imagePickerController.dismiss(animated: true)
-            }
-            .disposed(by: viewModel.disposeBag)
-
         shutterButton.rx.tap.bind {
             print("clicked take photo button")
 
@@ -364,32 +358,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
             self.session.stopRunning()
             #endif
         }.disposed(by: viewModel.disposeBag)
-
-        bringPhotoButton.rx.tap.bind {
-            self.present(self.imagePickerController, animated: true)
-        }.disposed(by: viewModel.disposeBag)
-        
-        photoHistoryButton.rx.tap.bind { [weak self] in
-            print("clicked history")
-            var estimateHistoryViewController = EstimateHistoryViewController()
-            estimateHistoryViewController.bindViewModel(EstimateHistoryViewModel())
-            self?.navigationController?.pushViewController(estimateHistoryViewController, animated: true)
-        }.disposed(by: viewModel.disposeBag)
-        
-        cartButton.rx.tap.bind {
-            var vc = ShopBasketViewController()
-            vc.bindViewModel(ShopBasketViewModel())
-            self.navigationController?.pushViewController(vc, animated: true)
-        }.disposed(by: viewModel.disposeBag)
-        
-        cameraHelpView.xMarkButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.cameraHelpView.isHidden = true
-                self?.topDrawer.isHidden = false
-
-                UserDefaults.standard.set(true, forKey: "isClosedHelpView")
-            })
-            .disposed(by: viewModel.disposeBag)
     }
     
     private func setUpCamera() {
@@ -399,7 +367,6 @@ class CameraViewController: BaseViewController, ViewModelBindableType {
                 if session.canAddInput(input) {
                     session.addInput(input)
                 }
-                
                 if session.canAddOutput(photoOutput) {
                     session.addOutput(photoOutput)
                 }

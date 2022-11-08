@@ -10,31 +10,40 @@ import RxSwift
 
 class CameraCoordinator: BaseCoordinator<Void> {
 
-    weak var navigationViewController: UINavigationController?
+    weak var navigationController: UINavigationController?
 
-    init(navigationViewController: UINavigationController) {
-        self.navigationViewController = navigationViewController
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
     }
 
     override func start() -> Observable<Void> {
         var cameraVC = CameraViewController()
-        navigationViewController?.pushViewController(cameraVC, animated: true)
+        cameraVC.bindViewModel(CameraViewModel(coordinator: self))
+        navigationController?.pushViewController(cameraVC, animated: true)
         return .never()
     }
 
-    private func showEstimateHistory() {
+     func showEstimateHistory() {
         var estimateHistoryVC = EstimateHistoryViewController()
         estimateHistoryVC.bindViewModel(EstimateHistoryViewModel())
-        navigationViewController?.pushViewController(estimateHistoryVC, animated: true)
+         navigationController?.pushViewController(estimateHistoryVC, animated: true)
     }
 
-    private func showTakenPicture() {
+     func showTakenPicture() {
         var takenPictureVC = TakenPictureViewController()
-        navigationViewController?.pushViewController(takenPictureVC, animated: true)
+         navigationController?.pushViewController(takenPictureVC, animated: true)
     }
 
-    private func showShopBasket() {
+     func showShopBasket() {
         var shopBasketVC = ShopBasketViewController()
-        navigationViewController?.pushViewController(shopBasketVC, animated: true)
+         navigationController?.pushViewController(shopBasketVC, animated: true)
+    }
+
+    func showImagePicker(imagePickerVC: UIImagePickerController) {
+        navigationController?.present(imagePickerVC, animated: true)
+    }
+
+    func hidePresentView() {
+        navigationController?.viewControllers.last?.dismiss(animated: true)
     }
 }

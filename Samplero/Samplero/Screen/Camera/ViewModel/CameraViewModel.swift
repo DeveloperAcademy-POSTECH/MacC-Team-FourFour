@@ -28,11 +28,22 @@ class CameraViewModel: ViewModelType {
 
     private var takenPictureIndex: Int!
 
+    private let coordinator: CameraCoordinator
+
+    required init(coordinator: CameraCoordinator) {
+        self.coordinator = coordinator
+    }
 
     struct Input {
         //        let viewDidLoad: ControlEvent<Void>
         let viewWillAppear: ControlEvent<Bool>
+        let tappedPhotoHistoryButton: ControlEvent<Void>
+        let tappedPickerDidCancel: Observable<Void>
+        let tappedBringPhotoButton: Observable<UIImagePickerController>
+        let tappedCartButton: ControlEvent<Void>
+        let tappedXMarkButton: Observable<Void>
         let tappedNextButton: Observable<Void>
+        let tappedRetakeButton: Observable<Void>
         let photoOutput: Observable<PhotoCaptureOutput>
         let didFinishPicking: Observable<UIImage>
     }
@@ -88,6 +99,31 @@ class CameraViewModel: ViewModelType {
             .bind(to: capturedImage)
             .disposed(by: disposeBag)
 
+        input.tappedPhotoHistoryButton
+            .subscribe { _ in
+                self.coordinator.showEstimateHistory()
+            }.disposed(by: disposeBag)
+
+        input.tappedPickerDidCancel
+            .subscribe { _ in
+                self.coordinator.hidePresentView()
+            }.disposed(by: disposeBag)
+
+        input.tappedBringPhotoButton
+            .subscribe { imagePickerVC in
+                self.coordinator.showImagePicker(imagePickerVC: imagePickerVC)
+            }.disposed(by: disposeBag)
+
+        input.tappedCartButton
+            .subscribe { _ in
+                self.coordinator.showShopBasket()
+            }.disposed(by: disposeBag)
+
+        input.tappedXMarkButton
+            .subscribe { _ in
+                UserDefaults.standard.set(true, forKey: "isClosedHelpView")
+            }.disposed(by: disposeBag)
+
         input.tappedNextButton.withLatestFrom(capturedImage)
             .asObservable()
             .observe(on: SerialDispatchQueueScheduler.init(qos: .userInitiated))
@@ -110,6 +146,13 @@ class CameraViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
+
+        input.tappedRetakeButton
+            .subscribe { _ in
+                self.coordinator.hidePresentView()
+            }
+            .disposed(by: disposeBag)
+
 
         let resultTakenPictureIndex =
         vnRequest

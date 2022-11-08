@@ -18,9 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        var cameraVC = CameraViewController()
-        cameraVC.bindViewModel(CameraViewModel())
-        window?.rootViewController = UINavigationController(rootViewController: cameraVC) 
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.tintColor = UIColor.black
+
+        let appCoordinator = AppCoordinator(window: window!, navigationController: navigationController)
+        appCoordinator.start()
+            .subscribe()
+            
         window?.makeKeyAndVisible() 
 
     }
