@@ -373,3 +373,11 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
 
 }
 
+extension Reactive where Base: UIView {
+    fileprivate var tapGesture: ControlEvent<UITapGestureRecognizer> {
+        self.base.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer()
+        self.base.addGestureRecognizer(gesture)
+        return gesture.rx.event
+    }
+}

@@ -377,7 +377,7 @@ extension ShopBasketViewController: UICollectionViewDelegateFlowLayout {
 
 
 extension Reactive where Base: UICollectionView {
-    var visibleStatus: Binder<Bool> {
+    fileprivate var visibleStatus: Binder<Bool> {
         return Binder(self.base) { collectionView, boolValue in
             switch boolValue {
             case true :
@@ -393,7 +393,7 @@ extension Reactive where Base: UICollectionView {
 // MARK: - UIButton visibleStatus + Rx
 
 extension Reactive where Base: UIButton {
-    var buttonEnabledStatus: Binder<Bool> {
+    fileprivate var buttonEnabledStatus: Binder<Bool> {
         return Binder(self.base) { button, boolValue in
             switch boolValue {
             case true :
