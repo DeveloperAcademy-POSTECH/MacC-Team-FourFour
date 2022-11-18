@@ -236,7 +236,7 @@ class TermsViewController: BaseViewController {
 }
 
 extension Reactive where Base: UIButton {
-    var enableStatus: Binder<Bool> {
+    fileprivate var enableStatus: Binder<Bool> {
         return Binder(self.base) { button, boolValue in
             switch boolValue {
             case true :

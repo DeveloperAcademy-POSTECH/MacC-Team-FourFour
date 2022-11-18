@@ -487,23 +487,14 @@ extension CameraViewController: AVCapturePhotoCaptureDelegate {
 }
 
 extension Reactive where Base: TakenPictureViewController {
-    var retake: ControlEvent<Void> {
+    fileprivate var retake: ControlEvent<Void> {
         let source = self.base.getRetakeButton().rx.tap
         return ControlEvent(events: source)
     }
 
-    var nextButton: ControlEvent<Void> {
+    fileprivate var nextButton: ControlEvent<Void> {
         let source = self.base.getNextButton().rx.tap
         return ControlEvent(events: source)
-    }
-}
-
-extension Reactive where Base: UIView {
-    public var tapGesture : ControlEvent<UITapGestureRecognizer> {
-        self.base.isUserInteractionEnabled = true
-        let gesture = UITapGestureRecognizer()
-        self.base.addGestureRecognizer(gesture)
-        return gesture.rx.event
     }
 }
 
