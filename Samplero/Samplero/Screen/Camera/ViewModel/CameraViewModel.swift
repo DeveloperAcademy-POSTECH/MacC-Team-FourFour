@@ -98,9 +98,9 @@ class CameraViewModel: ViewModelType {
         // TakenImage or PickedImage binding to capturedImage
         Observable.of(input.didFinishPicking,
                       input.photoOutput
-                          .map { $0.photo }
-                          .compactMap { $0.fileDataRepresentation() }
-                          .compactMap { UIImage(data: $0)} )
+            .map { $0.photo }
+            .compactMap { $0.fileDataRepresentation() }
+            .compactMap { UIImage(data: $0)} )
         .merge()
         .bind(to: capturedImage)
         .disposed(by: disposeBag)
@@ -170,6 +170,7 @@ class CameraViewModel: ViewModelType {
             .subscribe(on: MainScheduler.asyncInstance)
             .compactMap { $0.results as? [VNCoreMLFeatureValueObservation] }
             .compactMap { $0.first?.featureValue.multiArrayValue }
+            .compactMap(improveMaskedImage(segMap:))
             .compactMap { $0.image(min: 0, max: 1) }
             .map { segmentationMask in
                 if segmentationMask.size != capturedImage.value.size {
@@ -221,6 +222,17 @@ extension CameraViewModel {
             observer.onNext(status)
             return Disposables.create { observer.onCompleted() }
         }
+    }
+
+    func improveMaskedImage(segMap: MLMultiArray) -> MLMultiArray {
+        let segmentationMap = segMap
+        for y in 0...215 {
+            for x in 0...511 {
+                segmentationMap[y * 512 + x] = 1
+            }
+        }
+
+        return segmentationMap
     }
 
 }
