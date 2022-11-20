@@ -23,9 +23,8 @@ class CameraCoordinator: BaseCoordinator {
     }
     
     func showEstimateHistory() {
-        var estimateHistoryVC = EstimateHistoryViewController()
-        estimateHistoryVC.bindViewModel(EstimateHistoryViewModel())
-        navigationController?.pushViewController(estimateHistoryVC, animated: true)
+        let estimateHistoryCoordinator = EstimateHistoryCoordinator(navigationController: navigationController)
+        estimateHistoryCoordinator.start()
     }
 
     func showTakenPicture(image: UIImage) {
@@ -39,9 +38,8 @@ class CameraCoordinator: BaseCoordinator {
     }
 
     func showShopBasket() {
-        var shopBasketVC = ShopBasketViewController()
-        shopBasketVC.bindViewModel(ShopBasketViewModel())
-        navigationController?.pushViewController(shopBasketVC, animated: true)
+        let shopBasketCoordinator = ShopBasketCoordinator(navigationController: navigationController)
+        shopBasketCoordinator.start()
     }
 
     func showImagePicker(imagePickerVC: UIImagePickerController) {
@@ -50,10 +48,8 @@ class CameraCoordinator: BaseCoordinator {
 
     func showEstimate(takenPictureIndex: Int) {
         hidePresentedView() // TakenPictureViewController 해제
-        var estimateVC = EstimateViewController()
-        estimateVC.bindViewModel(EstimateViewModel())
-        estimateVC.viewModel.imageIndex = takenPictureIndex
-        self.navigationController?.pushViewController(estimateVC, animated: true)
+        let estimateCoordinator = EstimateCoordinator(navigationController: navigationController)
+        estimateCoordinator.start(with: takenPictureIndex)
 
         guard let lastVC = navigationController?.presentedViewController else { return }
         guard let takenPictureVC = lastVC as? TakenPictureViewController else { return }

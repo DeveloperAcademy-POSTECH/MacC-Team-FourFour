@@ -88,15 +88,6 @@ class EstimateHistoryViewController: BaseViewController, ViewModelBindableType {
                 return cell
             }
             .disposed(by: viewModel.disposeBag)
-
-        output.tappedItem
-            .subscribe(onNext: { index in
-                var estimateVC = EstimateViewController()
-                estimateVC.bindViewModel(EstimateViewModel())
-                estimateVC.viewModel.imageIndex = index.row + 1
-                self.navigationController?.pushViewController(estimateVC, animated: true)
-            })
-            .disposed(by: viewModel.disposeBag)
     }
 }
 

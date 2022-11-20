@@ -38,6 +38,9 @@
 		35084E4A28F0292C00621C0D /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4928F0292C00621C0D /* Color+Extension.swift */; };
 		35084E4C28F02A9300621C0D /* ImageLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35084E4B28F02A9300621C0D /* ImageLiteral.swift */; };
 		35109D3328F551F500EA6F8F /* CGSize+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35109D3228F551F500EA6F8F /* CGSize+Extension.swift */; };
+		354C2CFC292A7043009829AA /* ShopBasketCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354C2CFB292A7043009829AA /* ShopBasketCoordinator.swift */; };
+		354C2CFE292A72CB009829AA /* EstimateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354C2CFD292A72CB009829AA /* EstimateCoordinator.swift */; };
+		354C2D00292A75E8009829AA /* EstimateHistoryCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354C2CFF292A75E8009829AA /* EstimateHistoryCoordinator.swift */; };
 		355CB85428F0843D001A5731 /* EstimateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85328F0843D001A5731 /* EstimateViewController.swift */; };
 		355CB85B28F09B06001A5731 /* SampleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85A28F09B06001A5731 /* SampleDetailView.swift */; };
 		355CB85D28F1D15B001A5731 /* EstimateCommonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355CB85C28F1D15B001A5731 /* EstimateCommonStackView.swift */; };
@@ -139,6 +142,9 @@
 		35084E4928F0292C00621C0D /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		35084E4B28F02A9300621C0D /* ImageLiteral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLiteral.swift; sourceTree = "<group>"; };
 		35109D3228F551F500EA6F8F /* CGSize+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Extension.swift"; sourceTree = "<group>"; };
+		354C2CFB292A7043009829AA /* ShopBasketCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopBasketCoordinator.swift; sourceTree = "<group>"; };
+		354C2CFD292A72CB009829AA /* EstimateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateCoordinator.swift; sourceTree = "<group>"; };
+		354C2CFF292A75E8009829AA /* EstimateHistoryCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateHistoryCoordinator.swift; sourceTree = "<group>"; };
 		355CB85328F0843D001A5731 /* EstimateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateViewController.swift; sourceTree = "<group>"; };
 		355CB85A28F09B06001A5731 /* SampleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleDetailView.swift; sourceTree = "<group>"; };
 		355CB85C28F1D15B001A5731 /* EstimateCommonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EstimateCommonStackView.swift; sourceTree = "<group>"; };
@@ -469,6 +475,7 @@
 				355CB85728F08F7A001A5731 /* View */,
 				355CB85328F0843D001A5731 /* EstimateViewController.swift */,
 				355CB86B28F2EFDC001A5731 /* ViewModel */,
+				354C2CFD292A72CB009829AA /* EstimateCoordinator.swift */,
 			);
 			path = Estimate;
 			sourceTree = "<group>";
@@ -505,6 +512,7 @@
 				35E443F728F6AF3F00320DD6 /* ViewModel */,
 				35E443E428F689B100320DD6 /* View */,
 				35E443E828F689FA00320DD6 /* ShopBasketViewController.swift */,
+				354C2CFB292A7043009829AA /* ShopBasketCoordinator.swift */,
 			);
 			path = ShopBasket;
 			sourceTree = "<group>";
@@ -644,6 +652,7 @@
 				CEFFE77928F3C5E6007A7842 /* EstimateHistoryViewController.swift */,
 				CEFFE78328F3CFDC007A7842 /* ViewModel */,
 				CEFFE78228F3CFA8007A7842 /* View */,
+				354C2CFF292A75E8009829AA /* EstimateHistoryCoordinator.swift */,
 			);
 			path = EstimateHistory;
 			sourceTree = "<group>";
@@ -852,6 +861,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				354C2CFC292A7043009829AA /* ShopBasketCoordinator.swift in Sources */,
 				B51AF44828F6EDB80076F21B /* UIImage+CustomExtensions.swift in Sources */,
 				35E443E928F689FA00320DD6 /* ShopBasketViewController.swift in Sources */,
 				358DE8B12919040D00E2F710 /* AppCoordinator.swift in Sources */,
@@ -869,6 +879,7 @@
 				355CB87028F2F716001A5731 /* ViewModelBindableType.swift in Sources */,
 				212CFA7A28F65D30003D310A /* TermsViewController.swift in Sources */,
 				358DE89D291689CE00E2F710 /* AVCaptureSession+Rx.swift in Sources */,
+				354C2D00292A75E8009829AA /* EstimateHistoryCoordinator.swift in Sources */,
 				CEF76BD328EE77C0003D1F49 /* AppDelegate.swift in Sources */,
 				35E443F928F6AF4D00320DD6 /* ShopBasketViewModel.swift in Sources */,
 				210CC68328F2700C008191A9 /* GetAreaViewController.swift in Sources */,
@@ -888,6 +899,7 @@
 				355CB85F28F1D5DA001A5731 /* Sample.swift in Sources */,
 				CE6379E528F59782003ED6FA /* DBHelper.swift in Sources */,
 				CEF76BD528EE77C0003D1F49 /* SceneDelegate.swift in Sources */,
+				354C2CFE292A72CB009829AA /* EstimateCoordinator.swift in Sources */,
 				CEFFE78528F3CFF9007A7842 /* EstimateHistoryViewModel.swift in Sources */,
 				CEFFE78C28F3D7A3007A7842 /* BaseCollectionViewCell.swift in Sources */,
 				35E4440228F8E9C600320DD6 /* UIFont+Extension.swift in Sources */,

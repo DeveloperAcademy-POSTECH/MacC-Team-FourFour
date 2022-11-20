@@ -16,7 +16,7 @@ private enum SelectionEvent {
     case all([CheckSample])
 }
 
-class ShopBasketViewModel {
+class ShopBasketViewModel: ViewModelType {
 
 
     // MARK: - Properties
@@ -29,6 +29,13 @@ class ShopBasketViewModel {
     // 선택된 샘플
     var selectedSample = PublishSubject<CheckSample>()
 
+    private let coordinator: ShopBasketCoordinator
+
+    // MARK: - Init
+
+    required init(coordinator: ShopBasketCoordinator) {
+        self.coordinator = coordinator
+    }
 
     // MARK: - Input
 
@@ -38,6 +45,7 @@ class ShopBasketViewModel {
         let allDeleteButtonSelected: ControlEvent<Void>
         let orderButtonSelected: ControlEvent<Void>
     }
+
     // MARK: - Output
 
     struct Output {
