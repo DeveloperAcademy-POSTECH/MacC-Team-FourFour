@@ -39,7 +39,6 @@ class EstimateHistoryViewModel: ViewModelType {
     }
 
     // MARK: - Transform
-
     func transform(input: Input) -> Output {
         let estimateHistorySubject: BehaviorSubject<[EstimateHistory]> = BehaviorSubject(value: db.getEstimateHistories())
 

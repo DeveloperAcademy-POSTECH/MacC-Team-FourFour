@@ -1,0 +1,41 @@
+{
+  "pins" : [
+    {
+      "identity" : "lottie-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/airbnb/lottie-ios.git",
+      "state" : {
+        "revision" : "b4bd0604ded9574807f41b4004b57dd1226a30a4",
+        "version" : "3.5.0"
+      }
+    },
+    {
+      "identity" : "rxdatasources",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/RxSwiftCommunity/RxDataSources.git",
+      "state" : {
+        "revision" : "90c29b48b628479097fe775ed1966d75ac374518",
+        "version" : "5.0.2"
+      }
+    },
+    {
+      "identity" : "rxswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ReactiveX/RxSwift.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "ab09f6966d5a14ffe6a7b960cc414ac85468b60b"
+      }
+    },
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit",
+      "state" : {
+        "revision" : "f222cbdf325885926566172f6f5f06af95473158",
+        "version" : "5.6.0"
+      }
+    }
+  ],
+  "version" : 2
+}
