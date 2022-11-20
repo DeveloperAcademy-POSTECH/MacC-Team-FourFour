@@ -48,6 +48,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     private let allButtonsBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.isHidden = true
         return view
     }()
     
@@ -72,6 +73,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
     private let upperDivider: UIView = {
         let divider = UIView()
         divider.backgroundColor = UIColor.separator
+        divider.isHidden = true
         return divider
     }()
     
@@ -123,6 +125,7 @@ final class ShopBasketViewController: BaseViewController, ViewModelBindableType 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.shopBasketFlowLayout)
         collectionView.register(cell: ShopBasketCollectionViewCell.self)
         collectionView.backgroundColor = .systemBackground
+        collectionView.isHidden = true
         collectionView.register(AmountFooterView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: AmountFooterView.className)
         return collectionView
     }()

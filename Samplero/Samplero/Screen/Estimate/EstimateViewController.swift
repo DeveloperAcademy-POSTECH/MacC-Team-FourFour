@@ -342,22 +342,6 @@ final class EstimateViewController: BaseViewController, ViewModelBindableType {
                 self.addedButtonLabelStackView.isHidden = false
             })
             .disposed(by: viewModel.disposeBag)
-
-        output.tappedGoShopBasketLabel
-            .subscribe(onNext: {
-                var shopBasketVC = ShopBasketViewController()
-                shopBasketVC.bindViewModel(ShopBasketViewModel())
-                self.navigationController?.pushViewController(shopBasketVC, animated: true)
-            })
-            .disposed(by: viewModel.disposeBag)
-
-        output.tappedCartButton
-            .subscribe(onNext: {
-                var vc = ShopBasketViewController()
-                vc.bindViewModel(ShopBasketViewModel())
-                self.navigationController?.pushViewController(vc, animated: true)
-            })
-            .disposed(by: viewModel.disposeBag)
         
     }
 

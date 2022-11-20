@@ -18,17 +18,27 @@ class EstimateHistoryViewModel: ViewModelType {
     let db = DBHelper.shared
     var disposeBag = DisposeBag()
 
+    private let coordinator: EstimateHistoryCoordinator
+
+    // MARK: - Init
+
+    required init(coordinator: EstimateHistoryCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    // MARK: - Input
     struct Input {
         let viewWillAppear: ControlEvent<Bool>
         let itemSelected: ControlEvent<IndexPath>
     }
 
+    // MARK: - Output
     struct Output {
         let isEmptyCell: Observable<Bool>
         let estimateHistorySubject: Observable<[EstimateHistory]>
-        let tappedItem: Observable<IndexPath>
     }
 
+    // MARK: - Transform
     func transform(input: Input) -> Output {
         let estimateHistorySubject: BehaviorSubject<[EstimateHistory]> = BehaviorSubject(value: db.getEstimateHistories())
 
@@ -36,9 +46,12 @@ class EstimateHistoryViewModel: ViewModelType {
             .withLatestFrom(estimateHistorySubject)
             .map { $0.count > 0 ? true : false }
 
-        let tappedItem = input.itemSelected
-            .asObservable()
+        input.itemSelected
+            .subscribe { indexPath in
+                self.coordinator.showEstimate(with: indexPath.row + 1)
+            }
+            .disposed(by: disposeBag)
 
-        return Output(isEmptyCell: isEmptyCell, estimateHistorySubject: estimateHistorySubject, tappedItem: tappedItem)
+        return Output(isEmptyCell: isEmptyCell, estimateHistorySubject: estimateHistorySubject)
     }
 }

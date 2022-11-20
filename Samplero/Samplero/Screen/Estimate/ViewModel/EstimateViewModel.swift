@@ -11,6 +11,9 @@ import RxCocoa
 import RxSwift
 
 final class EstimateViewModel: ViewModelType {
+
+    // MARK: - Properties
+
     var imageIndex: Int = 0
     private let savingFolderName: String = "estimate-photo"
     private let floorSegmentedImageName: String = "floor-segmented-photo-"
@@ -23,7 +26,17 @@ final class EstimateViewModel: ViewModelType {
     let samplesRelay = BehaviorRelay<[Sample]>(value: []) // 현재샘플이 이전에 담기를 했는지 안했는지 확인용도
     let currentSample: BehaviorRelay<Sample> = BehaviorRelay(value: MockData.sampleList[0])
     var lastSelectedImage = UIImage()
-    
+
+    private let coordinator: EstimateCoordinator
+
+    // MARK: - Init
+
+    required init(coordinator: EstimateCoordinator) {
+        self.coordinator = coordinator
+    }
+
+    // MARK: - Input
+
     struct Input {
         let viewWillAppear: ControlEvent<Bool>
         let viewWillDisappear: ControlEvent<Bool>
@@ -36,6 +49,8 @@ final class EstimateViewModel: ViewModelType {
         let goShopBasketLabelSelected: ControlEvent<UITapGestureRecognizer>
     }
 
+    // MARK: - Output
+
     struct Output {
         let viewWillAppear: Observable<String>
         let sampleList: Observable<[Sample]>
@@ -44,10 +59,10 @@ final class EstimateViewModel: ViewModelType {
         let tappedAddButton: Observable<Void>
         let tappedInputArea: Observable<Void>
         let tappedInputAreaAgain: Observable<Void>
-        let tappedCartButton: Observable<Void>
         let tappedGetAreaSaveButton: Observable<[CGFloat]>
-        let tappedGoShopBasketLabel: Observable<Void>
     }
+
+    // MARK: - Transform
 
     func transform(input: Input) -> Output {
         let sampleList = Observable.of(MockData.sampleList)
@@ -74,13 +89,19 @@ final class EstimateViewModel: ViewModelType {
 
         let selectedInputAreaAgain = input.inputAreaAgainSelected.asObservable()
 
-        let selectedCartButton = input.cartButtonSelected.asObservable()
+        input.cartButtonSelected
+            .subscribe { _ in
+                self.coordinator.showShopBasket()
+            }.disposed(by: disposeBag)
 
         let selectedGetAreaSaveButton = input.getAreaSaveButtonSelected.map { width, height in
             self.calculatePrice(width: width, height: height)
         }
         
-        let selectedGoShopBasketLabel = input.goShopBasketLabelSelected.map { _ in}.asObservable()
+       input.goShopBasketLabelSelected.map { _ in}
+            .subscribe { _ in
+                self.coordinator.showShopBasket()
+            }.disposed(by: disposeBag)
 
         shopBaskets
             .map { basketItems in
@@ -134,9 +155,7 @@ final class EstimateViewModel: ViewModelType {
             tappedAddButton: selectedAddButton,
             tappedInputArea: selectedInputArea,
             tappedInputAreaAgain: selectedInputAreaAgain,
-            tappedCartButton: selectedCartButton,
-            tappedGetAreaSaveButton: selectedGetAreaSaveButton,
-            tappedGoShopBasketLabel: selectedGoShopBasketLabel)
+            tappedGetAreaSaveButton: selectedGetAreaSaveButton)
     }
 }
 
@@ -172,7 +191,6 @@ extension EstimateViewModel {
 
         let background = CIImage(cgImage: resizedBackgroundImage)
         let mask = CIImage(cgImage: maskedImage.cgImage!)
-
         let parameters = [
             kCIInputImageKey: beginImage,
             kCIInputBackgroundImageKey: background,
